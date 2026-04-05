@@ -7,7 +7,6 @@ import {
   updateUserTokens,
 } from "../service/auth.service";
 import { ApiResponse } from "../lib/apiResponse";
-import crypto from "crypto";
 import { generateOTP } from "../lib/gernerateOTP";
 import { createOTP, deleteManyOTP, findOTP } from "../service/otp.service";
 
@@ -27,7 +26,7 @@ const generateToken = async (userId) => {
   return { accessToken, refreshToken };
 };
 
-export const register = asyncHandler(async (req, res) => {
+export const registerUser = asyncHandler(async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 
   if (
@@ -78,7 +77,7 @@ export const register = asyncHandler(async (req, res) => {
     );
 });
 
-export const login = asyncHandler(async (req, res) => {
+export const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   if ([email, password].some((field) => field.trim() === "")) {
@@ -124,7 +123,7 @@ export const login = asyncHandler(async (req, res) => {
     );
 });
 
-export const logout = asyncHandler(async (req, res) => {
+export const userLogout = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   // invalidate the tokens in the database
   await updateUserTokens(userId, { refreshToken: null, accessToken: null });
@@ -136,14 +135,14 @@ export const logout = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "Logged out successfully"));
 });
 
-export const getProfile = asyncHandler(async (req, res) => {
+export const getUserProfile = asyncHandler(async (req, res) => {
   // find the user by id from req.user._id
   const user = findUserById(req.user._id);
   // send the user info in response
   res.json(new ApiResponse(200, { user }, "User profile fetched successfully"));
 });
 
-export const updateProfile = asyncHandler(async (req, res) => {
+export const updateUserProfile = asyncHandler(async (req, res) => {
   // only allow updating firstName, lastName and avatar
   const { firstName, lastName, avatar } = req.body;
   // build an object with the fields to update
@@ -165,7 +164,7 @@ export const updateProfile = asyncHandler(async (req, res) => {
   );
 });
 
-export const changePassword = asyncHandler(async (req, res) => {
+export const changeUserPassword = asyncHandler(async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   if ([currentPassword, newPassword].some((field) => field.trim() === "")) {
     throw new ApiError("All fields are required", 400);
