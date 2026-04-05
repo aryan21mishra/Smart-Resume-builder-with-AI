@@ -1,4 +1,4 @@
-import { verify } from "jsonwebtoken";
+
 import mongoose, { Schema } from "mongoose";
 
 const otpSchema = Schema(

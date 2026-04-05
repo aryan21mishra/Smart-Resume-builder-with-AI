@@ -1,4 +1,4 @@
-import { OTP } from "../models/otp.model";
+import { OTP } from "../models/otp.model.js";
 
 export const createOTP = async (credencial) => {
   return await OTP.cerate(credencial);

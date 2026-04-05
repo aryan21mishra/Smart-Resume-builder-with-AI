@@ -1,14 +1,14 @@
-import { ApiError } from "../lib/apiError";
-import { asyncHandler } from "../lib/asyncHandler";
+import { ApiError } from "../lib/apiError.js";
+import { asyncHandler } from "../lib/asyncHandler.js";
 import {
   createUser,
   findUserByEmail,
   updateUser,
   updateUserTokens,
-} from "../service/auth.service";
-import { ApiResponse } from "../lib/apiResponse";
-import { generateOTP } from "../lib/gernerateOTP";
-import { createOTP, deleteManyOTP, findOTP } from "../service/otp.service";
+} from "../service/user.service.js";
+import { ApiResponse } from "../lib/apiResponse.js";
+import { generateOTP } from "../lib/gernerateOTP.js";
+import { createOTP, deleteManyOTP, findOTP } from "../service/otp.service.js";
 
 const generateToken = async (userId) => {
   //find user by id

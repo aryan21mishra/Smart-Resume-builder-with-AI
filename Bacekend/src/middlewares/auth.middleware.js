@@ -1,6 +1,6 @@
-import { ApiError } from "../lib/apiError";
-import { asyncHandler } from "../lib/asyncHandler";
-import { findUserById } from "../service/user.service";
+import { ApiError } from "../lib/apiError.js";
+import { asyncHandler } from "../lib/asyncHandler.js";
+import { findUserById } from "../service/user.service.js";
 
 export const verifyUser = asyncHandler(async (req, _, next) => {
   const token =

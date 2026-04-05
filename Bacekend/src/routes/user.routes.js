@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyUser } from "../middlewares/auth.middleware";
+import { verifyUser } from "../middlewares/auth.middleware.js";
 import {
   changeUserPassword,
   forgetPassword,
@@ -10,16 +10,19 @@ import {
   userLogin,
   userLogout,
   verifyOTP,
-} from "../controllers/auth.controller";
+} from "../controllers/auth.controller.js";
 
 const router = Router();
 
 router.route("/register").post(registerUser);
 router.route("/login").post(userLogin);
 router.route("/logout").post(verifyUser, userLogout);
-router.route("/me").post(verifyUser, getUserProfile);
-router.route("/update-profile").post(verifyUser, updateUserProfile);
-router.route("/change-password").post(verifyUser, changeUserPassword);
+router.route("/me").get(verifyUser, getUserProfile);
+router.route("/update-profile").put(verifyUser, updateUserProfile);
+router.route("/change-password").put(verifyUser, changeUserPassword);
 router.route("/send-otp").post(sendOTP);
 router.route("/verify-otp").post(verifyOTP);
-router.route("/forget-password").post(forgetPassword);
+router.route("/forget-password").put(forgetPassword);
+
+
+export default router

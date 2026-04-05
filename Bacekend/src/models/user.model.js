@@ -67,7 +67,7 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-userSchema.index({ email: 1 });
+// userSchema.index({ email: 1 });
 // userSchema.index({ "oauth.google.id": 1 });
 // userSchema.index({ "oauth.github.id": 1 });
 export const User = mongoose.model("User", userSchema);
