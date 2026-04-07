@@ -3,6 +3,7 @@ import { asyncHandler } from "../lib/asyncHandler.js";
 import {
   createUser,
   findUserByEmail,
+  findUserById,
   updateUser,
   updateUserTokens,
 } from "../service/user.service.js";
@@ -30,14 +31,14 @@ export const registerUser = asyncHandler(async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
 
   if (
-    [email, password, firstName, lastName].some((field) => field.trim() === "")
+    [email, password, firstName, lastName].some((field) => field?.trim() === "")
   ) {
-    throw new ApiError("All fields are required", 400);
+    throw new ApiError(400, "All fields are required");
   }
   //check if user with the same email already exist
   const existingUser = await findUserByEmail(email);
   if (existingUser) {
-    throw new ApiError("Email already exist", 400);
+    throw new ApiError(400, "Email already exist");
   }
   //create a new user
   const newUser = await createUser({

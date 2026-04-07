@@ -14,10 +14,7 @@ const userSchema = new Schema(
     },
     passwordHash: { type: String, select: false },
     avatar: { type: String },
-    //     oauth: {
-    //       google: { id: String, accessToken: String, refreshToken: String },
-    //       github: { id: String, accessToken: String },
-    //     },
+
     refreshToken: {
       type: String,
       select: false,
@@ -37,9 +34,15 @@ userSchema.virtual("fullName").get(function () {
 
 // Hash password before save
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("passwordHash") || !this.passwordHash) return next();
-  this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
-  next();
+  try {
+    if (!this.isModified("passwordHash") || !this.passwordHash) {
+      return next();
+    }
+    this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
+    return next();
+  } catch (err) {
+    return next(err);
+  }
 });
 
 userSchema.methods.comparePassword = function (plain) {
