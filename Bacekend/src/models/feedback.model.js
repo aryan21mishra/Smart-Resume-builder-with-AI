@@ -29,6 +29,7 @@ const feedbackSchema = new Schema(
     keywordScore: { type: Number, min: 0, max: 100 },
     formatScore: { type: Number, min: 0, max: 100 },
     impactScore: { type: Number, min: 0, max: 100 },
+    overall_feedback: { type: String },
     sectionFeedback: sectionFeedbackSchema,
     improvements: [improvementsSchema],
     missingKeywords: {
