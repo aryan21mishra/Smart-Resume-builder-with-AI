@@ -1,13 +1,17 @@
 import mongoose, { Schema } from "mongoose";
 
-const contactSchema = new Schema(
+const personalInfoSchema = new Schema(
   {
+    firstName: { type: String, trim: true },
+    lastName: { type: Sting, trim: true },
+    title: { type: Sting, trim: true },
+    email: { type: Sting, trim: true },
     phone: { type: String, trim: true },
     location: { type: String, trim: true },
     linkedin: { type: String, trim: true },
     github: { type: String, trim: true },
-    website: { type: String, trim: true },
     portfolio: { type: String, trim: true },
+    summary: { type: Sting },
   },
   { _id: false },
 );
@@ -75,12 +79,9 @@ const skillsSchema = new Schema(
   { _id: false },
 );
 
-// ── Root Resume Schema ────────────────────────────────────────────────────────
-
 const resumeSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-
     title: {
       type: String,
       required: true,
@@ -92,66 +93,22 @@ const resumeSchema = new Schema(
       enum: ["modern", "classic", "minimal", "executive", "creative"],
       default: "modern",
     },
-    colorTheme: { type: String, default: "#e8b86d" },
-    font: { type: String, default: "DM Sans" },
-
-    targetJobTitle: { type: String, trim: true },
-    targetIndustry: { type: String, trim: true },
-    targetJobDescription: { type: String },
-
-    fullName: { type: String, trim: true },
-    email: { type: String, trim: true },
-    summary: { type: String, maxlength: 1000 },
-    contact: contactSchema,
-
+    personalInfo: personalInfoSchema,
     experience: [experienceSchema],
     education: [educationSchema],
+    skills: [skillsSchema],
     projects: [projectSchema],
     certifications: [certificationSchema],
-    skills: skillsSchema,
-    awards: [
-      { title: String, issuer: String, date: Date, description: String },
-    ],
-    publications: [{ title: String, journal: String, date: Date, url: String }],
-    volunteer: [
-      {
-        organization: String,
-        role: String,
-        startDate: Date,
-        endDate: Date,
-        description: String,
-      },
-    ],
-    customSections: [
-      {
-        heading: { type: String },
-        items: [{ label: String, description: String }],
-      },
-    ],
-
-    // AI & ATS
-    atsScore: { type: Number, min: 0, max: 100 },
-    keywordsMatched: [{ type: String }],
-    keywordsMissing: [{ type: String }],
-    lastAiAnalysis: { type: Date },
-
-    // Meta
     isPublic: { type: Boolean, default: false },
-    publicSlug: { type: String, unique: true, sparse: true },
     isDraft: { type: Boolean, default: true },
-    version: { type: Number, default: 1 },
-    tags: [{ type: String, trim: true }],
+    feedback: { type: Schema.Types.ObjectId, ref: "Feedback" },
     exportFormats: [{ type: String, enum: ["pdf", "docx", "txt", "json"] }],
+    isDelete: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );
 
-resumeSchema.index({ userId: 1, updatedAt: -1 });
-resumeSchema.index({ publicSlug: 1 }, { sparse: true });
-resumeSchema.index({ userId: 1, isDraft: 1 });
-resumeSchema.index(
-  { title: "text", summary: "text", targetJobTitle: "text" },
-  { name: "resume_text_search" },
-);
-
-module.exports = mongoose.model("Resume", resumeSchema);
+export const Resume = mongoose.model("Resume", resumeSchema);

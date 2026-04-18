@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
-
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 const userSchema = new Schema(
   {
     firstName: { type: String, required: true, trim: true },
@@ -33,20 +33,13 @@ userSchema.virtual("fullName").get(function () {
 });
 
 // Hash password before save
-userSchema.pre("save", async function (next) {
-  try {
-    if (!this.isModified("passwordHash") || !this.passwordHash) {
-      return next();
-    }
-    this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
-    return next();
-  } catch (err) {
-    return next(err);
-  }
+userSchema.pre("save", async function () {
+  if (!this.isModified("passwordHash") || !this.passwordHash) return;
+  this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
 });
 
-userSchema.methods.comparePassword = function (plain) {
-  return bcrypt.compare(plain, this.passwordHash);
+userSchema.methods.comparePassword = function (plainPassword) {
+  return bcrypt.compare(plainPassword, this.passwordHash);
 };
 
 userSchema.methods.generateAccessToken = function () {

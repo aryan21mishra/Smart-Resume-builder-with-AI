@@ -6,5 +6,6 @@ export const generateOTP = () => {
   for (let i = 0; i < 6; i++) {
     otp += numbers[crypto.randomInt(numbers.length)];
   }
+  console.log(otp)
   return otp;
 };

@@ -1,6 +1,5 @@
-
 import mongoose, { Schema } from "mongoose";
-
+import bcrypt from "bcryptjs";
 const otpSchema = Schema(
   {
     email: {
@@ -30,22 +29,12 @@ const otpSchema = Schema(
 );
 
 otpSchema.pre("save", async function () {
-  this.otp = await bcrypt.hash(this.otp, 20);
-  next();
+  if (!this.isModified("otp")) return;
+  this.otp = await bcrypt.hash(this.otp, 10);
 });
 
 otpSchema.methods.comparedOTP = async function (otp) {
   return await bcrypt.compare(otp, this.otp);
-};
-
-otpSchema.statics.incrementAttempts = function (email) {
-  return this.updateOne(
-    {
-      email,
-      attempts: { $lt: 5 },
-    },
-    { $inc: { attempts: 1 } },
-  );
 };
 
 export const OTP = mongoose.model("OTP", otpSchema);

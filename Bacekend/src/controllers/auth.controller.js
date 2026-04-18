@@ -9,7 +9,12 @@ import {
 } from "../service/user.service.js";
 import { ApiResponse } from "../lib/apiResponse.js";
 import { generateOTP } from "../lib/gernerateOTP.js";
-import { createOTP, deleteManyOTP, findOTP } from "../service/otp.service.js";
+import {
+  createOTP,
+  deleteManyOTP,
+  findAndUpdateOtp,
+  findOTP,
+} from "../service/otp.service.js";
 
 const generateToken = async (userId) => {
   //find user by id
@@ -81,18 +86,20 @@ export const registerUser = asyncHandler(async (req, res) => {
 export const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  if ([email, password].some((field) => field.trim() === "")) {
-    throw new ApiError("All fields are required", 400);
+  console.log(req.body);
+
+  if ([email, password].some((field) => field?.trim() === "")) {
+    throw new ApiError(400, "All fields are required");
   }
   // check if user with the email exist
   const existingUser = await findUserByEmail(email);
   if (!existingUser) {
-    throw new ApiError("User not found ", 404);
+    throw new ApiError(404, "User not found ");
   }
   // compare the password with the password hash in the database
   const isMatch = await existingUser.comparePassword(password);
   if (!isMatch) {
-    throw new ApiError("Invalid credentials", 401);
+    throw new ApiError(401, "Invalid credentials");
   }
   // generate access token and refresh token for the user
   const { accessToken, refreshToken } = await generateToken(existingUser._id);
@@ -113,10 +120,10 @@ export const userLogin = asyncHandler(async (req, res) => {
         200,
         {
           user: {
-            id: newUser._id,
-            email: newUser.email,
-            firstName: newUser.firstName,
-            lastName: newUser.lastName,
+            id: existingUser._id,
+            email: existingUser.email,
+            firstName: existingUser.firstName,
+            lastName: existingUser.lastName,
           },
         },
         "Logged in successfully",
@@ -138,7 +145,11 @@ export const userLogout = asyncHandler(async (req, res) => {
 
 export const getUserProfile = asyncHandler(async (req, res) => {
   // find the user by id from req.user._id
-  const user = findUserById(req.user._id);
+  console.log(req.user._id);
+  const user = await findUserById(req.user._id);
+  if (!user) {
+    throw new ApiError(404, "User not found!");
+  }
   // send the user info in response
   res.json(new ApiResponse(200, { user }, "User profile fetched successfully"));
 });
@@ -168,16 +179,16 @@ export const updateUserProfile = asyncHandler(async (req, res) => {
 export const changeUserPassword = asyncHandler(async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   if ([currentPassword, newPassword].some((field) => field.trim() === "")) {
-    throw new ApiError("All fields are required", 400);
+    throw new ApiError(400, "All fields are required");
   }
   //find user
-  const user = await findUserById(req.user._id);
+  const user = await findUserById(req.user._id, true);
 
   // match the currentPassword
   const isMatch = await user.comparePassword(currentPassword);
 
   if (!isMatch) {
-    throw new ApiError("Current password is incorrect", 401);
+    throw new ApiError(401, "Current password is incorrect");
   }
   //update new password
   user.passwordHash = newPassword;
@@ -189,13 +200,14 @@ export const changeUserPassword = asyncHandler(async (req, res) => {
 
 export const sendOTP = asyncHandler(async (req, res) => {
   const { email } = req.body;
-  if (!email || email.trim() === "") {
-    throw new ApiError("Email is required", 400);
+  if (!email || email?.trim() === "") {
+    throw new ApiError(400, "Email is required");
   }
+  console.log(email);
   //find the user via email
   const user = await findUserByEmail(email);
   if (!user) {
-    throw new ApiError("User not found", 404);
+    throw new ApiError(404, "User not found");
   }
   //find the otp schema is exit on corresponding email
   const existingOTP = await findOTP(email);
@@ -204,20 +216,13 @@ export const sendOTP = asyncHandler(async (req, res) => {
   if (existingOTP) {
     if (existingOTP.attempts === 5) {
       throw new ApiError(
-        "Maximum OTP attempts exceeded. Please try again later.",
         429,
+        "Maximum OTP attempts exceeded. Please try again later.",
       );
     }
 
     const otp = generateOTP();
-
-    existingOTP.otp = otp;
-
-    existingOTP.expiresAt = new Date(
-      Date.now() + Number(process.env.OTP_EXPIRY_MINUTES) * 60 * 1000,
-    );
-    otpModel.incrementAttempts(email);
-    existingOTP.save();
+    await findAndUpdateOtp(email, otp, expiresAt);
 
     // send otp via mail
   }
@@ -226,10 +231,12 @@ export const sendOTP = asyncHandler(async (req, res) => {
   const expiresAt = new Date(
     Date.now() + Number(process.env.OTP_EXPIRY_MINUTES) * 60 * 1000,
   );
-  const otpModel = await createOTP({ otp, expiresAt, attempts: 1 });
+  const otpModel = await createOTP({ email, otp, expiresAt, attempts: 1 });
+  console.log("model created");
   if (!otpModel) {
-    throw new ApiError("Failed to create OTP", 500);
+    throw new ApiError(500, "Failed to create OTP");
   }
+
   //send the mail
 
   res.json(
@@ -240,19 +247,19 @@ export const sendOTP = asyncHandler(async (req, res) => {
 export const verifyOTP = asyncHandler(async (req, res) => {
   const { email, otp } = req.body;
 
-  if ([email, newPassword].some((field) => field.trim() === "")) {
-    throw new ApiError("Email and otp are required", 400);
+  if ([email, otp].some((field) => field.trim() === "")) {
+    throw new ApiError(400, "Email and otp are required");
   }
 
   const record = await findOTP(email);
   if (!record) {
-    throw new ApiError("OTP not found or already used.", 400);
+    throw new ApiError(400, "OTP not found or already used.");
   }
 
   const OTPVerified = record.comparedOTP(otp);
 
   if (!OTPVerified) {
-    throw new ApiError("Invalid OTP", 400);
+    throw new ApiError(400, "Invalid OTP");
   }
 
   record.verified = true;
@@ -265,19 +272,20 @@ export const forgetPassword = asyncHandler(async (req, res) => {
   const { email, newPassword } = req.body;
 
   if ([email, newPassword].some((field) => field.trim() === "")) {
-    throw new ApiError("Email and new password are required", 400);
+    throw new ApiError(400, "Email and new password are required");
   }
   //find the user via email
   const user = await findUserByEmail(email);
 
   if (!user) {
-    throw new ApiError("User does not exist!", 404);
+    throw new ApiError(404, "User does not exist!");
   }
   // check the otp isVerified or not on a corresponding email
-  const optIsVerified = await findOTP(email).verified;
+  const optIsVerified = await findOTP(email);
+  console.log(optIsVerified);
 
-  if (!optIsVerified) {
-    throw new ApiError("Otp verification is required!", 400);
+  if (!optIsVerified.verified) {
+    throw new ApiError(400, "Otp verification is required!");
   }
 
   // set new password
