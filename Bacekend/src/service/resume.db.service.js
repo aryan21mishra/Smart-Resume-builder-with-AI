@@ -1,4 +1,4 @@
-import { Resume } from "../models/resume.model";
+import { Resume } from "../models/resume.model.js";
 
 export const createResumeForUser = (
   userId,

@@ -1,11 +1,11 @@
-import { ApiError } from "../lib/apiError";
-import { ApiResponse } from "../lib/apiResponse";
-import { asyncHandler } from "../lib/asyncHandler";
+import { ApiError } from "../lib/apiError.js";
+import { ApiResponse } from "../lib/apiResponse.js";
+import { asyncHandler } from "../lib/asyncHandler.js";
 import {
   createResumeForUser,
   findByIdAndUpdate,
   findResumeById,
-} from "../service/resume.db.service";
+} from "../service/resume.db.service.js";
 
 export const createResume = asyncHandler(async (req, res) => {
   const userId = req.user._id;

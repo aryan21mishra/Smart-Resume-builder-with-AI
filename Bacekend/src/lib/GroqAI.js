@@ -4,7 +4,7 @@ import { systemPrompt } from "../constant";
 const groq = new Groq();
 
 export const callAI = async (messages) => {
-  const baseMessage = [{ role: "system", content: systemPrompt }, messages];
+  const baseMessage = [{ role: "system", content: systemPrompt }, ...messages];
   const chatCompletion = await groq.chat.completions.create({
     messages: baseMessage,
     model: "meta-llama/llama-4-scout-17b-16e-instruct",

@@ -3,15 +3,15 @@ import mongoose, { Schema } from "mongoose";
 const personalInfoSchema = new Schema(
   {
     firstName: { type: String, trim: true },
-    lastName: { type: Sting, trim: true },
-    title: { type: Sting, trim: true },
-    email: { type: Sting, trim: true },
+    lastName: { type: String, trim: true },
+    title: { type: String, trim: true },
+    email: { type: String, trim: true },
     phone: { type: String, trim: true },
     location: { type: String, trim: true },
     linkedin: { type: String, trim: true },
     github: { type: String, trim: true },
     portfolio: { type: String, trim: true },
-    summary: { type: Sting },
+    summary: { type: String },
   },
   { _id: false },
 );

@@ -18,4 +18,4 @@ import userRoutes from "./routes/user.routes.js";
 import resumeRoutes from "./routes/resume.routes.js";
 
 app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/resumes", resumesRoutes);
+app.use("/api/v1/resumes", resumeRoutes);
