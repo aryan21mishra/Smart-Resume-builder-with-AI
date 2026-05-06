@@ -1,7 +1,7 @@
 import AuthLayout from "./pages/auth/layout";
 import LoginPage from "./pages/auth/login/page";
 import DashboardLayout from "./pages/dashboard/layout";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/home/HomePage";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
         <LoginPage />
       </AuthLayout> */}
       {/* <HomePage /> */}
-      <DashboardLayout/>
+      <DashboardLayout />
     </>
   );
 }

@@ -4,8 +4,9 @@ import Image from "../../components/common/Image";
 import Logo from "../../components/common/logo";
 import { Typewriter } from "react-simple-typewriter";
 import BackgroundGradientDesign from "../../components/common/BackgroundGradientDesign";
+import { Outlet } from "react-router-dom";
 
-const AuthLayout = ({ children }) => {
+const AuthLayout = () => {
   return (
     <div className="w-full h-screen bg-[#000000]">
       {/* Main section */}
@@ -62,7 +63,7 @@ const AuthLayout = ({ children }) => {
 
         {/* left section */}
         <div className="max-md:w-full h-full md:w-2/5 py-4 px-15">
-          {children}
+          <Outlet />
         </div>
       </div>
     </div>

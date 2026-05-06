@@ -29,7 +29,7 @@ const NavigationBar = () => {
       </div>
       <div className="flex gap-5 max-md:hidden">
         <Button
-          onClick={() => navigation("/login")}
+          onClick={() => navigation("/auth/login")}
           className="h-fit bg-transparent! text-white! border border-[rgba(255,255,255,0.08)]!">
           Sign In
         </Button>

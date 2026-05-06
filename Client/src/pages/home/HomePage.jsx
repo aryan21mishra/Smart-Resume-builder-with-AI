@@ -1,13 +1,13 @@
 import React from "react";
-import NavigationBar from "../layouts/NavigationBar";
-import HeroSection from "../content/home/HeroSection";
-import FeaturesSection from "../content/home/FeaturesSection";
-import HowItWorksSection from "../content/home/HowItWorksSection";
-import ReviewSection from "../content/home/ReviewSection";
-import TemplateSection from "../content/home/TemplateSection";
-import Image from "../components/common/Image";
-import { Image8 } from "../assets/home/index";
-import BackgroundGradientDesign from "../components/common/BackgroundGradientDesign";
+import NavigationBar from "../../layouts/NavigationBar";
+import HeroSection from "../../content/home/HeroSection";
+import FeaturesSection from "../../content/home/FeaturesSection";
+import HowItWorksSection from "../../content/home/HowItWorksSection";
+import ReviewSection from "../../content/home/ReviewSection";
+import TemplateSection from "../../content/home/TemplateSection";
+import Image from "../../components/common/Image";
+import { Image8 } from "../../assets/home/index";
+import BackgroundGradientDesign from "../../components/common/BackgroundGradientDesign";
 const HomePage = () => {
   return (
     <div className="relative bg-[#000000] overflow-hidden w-full h-full">

@@ -13,10 +13,15 @@ const SignupForm = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = async (data) => {
+ const onSubmit = async (data) => {
     setIsLoading(true);
-  };
 
+    // simulate request
+    setTimeout(() => {
+      setIsLoading(false);
+      console.log(data);
+    }, 1500);
+  };
   return (
     <div className="w-full">
       <div className="w-full flex justify-center">
@@ -54,9 +59,9 @@ const SignupForm = () => {
             type="email"
             placeholder="you@example.com"
             {...register("email", {
-              required: "Please enter a valid email.",
+              required: "Email is required.",
               pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: "Please enter a valid email.",
               },
             })}
@@ -67,6 +72,7 @@ const SignupForm = () => {
             label={"Password"}
             errors={errors}
             name={"password"}
+            type="password"
             placeholder="Min. 8 characters"
             {...register("password", {
               required: "Password must be at least 8 characters.",
