@@ -1,7 +1,7 @@
 import { Groq } from "groq-sdk";
-import { systemPrompt } from "../constant";
+import { systemPrompt } from "../constant.js";
 
-const groq = new Groq();
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 export const callAI = async (messages) => {
   const baseMessage = [{ role: "system", content: systemPrompt }, ...messages];

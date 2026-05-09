@@ -14,8 +14,22 @@ app.use(urlencoded({ extended: true }));
 
 app.use(json());
 
-import userRoutes from "./routes/user.routes.js";
+import userRouter from "./routes/user.routes.js";
 import resumeRoutes from "./routes/resume.routes.js";
+import resumeFeedbackRouter from "./routes/resumeFeedback.routes.js";
+// import { User } from "./models/user.model.js";
 
-app.use("/api/v1/users", userRoutes);
+// app.get("/test-db", async (req, res) => {
+//   try {
+//     const count = await User.countDocuments();
+//     res.json({ success: true, count });
+//   } catch (err) {
+//     res.json({ success: false, error: err.message });
+//   }
+// });
+
+app.use("/api/v1/users", userRouter);
+
 app.use("/api/v1/resumes", resumeRoutes);
+
+app.use("/api/v1/feedback", resumeFeedbackRouter);

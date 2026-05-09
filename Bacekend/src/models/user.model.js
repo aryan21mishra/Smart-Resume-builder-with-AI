@@ -34,7 +34,10 @@ userSchema.virtual("fullName").get(function () {
 
 // Hash password before save
 userSchema.pre("save", async function () {
-  if (!this.isModified("passwordHash") || !this.passwordHash) return;
+  if (!this.isModified("passwordHash") || !this.passwordHash) {
+    return;
+  }
+
   this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
 });
 
@@ -63,7 +66,7 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-// userSchema.index({ email: 1 });
+// userSchema.index({ aemail: 1 });
 // userSchema.index({ "oauth.google.id": 1 });
 // userSchema.index({ "oauth.github.id": 1 });
 export const User = mongoose.model("User", userSchema);

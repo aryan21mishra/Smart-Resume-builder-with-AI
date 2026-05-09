@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-
+import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 const personalInfoSchema = new Schema(
   {
     firstName: { type: String, trim: true },
@@ -110,5 +110,7 @@ const resumeSchema = new Schema(
   },
   { timestamps: true },
 );
+
+resumeSchema.plugin(mongooseAggregatePaginate);
 
 export const Resume = mongoose.model("Resume", resumeSchema);

@@ -12,17 +12,17 @@ import {
   verifyOTP,
 } from "../controllers/auth.controller.js";
 
-const router = Router();
+const userRouter = Router();
 
-router.route("/register").post(registerUser);
-router.route("/login").post(userLogin);
-router.route("/logout").post(verifyUser, userLogout);
-router.route("/me").get(verifyUser, getUserProfile);
-router.route("/update-profile").put(verifyUser, updateUserProfile);
-router.route("/change-password").put(verifyUser, changeUserPassword);
-router.route("/send-otp").post(sendOTP);
-router.route("/verify-otp").post(verifyOTP);
-router.route("/forget-password").put(forgetPassword);
+userRouter.route("/register").post(registerUser);
+userRouter.route("/login").post(userLogin);
+userRouter.route("/logout").post(verifyUser, userLogout);
+userRouter.route("/me").get(verifyUser, getUserProfile);
+userRouter.route("/update-profile").put(verifyUser, updateUserProfile);
+userRouter.route("/change-password").put(verifyUser, changeUserPassword);
+userRouter.route("/send-otp").post(sendOTP);
+userRouter.route("/verify-otp").post(verifyOTP);
+userRouter.route("/forget-password").put(forgetPassword);
 
 
-export default router
+export default userRouter

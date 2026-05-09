@@ -1,4 +1,4 @@
-import { Message } from "../models/message.model";
+import { Message } from "../models/message.model.js";
 
 export const createMessage = (conservationId, role, content, taskType) => {
   return Message.create({

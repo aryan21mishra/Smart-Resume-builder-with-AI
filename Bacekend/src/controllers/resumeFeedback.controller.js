@@ -1,10 +1,15 @@
-import { ApiError } from "../lib/apiError";
-import { ApiResponse } from "../lib/apiResponse";
-import { asyncHandler } from "../lib/asyncHandler";
-import { callAI } from "../lib/GroqAI";
-import { analyzeUserResumePrompt, jobMatchPrompt } from "../lib/promptFormat";
-import { createConservation } from "../service/conservation.service";
-import { createMessage, findMessages } from "../service/message.db.service";
+import { ApiError } from "../lib/apiError.js";
+import { ApiResponse } from "../lib/apiResponse.js";
+import { asyncHandler } from "../lib/asyncHandler.js";
+import { callAI } from "../lib/GroqAI.js";
+import {
+  analyzeUserResumePrompt,
+  jobMatchPrompt,
+  rewriteSectionPrompt,
+} from "../lib/promptFormat.js";
+import { createConservation } from "../service/conservation.service.js";
+import { createMessage, findMessages } from "../service/message.db.service.js";
+import { createRewriteSection } from "../service/rewrite-section.service.js";
 
 export const analyzeResume = asyncHandler(async (req, res) => {
   const { resumeId, resumeText, jobDescription } = req.body;
@@ -166,3 +171,73 @@ export const jobMatch = asyncHandler(async (req, res) => {
       ),
     );
 });
+
+export const rewriteSection = asyncHandler(async (req, res) => {
+  const { resumeId, section, currentContent, instruction, conservationId } =
+    req.body;
+
+  if (
+    [resumeId, section, currentContent].some((field) => field.trim() === "")
+  ) {
+    throw new ApiError(400, "Resume id,section,current content are required");
+  }
+  const pastMessages = await findMessages(conservationId);
+  const rewriteSectionPrompt = rewriteSectionPrompt(
+    section,
+    currentContent,
+    instruction,
+  );
+
+  const fullMessages = [
+    ...pastMessages,
+    { role: "user", content: rewriteSectionPrompt },
+  ];
+
+  const { rawText, parsedText } = callAI(fullMessages);
+  const saveUserMessage = await createMessage(
+    conservation._id,
+    "user",
+    rewriteSectionPrompt,
+    "rewrite",
+  );
+  if (!saveUserMessage) {
+    throw new ApiError(500, "Internal sever error while saving user message");
+  }
+  const saveAssistantMessage = await createMessage(
+    conservation._id,
+    "assistant",
+    rawText,
+    "rewrite",
+  );
+
+  const rewriteSection = await createRewriteSection({
+    resumeId,
+    userId,
+    sectionName: section,
+    originalContent: currentContent,
+    rewrittenContent: parsedText.rewrittenContent,
+    changesMade: parsedText.changesMade,
+    keywordScore: parsedText.keywordScore,
+    improvementReason: parsedText.improvementReason,
+    beforeScore: parsedText.beforeScore,
+    afterScore: parsedText.afterScore,
+  });
+
+  if (!saveAssistantMessage) {
+    throw new ApiError(
+      500,
+      "Internal sever error while saving assistant message",
+    );
+  }
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        { rewriteSection },
+        "Rewrite section analysis completed successfully",
+      ),
+    );
+});
+

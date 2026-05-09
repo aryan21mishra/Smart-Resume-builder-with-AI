@@ -59,3 +59,20 @@ Return this exact JSON:
 }RESUME: "${resumeText}"
 JOB DESCRIPTION: "${jobDescription}"`;
 };
+
+export const rewriteSectionPrompt = (section, currentContent, instruction) => {
+  return `TASK: Rewrite resume section
+Rewrite the ${section} section below to be more impactful and ATS-friendly.
+Return this exact JSON:
+{
+  "rewrittenContent": "<fully rewritten section>",
+  "changesMade": ["change1", "change2"],
+  "keywordsAdded": ["keyword1", "keyword2"],
+  "improvementReason": "<1-2 sentences why these changes help>",
+  "beforeScore": <estimated impact score 0-100 before>,
+  "afterScore": <estimated impact score 0-100 after>
+}
+SECTION: ${section.toUpperCase()}
+CURRENT CONTENT: "${currentContent}"
+INSTRUCTION: ${instruction || "Make it as impactful and ATS-friendly as possible."}`;
+};

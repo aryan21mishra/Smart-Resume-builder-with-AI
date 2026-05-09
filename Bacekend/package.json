@@ -19,6 +19,7 @@
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js"
   },
   "dependencies": {
+    "@react-email/render": "^2.0.8",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -27,6 +28,13 @@
     "groq-sdk": "^1.1.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.3",
-    "nodemon": "^3.1.14"
+    "mongoose-aggregate-paginate-v2": "^1.1.4",
+    "nodemon": "^3.1.14",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "resend": "^6.12.3"
+  },
+  "devDependencies": {
+    "tsx": "^4.21.0"
   }
 }

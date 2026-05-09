@@ -15,6 +15,8 @@ import {
   findAndUpdateOtp,
   findOTP,
 } from "../service/otp.service.js";
+import { sendEmail } from "../lib/Resend.js";
+
 
 const generateToken = async (userId) => {
   //find user by id
@@ -34,7 +36,7 @@ const generateToken = async (userId) => {
 
 export const registerUser = asyncHandler(async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
-
+  console.log(req.body);
   if (
     [email, password, firstName, lastName].some((field) => field?.trim() === "")
   ) {
@@ -55,6 +57,13 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   //getting access token and refresh token for the new user
   const { accessToken, refreshToken } = await generateToken(newUser._id);
+
+  // send the welcome email to the user
+  await sendEmail(
+    email,
+    "Welcome to Smart Resume Builder",
+    firstName + " " + lastName,
+  );
 
   const options = {
     httpOnly: true,
