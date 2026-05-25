@@ -2,10 +2,18 @@ import React, { useState } from "react";
 import { Input, Label } from "../ui";
 import { RiEyeLine, RiEyeOffLine, RiAlertLine } from "@remixicon/react";
 
+// Resolves dot-notation paths like "graduation.institution" into nested objects
+// errors["graduation.institution"] ❌  →  errors.graduation.institution ✅
+const getNestedError = (errors, name) => {
+  return name.split(".").reduce((acc, key) => acc?.[key], errors);
+};
+
 const FormField = ({ label, name, errors = {}, ...props }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = props.type === "password";
-  const fieldError = errors[name];
+
+  // Fix: use helper instead of errors[name]
+  const fieldError = getNestedError(errors, name);
 
   const inputBase = `text-white
     outline-none!
@@ -41,7 +49,7 @@ const FormField = ({ label, name, errors = {}, ...props }) => {
           </button>
         </div>
       ) : (
-        <Input {...props} name={name} className={inputBase}  />
+        <Input {...props} name={name} className={inputBase} />
       )}
 
       {fieldError && (
@@ -56,21 +64,32 @@ const FormField = ({ label, name, errors = {}, ...props }) => {
   );
 };
 
-const FormFieldWithIcon = ({label,name,errors = {},icon:Icon,iconPosition="right", ...props }) => {
-  const fieldError = errors[name];
+const FormFieldWithIcon = ({
+  label,
+  name,
+  errors = {},
+  icon: Icon,
+  iconPosition = "right",
+  ...props
+}) => {
+  // Fix: use helper instead of errors[name]
+  const fieldError = getNestedError(errors, name);
+
   const inputBase = `text-white
     outline-none!
     focus-visible:outline-none! focus-visible:ring-0!
     ${fieldError ? "border-red-500/50 focus-visible:ring-red-500/30 focus-visible:border-red-500/60" : ""}
   `;
+
   return (
     <div className="flex flex-col gap-2">
       <Label className="text-[11px] font-semibold tracking-[0.12em] uppercase text-zinc-500">
         {label}
       </Label>
-      <div className="relative flex items-center"> 
+      <div className="relative flex items-center">
         {Icon && (
-          <div className={`absolute ${iconPosition === "left" ? "left-3.5" : "right-3.5"} text-zinc-600 transition-colors duration-150`}>
+          <div
+            className={`absolute ${iconPosition === "left" ? "left-3.5" : "right-3.5"} text-zinc-600 transition-colors duration-150`}>
             <Icon size={17} />
           </div>
         )}
@@ -89,8 +108,7 @@ const FormFieldWithIcon = ({label,name,errors = {},icon:Icon,iconPosition="right
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export { FormFieldWithIcon };
 export default FormField;

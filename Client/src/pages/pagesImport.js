@@ -34,5 +34,24 @@ export const DashBoardMainPage = lazy(
 );
 
 import DashboardMainPage from "../pages/dashboard/page.jsx";
+import BuildResumePage from "./dashboard/my-resumes/build-resume/BuildResumePage";
+import PersonalInformationPage from "./dashboard/my-resumes/build-resume/personal-information/PersonalInformationPage";
+import ExperiencePage from "./dashboard/my-resumes/build-resume/experience/ExperiencePage.jsx";
+import EducationPage from "./dashboard/my-resumes/build-resume/education/EducationPage.jsx";
+import SkillsPage from "./dashboard/my-resumes/build-resume/skills/SkillPage.jsx";
+import CertificationsPage from "./dashboard/my-resumes/build-resume/certifications/CertificationPage.jsx";
+import ProjectsPage from "./dashboard/my-resumes/build-resume/projects/ProjectPage.jsx";
+import AwardsAndHonorsPage from "./dashboard/my-resumes/build-resume/awards-and-honors/AwardsAndHonorsPage";
 
-export { AuthLayout, DashboardMainPage };
+export {
+  AuthLayout,
+  DashboardMainPage,
+  BuildResumePage,
+  PersonalInformationPage,
+  ExperiencePage,
+  EducationPage,
+  SkillsPage,
+  CertificationsPage,
+  ProjectsPage,
+  AwardsAndHonorsPage,
+};
