@@ -1,8 +1,7 @@
 import { Conservation } from "../models/conservation.model.js";
 
-export const createConservation = (resumeId,userId) => {
+export const createConservation = (userId) => {
   return Conservation.create({
-    resumeId,
     userId,
   });
 };

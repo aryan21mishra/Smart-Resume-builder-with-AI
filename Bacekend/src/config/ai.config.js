@@ -1,10 +1,7 @@
 import { Groq } from "groq-sdk";
-import { systemPrompt } from "../constant.js";
-
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-export const callAI = async (messages) => {
-  const baseMessage = [{ role: "system", content: systemPrompt }, ...messages];
+export const aiCall = async (baseMessage) => {
   const chatCompletion = await groq.chat.completions.create({
     messages: baseMessage,
     model: "meta-llama/llama-4-scout-17b-16e-instruct",
@@ -14,8 +11,15 @@ export const callAI = async (messages) => {
     stream: false,
     stop: null,
   });
+  const rawText = chatCompletion.choices[0]?.message?.content;
+
+  const cleanedText = rawText
+    .replace(/```json/g, "")
+    .replace(/```/g, "")
+    .trim();
+
   return {
-    rawText: chatCompletion.choices[0]?.message?.content,
-    parsedText: JSON.parse(chatCompletion.choices[0]?.message?.content),
+    rawText,
+    parsedText: JSON.parse(cleanedText),
   };
 };

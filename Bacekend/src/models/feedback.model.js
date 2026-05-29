@@ -22,8 +22,13 @@ const improvementsSchema = new Schema(
 
 const feedbackSchema = new Schema(
   {
-    resumeId: { type: Schema.Types.ObjectId, ref: "Resume", required: true },
+    resumeId: { type: Schema.Types.ObjectId, ref: "Resume", default: null },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    resumeUploadId: {
+      type: Schema.Types.ObjectId,
+      ref: "ResumeUpload",
+      default: null,
+    },
     atsScore: { type: Number, min: 0, max: 100 },
     contentScore: { type: Number, min: 0, max: 100 },
     keywordScore: { type: Number, min: 0, max: 100 },

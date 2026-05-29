@@ -12,9 +12,10 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
-    passwordHash: { type: String, select: false },
+    passwordHash: { type: String, select: false, default: null },
     avatar: { type: String },
-
+    provider: { type: String, enum: ["google", "email"], default: "email" },
+    googleId: { type: String, select: false, default: null },
     refreshToken: {
       type: String,
       select: false,
@@ -37,7 +38,9 @@ userSchema.pre("save", async function () {
   if (!this.isModified("passwordHash") || !this.passwordHash) {
     return;
   }
-
+  if (!this.passwordHash) {
+    return;
+  }
   this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
 });
 

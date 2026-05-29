@@ -5,7 +5,6 @@ const conservationSchema = new Schema(
     resumeId: {
       type: Schema.Types.ObjectId,
       ref: "Resume",
-      required: true,
     },
     userId: {
       type: Schema.Types.ObjectId,

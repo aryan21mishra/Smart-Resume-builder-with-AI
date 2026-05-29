@@ -4,6 +4,7 @@ import {
   changeUserPassword,
   forgetPassword,
   getUserProfile,
+  googleLogin,
   registerUser,
   sendOTP,
   updateUserProfile,
@@ -16,6 +17,7 @@ const userRouter = Router();
 
 userRouter.route("/register").post(registerUser);
 userRouter.route("/login").post(userLogin);
+userRouter.route("/google-login").post(googleLogin);
 userRouter.route("/logout").post(verifyUser, userLogout);
 userRouter.route("/me").get(verifyUser, getUserProfile);
 userRouter.route("/update-profile").put(verifyUser, updateUserProfile);
@@ -24,5 +26,4 @@ userRouter.route("/send-otp").post(sendOTP);
 userRouter.route("/verify-otp").post(verifyOTP);
 userRouter.route("/forget-password").put(forgetPassword);
 
-
-export default userRouter
+export default userRouter;

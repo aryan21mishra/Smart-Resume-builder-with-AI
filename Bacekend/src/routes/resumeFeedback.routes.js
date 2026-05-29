@@ -1,14 +1,19 @@
 import { Router } from "express";
 import { verifyUser } from "../middlewares/auth.middleware.js";
 import {
-  analyzeResume,
+  analyzeResumeByText,
   jobMatch,
   rewriteSection,
 } from "../controllers/resumeFeedback.controller.js";
+import fileUpload from "../middlewares/multer.middleware.js";
 const resumeFeedbackRouter = Router();
 
-resumeFeedbackRouter.route("/analyze").post(verifyUser, analyzeResume);
-resumeFeedbackRouter.route("/job-match").post(verifyUser, jobMatch);
+resumeFeedbackRouter
+  .route("/analyze")
+  .post(fileUpload.single("resume"), verifyUser, analyzeResumeByText);
+resumeFeedbackRouter
+  .route("/job-match")
+  .post(fileUpload.single("resume"), verifyUser, jobMatch);
 resumeFeedbackRouter.route("/rewrite").post(verifyUser, rewriteSection);
 
 export default resumeFeedbackRouter;

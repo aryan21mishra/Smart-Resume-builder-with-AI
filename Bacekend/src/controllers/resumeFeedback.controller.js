@@ -1,31 +1,61 @@
-import { ApiError } from "../lib/apiError.js";
-import { ApiResponse } from "../lib/apiResponse.js";
-import { asyncHandler } from "../lib/asyncHandler.js";
-import { callAI } from "../lib/GroqAI.js";
 import {
-  analyzeUserResumePrompt,
-  jobMatchPrompt,
-  rewriteSectionPrompt,
-} from "../lib/promptFormat.js";
+  pdfExtractor,
+  asyncHandler,
+  getStructureTextFromPdf,
+  userPrompts,
+  uploadCloud,
+  ApiResponse,
+  ApiError,
+  getResumeAtsScoreFromAi,
+} from "../lib/index.js";
 import { createConservation } from "../service/conservation.service.js";
 import { createMessage, findMessages } from "../service/message.db.service.js";
 import { createRewriteSection } from "../service/rewrite-section.service.js";
+import { createFeedBack } from "../service/feedback.db.service.js";
+import { ResumeUpload } from "../models/resume-upload.model.js";
 
-export const analyzeResume = asyncHandler(async (req, res) => {
+export const analyzeResumeByText = asyncHandler(async (req, res) => {
   const { resumeId, resumeText, jobDescription } = req.body;
   const userId = req.user;
+  const file = req.file;
 
-  if (
-    [resumeId, resumeId, jobDescription].some((field) => field?.trim() === "")
-  ) {
-    throw new ApiError(
-      404,
-      "resumeId, resumeText and jobDescription are required",
-    );
+  //pdf structure text from ai
+  let structuredText;
+
+  //save file in db
+  let saveFile;
+
+  if (file) {
+    //upload on cloudinary
+    const uploadResult = await uploadCloud(file.path, "resumes");
+
+    //extract pdf to text
+    const resumePdfText = await pdfExtractor(file.path);
+
+    //structure the extracted text
+    //Prompt for structure the extracted text
+    const userPrompt = userPrompts.parseResumePrompt(resumePdfText);
+    //call ai for structure the extracted text
+    structuredText = await getStructureTextFromPdf(userPrompt);
+
+    //save the uploaded file
+    saveFile = await ResumeUpload.create({
+      title: uploadResult.originalName,
+      url: uploadResult.url,
+      publicId: uploadResult.publicId,
+      rawText: resumePdfText,
+      userId,
+    });
+
+    if (!structuredText) {
+      throw new ApiError(
+        500,
+        "Something went wrong during the structure text extraction!",
+      );
+    }
   }
-
-  const conservation = await createConservation(resumeId, userId);
-
+  //create conservation
+  const conservation = await createConservation(userId);
   if (!conservation) {
     throw new ApiError(
       500,
@@ -33,19 +63,26 @@ export const analyzeResume = asyncHandler(async (req, res) => {
     );
   }
 
-  const userPrompt = analyzeUserResumePrompt(resumeText, jobDescription);
+  //Prompt for check ats score of the resume
+  const userPrompt = analyzeUserResumePrompt(
+    resumeText || structuredText?.parsedText,
+    jobDescription,
+  );
 
-  const { rawText, parsedText } = await callAI([
+  //call ai for check ats score of the resume
+  const { rawText, parsedText } = await getResumeAtsScoreFromAi([
     {
       role: "user",
       content: userPrompt,
     },
   ]);
 
+  console.log("parsedText", parsedText);
+
   if (!rawText || !parsedText) {
     throw new ApiError(500, "AI service unavailable!");
   }
-
+  //save user message
   const saveUserMessage = await createMessage(
     conservation._id,
     "user",
@@ -55,6 +92,8 @@ export const analyzeResume = asyncHandler(async (req, res) => {
   if (!saveUserMessage) {
     throw new ApiError(500, "Internal sever error while saving user message");
   }
+
+  //save assistant message
   const saveAssistantMessage = await createMessage(
     conservation._id,
     "assistant",
@@ -68,9 +107,10 @@ export const analyzeResume = asyncHandler(async (req, res) => {
       "Internal sever error while saving assistant message",
     );
   }
-
-  const feedback = await createFeedback({
-    resumeId,
+  //save feedback of the resume
+  const feedback = await createFeedBack({
+    resumeId: resumeId || null,
+    resumeUploadId: saveFile?._id || null,
     userId,
     atsScore: parsedText.atsScore,
     contentScore: parsedText.contentScore,
@@ -80,17 +120,18 @@ export const analyzeResume = asyncHandler(async (req, res) => {
     impactScore: parsedText.impactScore,
     sectionFeedback: parsedText.sectionFeedback,
     improvements: parsedText.improvements,
-    missingKeywords: parsedText.missing_keywords,
+    missingKeywords: parsedText.missingKeywords,
     strengths: parsedText.strengths,
     jobDescription: jobDescription || null,
     jobMatchScore: parsedText.jobMatchScore || null,
   });
+
   res
     .status(200)
     .json(
       new ApiResponse(
         200,
-        { feedback, conservationId: conservation_id },
+        { feedback, conservationId: conservation?._id },
         "Resume analysis completed successfully",
       ),
     );
@@ -98,32 +139,64 @@ export const analyzeResume = asyncHandler(async (req, res) => {
 
 export const jobMatch = asyncHandler(async (req, res) => {
   const { resumeId, resumeText, jobDescription, conservationId } = req.body;
+  const userId = req.user;
+  const file = req.file;
+  //pdf structure text from ai
+  let structuredText;
 
-  if (
-    [resumeId, resumeId, jobDescription].some((field) => field?.trim() === "")
-  ) {
-    throw new ApiError(
-      404,
-      "resumeId, resumeText and jobDescription are required",
-    );
+  //save file in db
+  let saveFile;
+
+  if (file) {
+    //upload on cloudinary
+    const uploadResult = await uploadCloud(file.path, "resumes");
+
+    //extract pdf to text
+    const resumePdfText = await pdfExtractor(file.path);
+
+    //structure the extracted text
+    //Prompt for structure the extracted text
+    const userPrompt = userPrompts.parseResumePrompt(resumePdfText);
+    //call ai for structure the extracted text
+    structuredText = await getStructureTextFromPdf(userPrompt);
+
+    //save the uploaded file
+    saveFile = await ResumeUpload.create({
+      title: uploadResult.originalName,
+      url: uploadResult.url,
+      publicId: uploadResult.publicId,
+      rawText: resumePdfText,
+      userId,
+    });
+
+    if (!structuredText) {
+      throw new ApiError(
+        500,
+        "Something went wrong during the structure text extraction!",
+      );
+    }
   }
+
   if (conservationId === null) {
     conservationId = await createConservation(resumeId, userId)._id;
   }
 
   const pastMessages = await findMessages(conservationId);
-  const jobMatchPrompt = jobMatchPrompt(resumeText, jobDescription);
+  const jobMatchPrompt = jobMatchPrompt(
+    resumeText || structuredText?.parsedText,
+    jobDescription,
+  );
   const fullMessages = [
     ...pastMessages,
     { role: "user", content: jobMatchPrompt },
   ];
 
-  const { rawText, parsedText } = callAI(fullMessages);
+  const { rawText, parsedText } = getResumeAtsScoreFromAi(fullMessages);
   if (!rawText || !parsedText) {
     throw new ApiError(500, "AI service unavailable!");
   }
   const saveUserMessage = await createMessage(
-    conservation._id,
+    conservationId,
     "user",
     jobMatchPrompt,
     "job-match",
@@ -132,7 +205,7 @@ export const jobMatch = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Internal sever error while saving user message");
   }
   const saveAssistantMessage = await createMessage(
-    conservation._id,
+    conservationId,
     "assistant",
     rawText,
     "job-match",
@@ -146,7 +219,8 @@ export const jobMatch = asyncHandler(async (req, res) => {
   }
 
   const feedback = await createFeedBack({
-    resumeId,
+    resumeId: resumeId || null,
+    resumeUploadId: saveFile?._id || null,
     userId,
     atsScore: result.job_match_score,
     contentScore: 0,
@@ -181,6 +255,9 @@ export const rewriteSection = asyncHandler(async (req, res) => {
   ) {
     throw new ApiError(400, "Resume id,section,current content are required");
   }
+  if (conservationId === null) {
+    conservationId = await createConservation(resumeId, userId)._id;
+  }
   const pastMessages = await findMessages(conservationId);
   const rewriteSectionPrompt = rewriteSectionPrompt(
     section,
@@ -193,9 +270,9 @@ export const rewriteSection = asyncHandler(async (req, res) => {
     { role: "user", content: rewriteSectionPrompt },
   ];
 
-  const { rawText, parsedText } = callAI(fullMessages);
+  const { rawText, parsedText } = getResumeAtsScoreFromAi(fullMessages);
   const saveUserMessage = await createMessage(
-    conservation._id,
+    conservationId,
     "user",
     rewriteSectionPrompt,
     "rewrite",
@@ -204,14 +281,14 @@ export const rewriteSection = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Internal sever error while saving user message");
   }
   const saveAssistantMessage = await createMessage(
-    conservation._id,
+    conservationId,
     "assistant",
     rawText,
     "rewrite",
   );
 
   const rewriteSection = await createRewriteSection({
-    resumeId,
+    resumeId: resumeId || null,
     userId,
     sectionName: section,
     originalContent: currentContent,
@@ -240,4 +317,3 @@ export const rewriteSection = asyncHandler(async (req, res) => {
       ),
     );
 });
-

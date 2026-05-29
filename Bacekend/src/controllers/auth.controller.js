@@ -16,7 +16,11 @@ import {
   findOTP,
 } from "../service/otp.service.js";
 import { sendEmail } from "../lib/Resend.js";
-
+import {
+  sendOTPMail,
+  sendRegistrationEmail,
+} from "../service/email.service.js";
+import { verifyGoogleToken } from "../lib/google.js";
 
 const generateToken = async (userId) => {
   //find user by id
@@ -57,14 +61,10 @@ export const registerUser = asyncHandler(async (req, res) => {
 
   //getting access token and refresh token for the new user
   const { accessToken, refreshToken } = await generateToken(newUser._id);
-
   // send the welcome email to the user
-  await sendEmail(
-    email,
-    "Welcome to Smart Resume Builder",
-    firstName + " " + lastName,
-  );
-
+  console.log("Sending email to:", email); // ← add this
+  await sendRegistrationEmail(firstName, email);
+  console.log("Email sent successfully"); // ← and this
   const options = {
     httpOnly: true,
     secure: "production",
@@ -78,7 +78,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, options)
     .json(
       new ApiResponse(
-        true,
+        201,
         {
           user: {
             id: newUser._id,
@@ -222,6 +222,9 @@ export const sendOTP = asyncHandler(async (req, res) => {
   const existingOTP = await findOTP(email);
 
   // check if the otp exist how much attempt they have and if the attempt less than 5 then we generate the otp send send via mail other wise send error
+  const expiresAt = new Date(
+    Date.now() + Number(process.env.OTP_EXPIRY_MINUTES) * 60 * 1000,
+  );
   if (existingOTP) {
     if (existingOTP.attempts === 5) {
       throw new ApiError(
@@ -234,12 +237,11 @@ export const sendOTP = asyncHandler(async (req, res) => {
     await findAndUpdateOtp(email, otp, expiresAt);
 
     // send otp via mail
+    await sendOTPMail(email, otp);
   }
 
   const otp = generateOTP();
-  const expiresAt = new Date(
-    Date.now() + Number(process.env.OTP_EXPIRY_MINUTES) * 60 * 1000,
-  );
+
   const otpModel = await createOTP({ email, otp, expiresAt, attempts: 1 });
   console.log("model created");
   if (!otpModel) {
@@ -247,6 +249,7 @@ export const sendOTP = asyncHandler(async (req, res) => {
   }
 
   //send the mail
+  await sendOTPMail(email, otp);
 
   res.json(
     new ApiResponse(200, {}, "Password reset instructions sent to email"),
@@ -307,4 +310,39 @@ export const forgetPassword = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(new ApiResponse(200, {}, "Password changed successfully!"));
+});
+
+export const googleLogin = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    throw new ApiError(400, "Token is required");
+  }
+
+  const googleUser = await verifyGoogleToken(token);
+
+  const user = await findUserByEmail(googleUser.email);
+
+  if (!user) {
+    user = await createUser({
+      email: googleUser?.email,
+      firstName: googleUser?.firstName,
+      lastName: googleUser?.lastName,
+      passwordHash: "",
+      avatar: googleUser?.avatar,
+      provider: "google",
+    });
+    const { accessToken, refreshToken } = await generateToken(googleUser._id);
+    const options = {
+      httpOnly: true,
+      secure: "production",
+      sameSite: "strict",
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    };
+    res;
+    res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json(new ApiResponse(200, { user }, "Login successful!"));
+  }
 });

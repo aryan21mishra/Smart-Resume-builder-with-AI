@@ -1,7 +1,8 @@
-import { FeedBack } from "../models/feedback.model";
+import { FeedBack } from "../models/feedback.model.js";
 
 export const createFeedBack = async ({
   resumeId,
+  resumeUploadId,
   userId,
   atsScore,
   contentScore,
@@ -16,9 +17,10 @@ export const createFeedBack = async ({
   jobDescription,
   jobMatchScore,
 }) => {
-  return FeedBack.create({
+  const feedback = await FeedBack.create({
     resumeId,
     userId,
+    resumeUploadId,
     atsScore,
     contentScore,
     keywordScore,
@@ -32,4 +34,6 @@ export const createFeedBack = async ({
     jobDescription,
     jobMatchScore,
   });
+
+  return feedback;
 };

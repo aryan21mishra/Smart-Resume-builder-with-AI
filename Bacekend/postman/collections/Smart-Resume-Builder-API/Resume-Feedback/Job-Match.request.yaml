@@ -1,0 +1,22 @@
+$kind: http-request
+name: Job Match
+method: POST
+url: '{{baseUrl}}/api/v1/feedback/job-match'
+order: 1001
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{accessToken}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "resumeId": "{{resumeId}}",
+      "resumeText": "John Doe\nSoftware Engineer\n\nExperience:\n- Tech Corp (2020-Present): Built scalable APIs, Led a team of 3 engineers\n\nEducation:\n- B.S. Computer Science, State University (2016-2020)\n\nSkills: JavaScript, Node.js, React, Docker, AWS",
+      "jobDescription": "We are looking for a Software Engineer with experience in Node.js, React, and cloud technologies like AWS. The ideal candidate should have strong problem-solving skills and experience building scalable APIs.",
+      "conservationId": null
+    }

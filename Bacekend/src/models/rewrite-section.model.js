@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 const rewriteSectionSchema = new Schema(
   {
-    resumeId: { type: Schema.Types.ObjectId, ref: "Resume", required: true },
+    resumeId: { type: Schema.Types.ObjectId, ref: "Resume", default: null },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
     sectionName: { type: String, required: true },
     originalContent: { type: String, required: true },
@@ -15,4 +15,7 @@ const rewriteSectionSchema = new Schema(
   { timestamps: true },
 );
 
-export const RewriteSection = mongoose.model("RewriteSection", rewriteSectionSchema);
+export const RewriteSection = mongoose.model(
+  "RewriteSection",
+  rewriteSectionSchema,
+);

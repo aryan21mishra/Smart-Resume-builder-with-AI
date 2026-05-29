@@ -37,9 +37,8 @@ const educationSchema = new Schema(
     field: { type: String, trim: true },
     startDate: { type: Date },
     endDate: { type: Date },
-    gpa: { type: Number, min: 0, max: 4 },
-    honors: [{ type: String }],
-    activities: [{ type: String }],
+    isCurrent: { type: Boolean, default: false },
+    cgpa: { type: Number, min: 0, max: 4 },
   },
   { _id: true, timestamps: false },
 );
@@ -76,7 +75,7 @@ const skillsSchema = new Schema(
     languages: [{ type: String }],
     tools: [{ type: String }],
   },
-  { _id: false },
+  { _id: true },
 );
 
 const resumeSchema = new Schema(

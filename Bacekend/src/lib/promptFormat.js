@@ -1,5 +1,6 @@
-export const analyzeUserResumePrompt = (resumeText, jobDescription) => {
-  return `TASK: Full resume analysis
+class userAIPrompt {
+  analyzeUserResumePrompt(resumeText, jobDescription) {
+    return `TASK: Full resume analysis
 Analyze the resume below and return this exact JSON:{
   "atsScore": <0-100>,
   "contentScore": <0-100>,
@@ -33,10 +34,10 @@ ${
     ? `\nJOB DESCRIPTION:\n"\n${jobDescription}\n"`
     : "\nNo job description — set job_match_score to null."
 }`;
-};
+  }
 
-export const jobMatchPrompt = (resumeText, jobDescription) => {
-  return `TASK: Job description matching
+  jobMatchPrompt(resumeText, jobDescription) {
+    return `TASK: Job description matching
 Compare the resume against the job description.
 Return this exact JSON:
 {
@@ -58,10 +59,10 @@ Return this exact JSON:
   "overall_recommendation": "<final advice>"
 }RESUME: "${resumeText}"
 JOB DESCRIPTION: "${jobDescription}"`;
-};
+  }
 
-export const rewriteSectionPrompt = (section, currentContent, instruction) => {
-  return `TASK: Rewrite resume section
+  rewriteSectionPrompt(section, currentContent, instruction) {
+    return `TASK: Rewrite resume section
 Rewrite the ${section} section below to be more impactful and ATS-friendly.
 Return this exact JSON:
 {
@@ -75,4 +76,20 @@ Return this exact JSON:
 SECTION: ${section.toUpperCase()}
 CURRENT CONTENT: "${currentContent}"
 INSTRUCTION: ${instruction || "Make it as impactful and ATS-friendly as possible."}`;
-};
+  }
+
+  parseResumePrompt(rawText) {
+    return `Parse this raw resume text extracted from a PDF and 
+return the structured JSON exactly as specified.
+
+The text may be messy — missing punctuation, jumbled spacing, 
+incorrect line breaks. Use your intelligence to identify sections.
+
+RAW RESUME TEXT:
+"""
+${rawText}
+"""`;
+  }
+}
+
+export const userPrompts = new userAIPrompt();
