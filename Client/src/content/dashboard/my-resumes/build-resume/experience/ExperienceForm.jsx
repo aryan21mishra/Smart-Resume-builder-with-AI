@@ -3,6 +3,8 @@ import FormField from "@/components/common/FormField";
 import { RiSparkling2Line, RiCheckLine } from "@remixicon/react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui";
+import { useDispatch } from "react-redux";
+import { updateForm } from "@/redux/resumes/resumeSlice";
 const ExperienceForm = ({ setActiveTab }) => {
   const {
     register,
@@ -10,13 +12,12 @@ const ExperienceForm = ({ setActiveTab }) => {
     watch,
     formState: { errors },
   } = useForm();
-  console.log(setActiveTab);
 
   // Fix #4 — watch isCurrent to conditionally disable/require End Date
   const currentlyWorkHere = watch("currentlyWorkHere");
-
+  const dispatch = useDispatch();
   const onSubmit = (data) => {
-    console.log(data);
+    dispatch(updateForm({ field: "experiences", data }));
     setActiveTab("list");
   };
 

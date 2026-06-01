@@ -1,66 +1,71 @@
+import React from "react";
+import { Link } from "react-router-dom";
 import {
-  RiArrowRightLongLine,
   RiFileList2Line,
   RiLineChartLine,
   RiTargetFill,
+  RiArrowRightLongLine,
 } from "@remixicon/react";
-import { Link } from "react-router-dom";
 
 export default function FeaturesSection() {
+  const primaryFeatures = [
+    {
+      icon: <RiFileList2Line size={40} />,
+      heading: "Resume Builder",
+      paragraph:
+        "Create professional, ATS-Friendly resumes with our easy builder and modern templates.",
+      buttonName: "Build Now",
+      navigationTo: "/builder/new",
+    },
+    {
+      icon: <RiLineChartLine size={40} />,
+      heading: "ATS Score Checker",
+      paragraph:
+        "Upload your resume and get an instant ATS score with detailed feedback and suggestions.",
+      buttonName: "Check Score",
+      navigationTo: "/dashboard",
+    },
+    {
+      icon: <RiTargetFill size={40} />,
+      heading: "Job Description Match",
+      paragraph:
+        "Match your resume with any job description and get a compatibility score instantly.",
+      buttonName: "Match Now",
+      navigationTo: "/dashboard",
+    },
+  ];
+
   return (
-    <section className="py-10">
-      <div className="px-10 mx-auto ">
-        <div className="flex items-center justify-center flex-col">
-          <h1 className="text-5xl text-center font-montserratExtraBold text-white">
+    <section className="py-10 bg-slate-9v00">
+      <div className="px-10 mx-auto max-w-7xl">
+        {/* Header Section */}
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-5xl text-center font-bold tracking-tight text-white">
             One Platform. Endless Power.
           </h1>
-          <p className="text-base font-montserratExtraLight text-white text-center mt-2 max-w-212">
+          <p className="text-base text-white/80 text-center mt-3 max-w-xl">
             Every feature is built to close the gap between your resume and the
             job offer — faster than any tool you've used before.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4 mt-12">
-          {[
-            {
-              icon: <RiFileList2Line size={40} />,
-              heading: "Resume Builder",
-              paragraph:
-                "Create professional, ATS-Friendly resumes with our easy builder and modern templates.",
-              buttonName: "Build Now",
-              navigationTo: "/builder/new",
-            },
-            {
-              icon: <RiLineChartLine size={40} />,
-              heading: "ATS Score Checker",
-              paragraph:
-                "Upload your resume and get an instant ATS score with detailed feedback and suggestions.",
-              buttonName: "Check Score",
-              navigationTo: "/dashboard",
-            },
-            {
-              icon: <RiTargetFill size={40} />,
-              heading: "Job Description Match",
-              paragraph:
-                "Match your resume with any job description and get a compatibility score instantly.",
-              buttonName: "Match Now",
-              navigationTo: "/dashboard",
-            },
-          ].map((item, index) => (
+        {/* Primary Features Grid */}
+        <div className="grid md:grid-cols-3 gap-6 mt-12">
+          {primaryFeatures.map((item, index) => (
             <div
               key={index}
-              className="p-6 border rounded-xl hover:shadow-lg flex items-start gap-5 text-white">
-              <div className="p-7 rounded-3xl bg-white/30">{item.icon}</div>
+              className="p-6 border border-white/10 rounded-xl hover:shadow-2xl transition-all flex items-start gap-5 text-white bg-white/5 backdrop-blur-sm">
+              <div className="p-4 rounded-2xl bg-white/10 shrink-0">
+                {item.icon}
+              </div>
               <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-montserratSemiBold">
-                  {item.heading}
-                </h3>
-                <p className="text-white/60 font-montserratMedium">
+                <h3 className="text-xl font-semibold">{item.heading}</h3>
+                <p className="text-white/60 text-sm leading-relaxed">
                   {item.paragraph}
                 </p>
                 <Link
                   to={item.navigationTo}
-                  className="text-indigo-600  flex gap-2 font-montserratSemiBold items-center text-base">
+                  className="text-indigo-400 hover:text-indigo-300 flex gap-2 font-medium items-center text-sm mt-2 transition-colors">
                   {item.buttonName} <RiArrowRightLongLine />
                 </Link>
               </div>
@@ -68,624 +73,300 @@ export default function FeaturesSection() {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 grid-rows-3 gap-4 text-white">
-          <div className="col-span-2 flex items-center border rounded-3xl">
-            <div className="flex gap-3">
-              <div className="feat-text">
-                <div className="w-13 h-13">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <rect
-                      x="4"
-                      y="3"
-                      width="16"
-                      height="18"
-                      rx="2"
-                      stroke="#c85a2a"
-                      stroke-width="1.5"
-                    />
-                    <path
-                      d="M8 8h8M8 12h5M8 16h6"
-                      stroke="#c85a2a"
-                      stroke-width="1.4"
-                      stroke-linecap="round"
-                    />
-                  </svg>
+        {/* Breakdown Dashboard Features Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-16 text-white">
+          {/* Feature 01: Live Resume Builder (Full Width Banner) */}
+          <div className="lg:col-span-2 p-8 border border-white/10 rounded-3xl bg-gradient-to-br from-orange-500/10 to-transparent flex flex-col md:flex-row gap-8 items-center">
+            <div className="flex-1 space-y-4">
+              <div className="w-12 h-12">
+                <svg viewBox="0 0 24 24" fill="none" className="w-full h-full">
+                  <rect
+                    x="4"
+                    y="3"
+                    width="16"
+                    height="18"
+                    rx="2"
+                    stroke="#c85a2a"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M8 8h8M8 12h5M8 16h6"
+                    stroke="#c85a2a"
+                    strokeWidth="1.4"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold">Live Resume Builder</h3>
+              <p className="text-white/70 text-sm leading-relaxed">
+                A three-panel editor — form on the left, live resume preview in
+                the center, AI feedback on the right. Every keystroke updates
+                your resume in real time with a 300ms debounce. Switch between 6
+                beautiful templates instantly. Autosaves every 30 seconds so you
+                never lose progress.
+              </p>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 text-orange-400 text-xs font-medium border border-orange-500/20">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <circle
+                    cx="6"
+                    cy="6"
+                    r="5"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                  />
+                  <path
+                    d="M4 6l1.5 1.5 3-3"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                Live Preview · 6 Templates · Autosave
+              </div>
+            </div>
+
+            {/* Interactive Builder Mockup Graphic */}
+            <div className="w-full md:w-80 bg-slate-950 rounded-2xl border border-white/10 p-4 shadow-xl shrink-0">
+              <div className="flex gap-1.5 mb-3">
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500/40"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/40"></div>
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500/40"></div>
+              </div>
+              <div className="grid grid-cols-12 gap-3 text-[10px]">
+                <div className="col-span-4 border-r border-white/5 pr-2 space-y-1 text-white/40">
+                  <div className="font-bold text-white/60 mb-2">Sections</div>
+                  <div className="bg-white/10 text-white rounded px-1.5 py-0.5">
+                    Personal
+                  </div>
+                  <div className="px-1.5 py-0.5">Experience</div>
+                  <div className="px-1.5 py-0.5">Skills</div>
+                  <div className="h-3 bg-white/5 rounded mt-4 w-full"></div>
+                  <div className="h-3 bg-white/5 rounded w-2/3"></div>
                 </div>
-                <div className="feat-title">Live Resume Builder</div>
-                <p className="feat-desc">
-                  A three-panel editor — form on the left, live resume preview
-                  in the center, AI feedback on the right. Every keystroke
-                  updates your resume in real time with a 300ms debounce. Switch
-                  between 6 beautiful templates instantly. Autosaves every 30
-                  seconds so you never lose progress.
-                </p>
-                <div className="feat-tag">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <div className="col-span-5 bg-white/5 rounded p-2 text-center border border-white/10">
+                  <div className="font-bold text-white mb-1">Arjun Sharma</div>
+                  <div className="text-[6px] text-orange-400 font-bold uppercase tracking-wider">
+                    Full Stack Dev
+                  </div>
+                  <div className="h-[1px] bg-white/20 my-1.5"></div>
+                  <div className="space-y-1">
+                    <div className="h-1 bg-white/40 rounded w-full"></div>
+                    <div className="h-1 bg-white/20 rounded w-5/6"></div>
+                    <div className="h-1 bg-white/20 rounded w-4/5"></div>
+                  </div>
+                </div>
+                <div className="col-span-3 pl-1 flex flex-col justify-center items-center">
+                  <div className="text-[8px] text-white/50 mb-1">AI Score</div>
+                  <div className="relative w-8 h-8 flex items-center justify-center">
+                    <svg
+                      className="absolute w-full h-full transform -rotate-90"
+                      viewBox="0 0 30 30">
+                      <circle
+                        cx="15"
+                        cy="15"
+                        r="12"
+                        fill="none"
+                        stroke="rgba(255,255,255,.1)"
+                        strokeWidth="2"
+                      />
+                      <circle
+                        cx="15"
+                        cy="15"
+                        r="12"
+                        fill="none"
+                        stroke="#e8794a"
+                        strokeWidth="2"
+                        strokeDasharray="75"
+                        strokeDashoffset="20"
+                      />
+                    </svg>
+                    <span className="text-[9px] font-bold">73</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Feature 02: ATS Score Checker */}
+          <div className="p-6 border border-white/10 rounded-3xl bg-gradient-to-br from-emerald-500/10 to-transparent flex flex-col justify-between gap-6">
+            <div className="space-y-3">
+              <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+                02 — AI Powered
+              </div>
+              <h3 className="text-xl font-bold">ATS Score Checker</h3>
+              <p className="text-white/70 text-sm leading-relaxed">
+                Get an instant compatibility score powered by Claude AI. See
+                exactly how well your resume performs across 4 dimensions —
+                content quality, keyword density, format readability, and impact
+                of your bullet points.
+              </p>
+              <div className="inline-flex items-center gap-1.5 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full">
+                Claude AI · Real-time · 4 Sub-scores
+              </div>
+            </div>
+
+            {/* ATS Visual Mockup */}
+            <div className="bg-slate-950 rounded-2xl border border-white/10 p-4 space-y-4">
+              <div className="flex gap-4 items-center">
+                <div className="relative w-12 h-12 flex items-center justify-center shrink-0">
+                  <svg
+                    className="absolute w-full h-full transform -rotate-90"
+                    viewBox="0 0 70 70">
                     <circle
-                      cx="6"
-                      cy="6"
-                      r="5"
-                      stroke="currentColor"
-                      stroke-width="1.2"
-                    />
-                    <path
-                      d="M4 6l1.5 1.5 3-3"
-                      stroke="currentColor"
-                      stroke-width="1.2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  Live Preview · 6 Templates · Autosave
-                </div>
-              </div>
-
-              <div className="feat-visual">
-                <div className="visual-builder">
-                  <div className="vb-bar">
-                    <div className="vb-dot"></div>
-                    <div className="vb-dot"></div>
-                    <div className="vb-dot"></div>
-                  </div>
-                  <div className="vb-body">
-                    <div className="vb-sidebar">
-                      <div className="vb-side-label">Sections</div>
-                      <div className="vb-side-tab active">Personal</div>
-                      <div className="vb-side-tab">Experience</div>
-                      <div className="vb-side-tab">Education</div>
-                      <div className="vb-side-tab">Skills</div>
-                      <div className="vb-side-label" className="margin-top:8px">
-                        Fields
-                      </div>
-                      <div className="vb-field"></div>
-                      <div className="vb-field short"></div>
-                      <div className="vb-field"></div>
-                      <div className="vb-field short"></div>
-                      <div className="vb-field"></div>
-                    </div>
-                    <div className="vb-preview">
-                      <div className="vb-resume-mini">
-                        <div className="vb-resume-bar"></div>
-                        <div className="vb-resume-name">Arjun Sharma</div>
-                        <div className="font-size:6px;color:var(--accent);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:2px;">
-                          Full Stack Developer
-                        </div>
-                        <div className="height:1px;background:var(--ink);margin:5px 0;"></div>
-                        <div
-                          className="vb-resume-line dark"
-                          className="width:55%;margin-bottom:4px;"></div>
-                        <div
-                          className="vb-resume-line"
-                          className="width:90%"></div>
-                        <div
-                          className="vb-resume-line"
-                          className="width:75%"></div>
-                        <div
-                          className="vb-resume-line"
-                          className="width:85%"></div>
-                        <div
-                          className="vb-resume-line dark"
-                          className="width:55%;margin-top:8px;margin-bottom:4px;"></div>
-                        <div
-                          className="vb-resume-line"
-                          className="width:80%"></div>
-                        <div
-                          className="vb-resume-line"
-                          className="width:70%"></div>
-                        <div
-                          className="vb-resume-line dark"
-                          className="width:40%;margin-top:8px;margin-bottom:4px;"></div>
-                        <div className="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px;">
-                          <span className="font-size:5.5px;background:var(--paper);border:1px solid var(--paper3);padding:1px 4px;border-radius:2px;color:var(--ink2);">
-                            React
-                          </span>
-                          <span className="font-size:5.5px;background:var(--paper);border:1px solid var(--paper3);padding:1px 4px;border-radius:2px;color:var(--ink2);">
-                            Node.js
-                          </span>
-                          <span className="font-size:5.5px;background:var(--paper);border:1px solid var(--paper3);padding:1px 4px;border-radius:2px;color:var(--ink2);">
-                            AWS
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="vb-ai">
-                      <div className="vb-ai-label">AI Score</div>
-                      <div className="vb-ai-ring-row">
-                        <div className="vb-ai-ring">
-                          <svg width="30" height="30" viewBox="0 0 30 30">
-                            <circle
-                              cx="15"
-                              cy="15"
-                              r="12"
-                              fill="none"
-                              stroke="rgba(255,255,255,.08)"
-                              stroke-width="3"
-                            />
-                            <circle
-                              cx="15"
-                              cy="15"
-                              r="12"
-                              fill="none"
-                              stroke="#e8794a"
-                              stroke-width="3"
-                              stroke-linecap="round"
-                              stroke-dasharray="75"
-                              stroke-dashoffset="20"
-                            />
-                          </svg>
-                          <div className="vb-ai-ring-num">73</div>
-                        </div>
-                        <div>
-                          <div className="vb-ai-score-label">ATS Score</div>
-                          <div className="vb-ai-score-val">Good ↑</div>
-                        </div>
-                      </div>
-                      <div className="vb-ai-sug">
-                        <div
-                          className="vb-ai-sug-dot"
-                          className="background:#5db87a"></div>
-                        <div className="vb-ai-sug-text">Strong metrics</div>
-                      </div>
-                      <div className="vb-ai-sug">
-                        <div
-                          className="vb-ai-sug-dot"
-                          className="background:#e8c56a"></div>
-                        <div className="vb-ai-sug-text">Add Agile keywords</div>
-                      </div>
-                      <div className="vb-ai-sug">
-                        <div
-                          className="vb-ai-sug-dot"
-                          className="background:#e8736a"></div>
-                        <div className="vb-ai-sug-text">Rewrite summary</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="feat-card theme-teal reveal">
-            <div className="feat-card-inner">
-              <div className="feat-text">
-                <div className="feat-number">02 — AI Powered</div>
-                <div className="feat-icon-wrap">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="9"
-                      stroke="#0d7a6a"
-                      stroke-width="1.5"
-                    />
-                    <path
-                      d="M8 12l2.5 2.5 5.5-5.5"
-                      stroke="#0d7a6a"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div className="feat-title">ATS Score Checker</div>
-                <p className="feat-desc">
-                  Get an instant compatibility score powered by Claude AI. See
-                  exactly how well your resume performs across 4 dimensions —
-                  content quality, keyword density, format readability, and
-                  impact of your bullet points.
-                </p>
-                <div className="feat-tag">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M6 1l1.5 3.5H11l-3 2 1.5 3.5L6 8 2.5 10 4 6.5 1 4.5h3.5z"
-                      stroke="currentColor"
-                      stroke-width="1.1"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  Claude AI · Real-time · 4 Sub-scores
-                </div>
-              </div>
-              <div className="feat-visual">
-                <div className="visual-ats">
-                  <div className="vats-top">
-                    <div className="vats-ring">
-                      <svg width="70" height="70" viewBox="0 0 70 70">
-                        <circle
-                          cx="35"
-                          cy="35"
-                          r="28"
-                          fill="none"
-                          stroke="rgba(255,255,255,.06)"
-                          stroke-width="6"
-                        />
-                        <circle
-                          cx="35"
-                          cy="35"
-                          r="28"
-                          fill="none"
-                          stroke="#5db87a"
-                          stroke-width="6"
-                          stroke-linecap="round"
-                          stroke-dasharray="176"
-                          stroke-dashoffset="44"
-                        />
-                      </svg>
-                      <div className="vats-ring-num">75</div>
-                    </div>
-                    <div className="vats-summary">
-                      <strong>Good Score</strong>
-                      Your resume passes most ATS filters. Adding quantified
-                      results and industry keywords can push this to 90+.
-                    </div>
-                  </div>
-                  <div className="vats-scores">
-                    <div className="vats-score-card">
-                      <div className="vats-score-label">Content</div>
-                      <div className="vats-score-bar-track">
-                        <div
-                          className="vats-score-bar-fill"
-                          className="width:82%;background:#5db87a"></div>
-                      </div>
-                      <div className="vats-score-val green">82</div>
-                    </div>
-                    <div className="vats-score-card">
-                      <div className="vats-score-label">Keywords</div>
-                      <div className="vats-score-bar-track">
-                        <div
-                          className="vats-score-bar-fill"
-                          className="width:64%;background:#e8c56a"></div>
-                      </div>
-                      <div className="vats-score-val yellow">64</div>
-                    </div>
-                    <div className="vats-score-card">
-                      <div className="vats-score-label">Format</div>
-                      <div className="vats-score-bar-track">
-                        <div
-                          className="vats-score-bar-fill"
-                          className="width:91%;background:#5db87a"></div>
-                      </div>
-                      <div className="vats-score-val green">91</div>
-                    </div>
-                    <div className="vats-score-card">
-                      <div className="vats-score-label">Impact</div>
-                      <div className="vats-score-bar-track">
-                        <div
-                          className="vats-score-bar-fill"
-                          className="width:58%;background:#e8794a"></div>
-                      </div>
-                      <div className="vats-score-val orange">58</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="feat-card theme-blue reveal">
-            <div className="feat-card-inner">
-              <div className="feat-text">
-                <div className="feat-number">03 — Pro Feature</div>
-                <div className="feat-icon-wrap">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <rect
-                      x="3"
-                      y="3"
-                      width="8"
-                      height="10"
-                      rx="1.5"
-                      stroke="#2563eb"
-                      stroke-width="1.5"
-                    />
-                    <rect
-                      x="13"
-                      y="3"
-                      width="8"
-                      height="10"
-                      rx="1.5"
-                      stroke="#2563eb"
-                      stroke-width="1.5"
-                    />
-                    <path
-                      d="M7 19h10M12 16v3"
-                      stroke="#2563eb"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    />
-                  </svg>
-                </div>
-                <div className="feat-title">Job Description Match</div>
-                <p className="feat-desc">
-                  Paste any job description and Claude compares it against your
-                  resume. See which requirements you meet, which skills you're
-                  missing, and exactly how to reframe your experience for that
-                  specific role.
-                </p>
-                <div className="feat-tag">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M2 6h8M6 2l4 4-4 4"
-                      stroke="currentColor"
-                      stroke-width="1.3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  Role-Specific · Skill Gap Analysis
-                </div>
-              </div>
-              <div className="feat-visual">
-                <div className="visual-match">
-                  <div className="vmatch-header">
-                    <div className="vmatch-title">
-                      Google SDE II — Match Analysis
-                    </div>
-                    <div className="vmatch-score-badge">76% Match</div>
-                  </div>
-                  <div className="vmatch-jd-box">
-                    <div className="vmatch-jd-label">
-                      Job Description Detected
-                    </div>
-                    <div className="vmatch-jd-line" className="width:90%"></div>
-                    <div className="vmatch-jd-line" className="width:70%"></div>
-                    <div className="vmatch-jd-line" className="width:80%"></div>
-                  </div>
-                  <div className="vmatch-gaps">
-                    <div className="vmatch-gap-row">
-                      <div
-                        className="vmatch-gap-dot"
-                        className="background:#ef4444"></div>
-                      <div className="vmatch-gap-label">
-                        Agile / Scrum methodology
-                      </div>
-                      <div className="vmatch-gap-importance imp-critical">
-                        Critical
-                      </div>
-                    </div>
-                    <div className="vmatch-gap-row">
-                      <div
-                        className="vmatch-gap-dot"
-                        className="background:#f59e0b"></div>
-                      <div className="vmatch-gap-label">
-                        Kubernetes / container orchestration
-                      </div>
-                      <div className="vmatch-gap-importance imp-important">
-                        Important
-                      </div>
-                    </div>
-                    <div className="vmatch-gap-row">
-                      <div
-                        className="vmatch-gap-dot"
-                        className="background:#5db87a"></div>
-                      <div className="vmatch-gap-label">
-                        React.js + TypeScript
-                      </div>
-                      <div className="vmatch-gap-importance imp-nice">
-                        ✓ Present
-                      </div>
-                    </div>
-                    <div className="vmatch-gap-row">
-                      <div
-                        className="vmatch-gap-dot"
-                        className="background:#5db87a"></div>
-                      <div className="vmatch-gap-label">
-                        REST API design + Node.js
-                      </div>
-                      <div className="vmatch-gap-importance imp-nice">
-                        ✓ Present
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="feat-card theme-purple reveal">
-            <div className="feat-card-inner">
-              <div className="feat-text">
-                <div className="feat-number">04 — Smart Analysis</div>
-                <div className="feat-icon-wrap">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M7 7h10M7 11h7M7 15h8"
-                      stroke="#6c5ce7"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
+                      cx="35"
+                      cy="35"
+                      r="28"
+                      fill="none"
+                      stroke="rgba(255,255,255,.05)"
+                      strokeWidth="5"
                     />
                     <circle
-                      cx="18"
-                      cy="18"
-                      r="3"
-                      stroke="#6c5ce7"
-                      stroke-width="1.4"
-                    />
-                    <path
-                      d="M20.5 20.5l2 2"
-                      stroke="#6c5ce7"
-                      stroke-width="1.4"
-                      stroke-linecap="round"
+                      cx="35"
+                      cy="35"
+                      r="28"
+                      fill="none"
+                      stroke="#5db87a"
+                      strokeWidth="5"
+                      strokeDasharray="176"
+                      strokeDashoffset="44"
                     />
                   </svg>
+                  <span className="text-sm font-bold">75</span>
                 </div>
-                <div className="feat-title">Keyword Suggestions</div>
-                <p className="feat-desc">
-                  Claude scans your resume and identifies every keyword present
-                  vs missing. See your keyword density score, which categories
-                  you're weak in, and get a prioritized list of the most
-                  impactful keywords to add.
-                </p>
-                <div className="feat-tag">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M6 1l1.5 3.5H11l-3 2 1.5 3.5L6 8 2.5 10 4 6.5 1 4.5h3.5z"
-                      stroke="currentColor"
-                      stroke-width="1.1"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  Present vs Missing · Density Score
+                <div className="text-xs text-white/70">
+                  <strong className="text-white block text-sm">
+                    Good Score
+                  </strong>
+                  Your resume passes most ATS filters easily.
                 </div>
               </div>
-              <div className="feat-visual">
-                <div className="visual-keywords">
-                  <div className="vkw-header">
-                    <div className="vkw-title">Keyword Analysis</div>
-                    <div className="vkw-sub">
-                      Green = present · Red strikethrough = missing
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                {[
+                  ["Content", "82%", "bg-emerald-500"],
+                  ["Keywords", "64%", "bg-yellow-500"],
+                  ["Format", "91%", "bg-emerald-500"],
+                  ["Impact", "58%", "bg-orange-500"],
+                ].map(([label, val, color]) => (
+                  <div
+                    key={label}
+                    className="bg-white/5 p-2 rounded-lg border border-white/5">
+                    <div className="flex justify-between text-[10px] text-white/50 mb-1">
+                      <span>{label}</span>
+                      <span className="font-bold text-white">{val}</span>
+                    </div>
+                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${color}`}
+                        style={{ width: val }}></div>
                     </div>
                   </div>
-                  <div className="vkw-chips">
-                    <span className="kw-chip kw-present">React.js</span>
-                    <span className="kw-chip kw-present">Node.js</span>
-                    <span className="kw-chip kw-present">AWS</span>
-                    <span className="kw-chip kw-present">CI/CD</span>
-                    <span className="kw-chip kw-missing">Agile</span>
-                    <span className="kw-chip kw-missing">Kubernetes</span>
-                    <span className="kw-chip kw-present">TypeScript</span>
-                    <span className="kw-chip kw-missing">System Design</span>
-                    <span className="kw-chip kw-present">Docker</span>
-                    <span className="kw-chip kw-missing">Microservices</span>
-                  </div>
-                  <div className="vkw-density">
-                    <div className="vkw-density-label">
-                      <span>Keyword Density Score</span>
-                      <span className="color:var(--purple);font-weight:600;">
-                        72/100
-                      </span>
-                    </div>
-                    <div className="vkw-density-track">
-                      <div className="vkw-density-fill"></div>
-                    </div>
-                  </div>
-                  <div className="vkw-recs">
-                    <div className="vkw-rec-label">Recommended Additions</div>
-                    <div className="vkw-rec-chips">
-                      <span className="vkw-rec-chip">
-                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
-                          <path
-                            d="M4.5 1v7M1 4.5h7"
-                            stroke="currentColor"
-                            stroke-width="1.2"
-                            stroke-linecap="round"
-                          />
-                        </svg>
-                        Agile
-                      </span>
-                      <span className="vkw-rec-chip">
-                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
-                          <path
-                            d="M4.5 1v7M1 4.5h7"
-                            stroke="currentColor"
-                            stroke-width="1.2"
-                            stroke-linecap="round"
-                          />
-                        </svg>
-                        Kubernetes
-                      </span>
-                      <span className="vkw-rec-chip">
-                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none">
-                          <path
-                            d="M4.5 1v7M1 4.5h7"
-                            stroke="currentColor"
-                            stroke-width="1.2"
-                            stroke-linecap="round"
-                          />
-                        </svg>
-                        Microservices
-                      </span>
-                    </div>
-                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Feature 03: Job Description Match */}
+          <div className="p-6 border border-white/10 rounded-3xl bg-gradient-to-br from-blue-500/10 to-transparent flex flex-col justify-between gap-6">
+            <div className="space-y-3">
+              <div className="text-xs font-bold uppercase tracking-wider text-blue-400">
+                03 — Pro Feature
+              </div>
+              <h3 className="text-xl font-bold">Job Description Match</h3>
+              <p className="text-white/70 text-sm leading-relaxed">
+                Paste any job description and Claude compares it against your
+                resume. See which requirements you meet, which skills you're
+                missing, and exactly how to reframe your experience for that
+                specific role.
+              </p>
+              <div className="inline-flex items-center gap-1.5 text-xs text-blue-400 bg-blue-500/10 border border-blue-500/20 px-3 py-1 rounded-full">
+                Role-Specific · Skill Gap Analysis
+              </div>
+            </div>
+
+            {/* Job Match Analysis Display */}
+            <div className="bg-slate-950 rounded-2xl border border-white/10 p-4 space-y-3 text-xs">
+              <div className="flex justify-between items-center border-b border-white/5 pb-2">
+                <span className="font-semibold text-white/80">
+                  Google SDE II — Match
+                </span>
+                <span className="bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded text-[10px] font-bold border border-blue-500/30">
+                  76% Match
+                </span>
+              </div>
+              <div className="space-y-2 text-[11px]">
+                <div className="flex justify-between items-center bg-red-500/5 p-1.5 rounded border border-red-500/10">
+                  <span className="text-white/70">
+                    Agile / Scrum Methodology
+                  </span>
+                  <span className="text-[9px] uppercase bg-red-500/20 text-red-400 px-1.5 rounded font-bold">
+                    Critical
+                  </span>
+                </div>
+                <div className="flex justify-between items-center bg-yellow-500/5 p-1.5 rounded border border-yellow-500/10">
+                  <span className="text-white/70">
+                    Kubernetes Container Orchestration
+                  </span>
+                  <span className="text-[9px] uppercase bg-yellow-500/20 text-yellow-400 px-1.5 rounded font-bold">
+                    Important
+                  </span>
+                </div>
+                <div className="flex justify-between items-center bg-emerald-500/5 p-1.5 rounded border border-emerald-500/10">
+                  <span className="text-white/70">React.js + TypeScript</span>
+                  <span className="text-[9px] text-emerald-400 font-bold">
+                    ✓ Present
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="feat-card theme-gold reveal">
-            <div className="feat-card-inner">
-              <div className="feat-text">
-                <div className="feat-number">05 — Pro Feature</div>
-                <div className="feat-icon-wrap">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M12 20h9"
-                      stroke="#b89a5a"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"
-                      stroke="#b89a5a"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-                <div className="feat-title">AI Content Rewriter</div>
-                <p className="feat-desc">
-                  Select any section — summary, experience bullet, or skills —
-                  and Claude rewrites it to be more impactful, ATS-friendly, and
-                  achievement-focused. See the before and after score side by
-                  side.
-                </p>
-                <div className="feat-tag">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M2 6h8M6 2l4 4-4 4"
-                      stroke="currentColor"
-                      stroke-width="1.3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  Before vs After · Score Improvement
-                </div>
+          {/* Feature 04: Keyword Suggestions */}
+          <div className="lg:col-span-2 p-6 border border-white/10 rounded-3xl bg-gradient-to-br from-purple-500/10 to-transparent flex flex-col md:flex-row gap-6 items-center justify-between">
+            <div className="flex-1 space-y-3">
+              <div className="text-xs font-bold uppercase tracking-wider text-purple-400">
+                04 — Smart Analysis
               </div>
-              <div className="feat-visual">
-                <div className="visual-rewrite">
-                  <div className="vrw-header">
-                    <div className="vrw-title">Rewriting: Summary Section</div>
-                    <div className="vrw-badge">AI Rewrite</div>
-                  </div>
-                  <div className="vrw-before">
-                    <div className="vrw-before-label">Before</div>
-                    <div className="vrw-before-text">
-                      I am a B.Tech student who is responsible for working on
-                      web development projects and I have helped with React and
-                      Node.js tasks at internships.
-                    </div>
-                  </div>
-                  <div className="vrw-arrow">↓</div>
-                  <div className="vrw-after">
-                    <div className="vrw-after-label">
-                      After — Claude Rewrite
-                    </div>
-                    <div className="vrw-after-text">
-                      Final-year CSE student who shipped 3 production apps used
-                      by 500+ users. Reduced API response time 38% at TechCorp
-                      and cut load time 52% at StartupX using React, Node.js,
-                      and AWS.
-                    </div>
-                  </div>
-                  <div className="vrw-changes">
-                    <span className="vrw-change">+ Quantified results</span>
-                    <span className="vrw-change">+ Action verbs</span>
-                    <span className="vrw-change">+ Keywords added</span>
-                  </div>
-                  <div className="vrw-scores">
-                    <div className="vrw-score">
-                      <div className="vrw-score-label">Before</div>
-                      <div className="vrw-score-val red">34</div>
-                    </div>
-                    <div className="display:flex;align-items:center;font-size:18px;color:var(--gold);">
-                      →
-                    </div>
-                    <div className="vrw-score">
-                      <div className="vrw-score-label">After</div>
-                      <div className="vrw-score-val green">87</div>
-                    </div>
-                  </div>
+              <h3 className="text-xl font-bold">Keyword Suggestions</h3>
+              <p className="text-white/70 text-sm leading-relaxed">
+                Claude scans your resume and identifies every keyword present vs
+                missing. See your keyword density score, which categories you're
+                weak in, and get a prioritized list of the most impactful
+                keywords to add.
+              </p>
+              <div className="inline-flex items-center gap-1.5 text-xs text-purple-400 bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full">
+                Present vs Missing · Density Score
+              </div>
+            </div>
+
+            {/* Keyword Chips Dashboard Display */}
+            <div className="w-full md:w-80 bg-slate-950 rounded-2xl border border-white/10 p-4 space-y-3 shrink-0">
+              <div className="text-[11px] font-semibold text-white/50 mb-1">
+                Keyword Breakdown
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {["React.js", "Node.js", "AWS", "TypeScript"].map((kw) => (
+                  <span
+                    key={kw}
+                    className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md font-medium">
+                    {kw}
+                  </span>
+                ))}
+                {["Agile", "Kubernetes", "Microservices"].map((kw) => (
+                  <span
+                    key={kw}
+                    className="text-[10px] bg-red-500/10 text-red-400 border border-red-500/20 line-through px-2 py-0.5 rounded-md font-medium">
+                    {kw}
+                  </span>
+                ))}
+              </div>
+              <div className="pt-2 border-t border-white/5">
+                <div className="flex justify-between text-[11px] text-white/60 mb-1">
+                  <span>Density Target Score</span>
+                  <span className="text-purple-400 font-bold">72/100</span>
+                </div>
+                <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-purple-500 rounded-full w-[72%]"></div>
                 </div>
               </div>
             </div>

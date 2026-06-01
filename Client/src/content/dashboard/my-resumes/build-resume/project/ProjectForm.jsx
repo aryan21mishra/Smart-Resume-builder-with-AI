@@ -3,7 +3,8 @@ import { useForm } from "react-hook-form";
 import { RiCheckLine } from "@remixicon/react";
 import FormField from "@/components/common/FormField";
 import { Button } from "@/components/ui";
-
+import { useDispatch } from "react-redux";
+import { updateForm } from "@/redux/resumes/resumeSlice";
 const ProjectForm = ({ setActiveTab }) => {
   const {
     register,
@@ -13,19 +14,9 @@ const ProjectForm = ({ setActiveTab }) => {
   } = useForm();
 
   const currentlyWorking = watch("currentlyWorking");
-
+  const dispatch = useDispatch();
   const onSubmit = (data) => {
-    // convert tech stack string into array
-    const formattedData = {
-      ...data,
-      tech: data.tech
-        ?.split(",")
-        .map((item) => item.trim())
-        .filter(Boolean),
-    };
-
-    console.log(formattedData);
-
+    dispatch(updateForm({ field: "projects", data }));
     setActiveTab?.("list");
   };
 

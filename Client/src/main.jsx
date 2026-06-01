@@ -6,9 +6,18 @@ import { BrowserRouter, RouterProvider } from "react-router-dom";
 import { router } from "./routes/router.jsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store/store.js";
-
+import TanstackProvider from "./layouts/provider/tanstackProvider.jsx";
+import { Toaster } from "sonner";
 createRoot(document.getElementById("root")).render(
-  <Provider store={store}>
-    <RouterProvider router={router} />,
-  </Provider>,
+  <TanstackProvider>
+    <Provider store={store}>
+      <Toaster
+        position="bottom-right"
+        richColors
+        duration={3000}
+        theme="dark"
+      />
+      <RouterProvider router={router} />,
+    </Provider>
+  </TanstackProvider>,
 );

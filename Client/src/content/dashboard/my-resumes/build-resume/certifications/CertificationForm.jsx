@@ -2,6 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import FormField from "@/components/common/FormField";
 import { Button } from "@/components/ui";
+import { useDispatch } from "react-redux";
+import { updateForm } from "@/redux/resumes/resumeSlice";
 
 const CertificationForm = ({ setActiveTab }) => {
   const {
@@ -12,10 +14,9 @@ const CertificationForm = ({ setActiveTab }) => {
   } = useForm();
 
   const noExpiry = watch("noExpiry");
-
+  const dispatch = useDispatch();
   const onSubmit = (data) => {
-    console.log(data);
-
+    dispatch(updateForm({ field: "certifications", data }));
     setActiveTab?.("list");
   };
 

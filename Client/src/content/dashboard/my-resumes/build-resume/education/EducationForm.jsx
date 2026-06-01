@@ -1,8 +1,10 @@
 import FormField from "@/components/common/FormField";
 import { Button } from "@/components/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { updateForm } from "@/redux/resumes/resumeSlice";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 const EducationForm = () => {
   const [activeTab, setActiveTab] = useState("graduation");
@@ -14,12 +16,12 @@ const EducationForm = () => {
     trigger,
     formState: { errors },
   } = useForm();
-
+  const dispatch = useDispatch();
   // Fix #4 — watch isCurrent to conditionally disable/require End Date
   const isCurrent = watch("graduation.isCurrent");
 
   const onSubmit = (data) => {
-    console.log(data);
+    dispatch(updateForm({ field: "education", data }));
   };
 
   // Fix #5 — validate current tab fields before moving to next

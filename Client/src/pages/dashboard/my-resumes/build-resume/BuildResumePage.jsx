@@ -8,7 +8,8 @@ const BuildResumePage = () => {
     <div className="w-full min-h-screen flex flex-col bg-black text-white">
       <BuildResumeHeader />
       <div className="flex-1 flex flex-row w-full min-h-0">
-        {/* <TrackResumeCompletetion /> */}
+        <TrackResumeCompletetion />
+
         <div className="flex-1 overflow-y-auto min-h-0 flex flex-col">
           <Outlet />
         </div>

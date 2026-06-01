@@ -1,7 +1,12 @@
 import React from "react";
+import ResumeTemplates from "../../../content/dashboard/templates/ResumeTemplates";
 
 const TemplatesPage = () => {
-  return <div></div>;
+  return (
+    <div>
+      <ResumeTemplates />
+    </div>
+  );
 };
 
 export default TemplatesPage;
