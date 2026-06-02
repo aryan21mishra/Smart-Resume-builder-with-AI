@@ -68,7 +68,7 @@ export const updateResume = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(
-      new ApiResponse(200, { updateResume }, "Resume updated successfully"),
+      new ApiResponse(200, { updatedResume }, "Resume updated successfully"),
     );
 });
 
@@ -81,10 +81,10 @@ export const deleteResume = asyncHandler(async (req, res) => {
   const isDeleted = await findByIdAndUpdate(resumeId, { isDeleted: true });
 
   if (!isDeleted) {
-    throw new ApiError("");
+    throw new ApiError("Failed to delete resume!");
   }
 
-  res.status(200).json(new ApiResponse(200, {}, "Resume deleted"));
+  res.status(200).json(new ApiResponse(200, {}, "Resume deleted successfully"));
 });
 
 export const getResume = asyncHandler(async (req, res) => {
@@ -127,4 +127,14 @@ export const duplicateResume = asyncHandler(async (req, res) => {
   res.json(
     new ApiResponse(201, { resume: newResume }, "Resume created successfully"),
   );
+});
+
+export const getAllResumes = asyncHandler(async (req, res) => {
+  const userId = req.user._id;
+  console.log(userId);
+  const allResumes = await findAllResumesByUserId(userId);
+  if (!allResumes) {
+    throw new ApiError(404, "Resumes not found!");
+  }
+  res.status(200).json(new ApiResponse(200, { allResumes }, "Resumes fetched"));
 });

@@ -319,26 +319,30 @@ export const googleLogin = asyncHandler(async (req, res) => {
   }
 
   const googleUser = await verifyGoogleToken(token);
+  const [firstName, lastName] = googleUser.name.split(" ");
 
-  const user = await findUserByEmail(googleUser.email);
+  let user = await findUserByEmail(googleUser.email);
+  console.log("user", user);
 
   if (!user) {
     user = await createUser({
       email: googleUser?.email,
-      firstName: googleUser?.firstName,
-      lastName: googleUser?.lastName,
+      firstName: firstName,
+      lastName: lastName,
       passwordHash: "",
-      avatar: googleUser?.avatar,
+      avatar: googleUser?.picture,
       provider: "google",
     });
-    const { accessToken, refreshToken } = await generateToken(googleUser._id);
+
+    const { accessToken, refreshToken } = await generateToken(user._id);
+
     const options = {
       httpOnly: true,
       secure: "production",
       sameSite: "strict",
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     };
-    res;
+
     res
       .status(200)
       .cookie("accessToken", accessToken, options)

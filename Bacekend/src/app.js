@@ -14,9 +14,11 @@ app.use(urlencoded({ extended: true }));
 
 app.use(json());
 
+app.use(errorHandler);
 import userRouter from "./routes/user.routes.js";
 import resumeRoutes from "./routes/resume.routes.js";
 import resumeFeedbackRouter from "./routes/resumeFeedback.routes.js";
+import { errorHandler } from "./middlewares/error.middleware.js";
 // import { User } from "./models/user.model.js";
 
 // app.get("/test-db", async (req, res) => {

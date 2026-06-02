@@ -33,3 +33,7 @@ export const findByIdAndUpdate = (resumeId, updateField) => {
     { returnDocument: "after" },
   );
 };
+
+export const findAllResumesByUserId = (userId) => {
+  return Resume.find({ userId, isDeleted: false }).sort({ createdAt: -1 });
+};

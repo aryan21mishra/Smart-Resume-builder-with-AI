@@ -98,6 +98,7 @@ const resumeSchema = new Schema(
     skills: [skillsSchema],
     projects: [projectSchema],
     certifications: [certificationSchema],
+    languages: [{ type: String, trim: true }],
     isPublic: { type: Boolean, default: false },
     isDraft: { type: Boolean, default: true },
     feedback: { type: Schema.Types.ObjectId, ref: "Feedback" },
