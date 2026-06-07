@@ -62,14 +62,6 @@ const TrackResumeCompletion = () => {
       completed: false,
       icon: RiAwardLine,
     },
-    {
-      id: 7,
-      value: "language",
-      title: "Language",
-      path: "/dashboard/my-resumes/build-resume/languages",
-      completed: false,
-      icon: RiGlobalLine,
-    },
   ]);
   const { pathname } = useLocation();
 

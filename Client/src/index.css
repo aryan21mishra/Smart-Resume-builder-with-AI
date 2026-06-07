@@ -227,3 +227,53 @@ button {
     @apply font-sans;
   }
 }
+
+@media print {
+  body, html {
+    background: white !important;
+    color: black !important;
+    height: auto !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* Hide navigation bars, control panel sidebar, and control buttons */
+  header,
+  aside,
+  footer,
+  .no-print,
+  button,
+  .w-80,
+  .border-r,
+  .bg-zinc-950,
+  div[class*="w-80"],
+  div[class*="border-r"],
+  div[class*="bg-zinc-950"],
+  .toaster {
+    display: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    height: auto !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
+  /* Force print containers to occupy the full page width without shadows, scales, or borders */
+  .print-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: white !important;
+    color: black !important;
+    transform: none !important;
+  }
+}

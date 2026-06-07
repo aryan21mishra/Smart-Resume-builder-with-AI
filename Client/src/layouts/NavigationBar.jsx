@@ -34,7 +34,7 @@ const NavigationBar = () => {
           Sign In
         </Button>
         <Button
-          onClick={() => navigation("/register")}
+          onClick={() => navigation("/auth/register")}
           className="h-fit bg-linear-to-r from-[#6C63FF] to-[#8B5CF6]   text-white font-medium hover:opacity-90 transition">
           Get Started
         </Button>

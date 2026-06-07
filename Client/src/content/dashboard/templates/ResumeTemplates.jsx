@@ -19,7 +19,7 @@ const ResumeTemplates = () => {
   const dispatch = useDispatch();
 
   const navigateHandler = () => {
-    dispatch(updateForm({ field: "template", selectedTemplate }));
+    dispatch(updateForm({ field: "template", data: selectedTemplate }));
     navigate("/dashboard/my-resumes/build-resume/personal-information");
   };
 
@@ -57,15 +57,15 @@ const ResumeTemplates = () => {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <RiLayoutGridLine size={12} className="text-zinc-500" />
-            <span className="font-mono text-[10px] tracking-widest uppercase text-zinc-500">
+            <span className="font-montserratRegular text-[10px] tracking-widest uppercase text-zinc-500">
               Design Pipeline
             </span>
           </div>
-          <h1 className="text-xl font-bold tracking-tight text-white font-montserratBold">
+          <h1 className="text-xl tracking-tight text-white font-montserratBold">
             Select Layout Skeleton
           </h1>
         </div>
-        <div className="font-mono text-[10px] text-zinc-400 bg-zinc-900/40 border border-zinc-800 px-3 py-1.5 rounded-md flex items-center gap-2">
+        <div className="font-montserratRegular text-[10px] text-zinc-400 bg-zinc-900/40 border border-zinc-800 px-3 py-1.5 rounded-md flex items-center gap-2">
           <span>ACTIVE TEMPLATES: 03</span>
         </div>
       </header>
@@ -116,7 +116,7 @@ const ResumeTemplates = () => {
 
                 {/* Typography Descriptive Stack */}
                 <div className="space-y-1.5">
-                  <h3 className="text-sm font-montserratBold font-bold text-white tracking-wide">
+                  <h3 className="text-sm font-montserratBold text-white tracking-wide">
                     {tpl.title}
                   </h3>
                   <p className="text-xs text-zinc-400 font-montserratRegular leading-relaxed line-clamp-4">
@@ -131,20 +131,20 @@ const ResumeTemplates = () => {
                   {tpl.tags.map((tag, i) => (
                     <span
                       key={i}
-                      className="text-[9px] font-mono tracking-wide px-2 py-0.5 rounded bg-zinc-950 border border-zinc-900 text-zinc-400">
+                      className="text-[9px] font-montserratRegular tracking-wide px-2 py-0.5 rounded bg-zinc-950 border border-zinc-900 text-zinc-400">
                       {tag}
                     </span>
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between text-[10px] font-mono">
+                <div className="flex items-center justify-between text-[10px] font-montserratRegular">
                   <span className="text-zinc-500 uppercase tracking-wider flex items-center gap-1">
                     <RiSparklingLine size={10} />
                     {tpl.difficulty}
                   </span>
                   <span
                     className={`
-                    font-bold uppercase tracking-widest flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300
+                    font-montserratBold uppercase tracking-widest flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300
                     ${isSelected ? "text-white opacity-100" : "text-zinc-400"}
                   `}>
                     <span>Deploy</span>
@@ -162,7 +162,7 @@ const ResumeTemplates = () => {
         <Button
           onClick={navigateHandler}
           variant="primary"
-          className="px-6 py-2.5 bg-white text-black font-semibold text-xs rounded-lg hover:bg-zinc-200 transition-colors tracking-wide flex items-center gap-2">
+          className="px-6 py-2.5 bg-white text-black font-montserratSemiBold text-xs rounded-lg hover:bg-zinc-200 transition-colors tracking-wide flex items-center gap-2">
           <span>Proceed with Selected Layout</span>
           <RiArrowRightLine size={12} className="stroke-[2.5]" />
         </Button>

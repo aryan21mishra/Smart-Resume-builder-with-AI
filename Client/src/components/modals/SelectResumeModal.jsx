@@ -17,28 +17,66 @@ import {
   Sparkles,
   UploadCloud,
 } from "lucide-react";
-const mockCreatedResumes = [
-  { id: 1, title: "Software Engineer Resume", lastUpdated: "2 days ago" },
-  { id: 2, title: "Product Manager CV", lastUpdated: "1 week ago" },
-  { id: 3, title: "Full Stack Developer Resume", lastUpdated: "Yesterday" },
-];
+
+import { useGetAllResumeQuery } from "@/hooks/queries/useResumeQueries";
 
 const SelectResumeModal = ({
   children,
   selectedResume,
   setSelectedResume,
-  showWebsiteResumes,
-  setShowWebsiteResumes,
+  showWebsiteResumes: propShowWebsiteResumes,
+  setShowWebsiteResumes: propSetShowWebsiteResumes,
   jobDescription,
   setJobDescription,
-  fileInputRef,
-  handleFileChange,
-  triggerFileSelect,
+  fileInputRef: propFileInputRef,
   handleSelectWebsiteResume,
 }) => {
+  const localFileInputRef = useRef(null);
+  const fileInputRef = propFileInputRef || localFileInputRef;
+
+  const [localShowWebsiteResumes, localSetShowWebsiteResumes] = useState(false);
+  const showWebsiteResumes = propShowWebsiteResumes !== undefined ? propShowWebsiteResumes : localShowWebsiteResumes;
+  const setShowWebsiteResumes = propSetShowWebsiteResumes !== undefined ? propSetShowWebsiteResumes : localSetShowWebsiteResumes;
+
+  // Query website resumes list
+  const { data: resumesList, isLoading: resumesLoading } = useGetAllResumeQuery();
+  const resumes = resumesList || [];
+
+  const triggerFileSelect = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedResume({
+        type: "file",
+        name: file.name,
+        size: `${(file.size / 1024).toFixed(1)} KB`,
+        rawFile: file,
+      });
+    }
+  };
+
+  const onSelectWebsiteResume = (resume) => {
+    if (handleSelectWebsiteResume) {
+      handleSelectWebsiteResume(resume);
+    } else {
+      setSelectedResume({
+        type: "website",
+        name: resume.title,
+        id: resume._id,
+        rawResume: resume,
+        lastUpdated: new Date(resume.updatedAt).toLocaleDateString(),
+      });
+    }
+  };
+
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-md bg-zinc-950 border border-zinc-900 p-6 rounded-2xl">
         <DialogHeader className="space-y-1">
           <DialogTitle className="text-sm font-semibold tracking-tight text-white flex items-center gap-1.5">
@@ -72,7 +110,7 @@ const SelectResumeModal = ({
                       <p className="text-[10px] text-zinc-500 font-mono mt-0.5">
                         {selectedResume.type === "file"
                           ? `Local File • ${selectedResume.size}`
-                          : `Site Resume • Mod. ${selectedResume.lastUpdated}`}
+                          : `Site Resume • Mod. ${selectedResume.lastUpdated || "Recently"}`}
                       </p>
                     </div>
                   </div>
@@ -124,35 +162,41 @@ const SelectResumeModal = ({
                   Website Resumes
                 </span>
                 <div className="space-y-1.5 max-h-[150px] overflow-y-auto pr-1">
-                  {mockCreatedResumes.map((resume) => {
-                    const isSelected =
-                      selectedResume &&
-                      selectedResume.type === "website" &&
-                      selectedResume.name === resume.title;
-                    return (
-                      <div
-                        key={resume.id}
-                        onClick={() => {
-                          handleSelectWebsiteResume(resume);
-                          setShowWebsiteResumes(false);
-                        }}
-                        className={`group relative flex items-center justify-between p-2 rounded-lg border cursor-pointer transition-all duration-200 ${
-                          isSelected
-                            ? "bg-white/5 border-white"
-                            : "bg-zinc-900 border-zinc-800/80 hover:bg-zinc-850 hover:border-zinc-700"
-                        }`}>
-                        <div className="flex items-center gap-2 truncate">
-                          <FileText className="h-3.5 w-3.5 text-zinc-400 group-hover:text-white shrink-0" />
-                          <span className="text-xs text-zinc-300 group-hover:text-white truncate font-medium">
-                            {resume.title}
+                  {resumesLoading ? (
+                    <div className="text-xs text-zinc-500 p-2">Loading resumes...</div>
+                  ) : resumes.length === 0 ? (
+                    <div className="text-xs text-zinc-500 p-2">No resumes found. Create one first!</div>
+                  ) : (
+                    resumes.map((resume) => {
+                      const isSelected =
+                        selectedResume &&
+                        selectedResume.type === "website" &&
+                        selectedResume.id === resume._id;
+                      return (
+                        <div
+                          key={resume._id}
+                          onClick={() => {
+                            onSelectWebsiteResume(resume);
+                            setShowWebsiteResumes(false);
+                          }}
+                          className={`group relative flex items-center justify-between p-2 rounded-lg border cursor-pointer transition-all duration-200 ${
+                            isSelected
+                              ? "bg-white/5 border-white"
+                              : "bg-zinc-900 border-zinc-800/80 hover:bg-zinc-850 hover:border-zinc-700"
+                          }`}>
+                          <div className="flex items-center gap-2 truncate">
+                            <FileText className="h-3.5 w-3.5 text-zinc-400 group-hover:text-white shrink-0" />
+                            <span className="text-xs text-zinc-300 group-hover:text-white truncate font-medium">
+                              {resume.title}
+                            </span>
+                          </div>
+                          <span className="text-[9px] font-mono text-zinc-500 uppercase">
+                            {resume.updatedAt ? new Date(resume.updatedAt).toLocaleDateString() : ""}
                           </span>
                         </div>
-                        <span className="text-[9px] font-mono text-zinc-500 uppercase">
-                          {resume.lastUpdated}
-                        </span>
-                      </div>
-                    );
-                  })}
+                      );
+                    })
+                  )}
                 </div>
               </div>
             )}
@@ -184,7 +228,7 @@ const SelectResumeModal = ({
                 Close
               </Button>
               <Button className="bg-white text-black hover:bg-zinc-200 text-xs font-semibold rounded-lg px-4 h-8 transition-all">
-                Analyze
+                Confirm
               </Button>
             </div>
           </DialogClose>

@@ -2,17 +2,22 @@ import React from "react";
 import FormField from "@/components/common/FormField";
 import { Button } from "@/components/ui";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { updateForm } from "@/redux/resumes/resumeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { updateForm, selectResumes } from "@/redux/resumes/resumeSlice";
 import { useNavigate } from "react-router-dom";
 const PersonalInformationForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const resume = useSelector(selectResumes);
+  const personalInformation = resume?.personalInformation || {};
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    values: personalInformation
+  });
   const onSubmit = (data) => {
     dispatch(updateForm({ field: "personalInformation", data }));
     navigate("/dashboard/my-resumes/build-resume/experience");

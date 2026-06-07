@@ -3,20 +3,30 @@ import { useForm } from "react-hook-form";
 import { RiCheckLine } from "@remixicon/react";
 import FormField from "@/components/common/FormField";
 import { Button } from "@/components/ui";
-import { useDispatch } from "react-redux";
-import { updateForm } from "@/redux/resumes/resumeSlice";
-const ProjectForm = ({ setActiveTab }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { addProject, updateProject, selectResumes } from "@/redux/resumes/resumeSlice";
+const ProjectForm = ({ setActiveTab, editIndex, setEditIndex }) => {
+  const dispatch = useDispatch();
+  const projects = useSelector(selectResumes)?.projects || [];
+  const projectData = editIndex !== null && editIndex !== undefined ? (projects[editIndex] || {}) : {};
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    values: projectData
+  });
 
   const currentlyWorking = watch("currentlyWorking");
-  const dispatch = useDispatch();
   const onSubmit = (data) => {
-    dispatch(updateForm({ field: "projects", data }));
+    if (editIndex !== null && editIndex !== undefined) {
+      dispatch(updateProject({ index: editIndex, data }));
+    } else {
+      dispatch(addProject(data));
+    }
+    setEditIndex?.(null);
     setActiveTab?.("list");
   };
 
@@ -138,7 +148,10 @@ const ProjectForm = ({ setActiveTab }) => {
           variant="default"
           size="lg"
           className="border border-white/10 bg-white/5 hover:bg-white/10 text-white py-3! px-6! rounded-xl font-montserratMedium text-sm tracking-wide transition cursor-pointer"
-          onClick={() => setActiveTab?.("list")}>
+          onClick={() => {
+            setEditIndex?.(null);
+            setActiveTab?.("list");
+          }}>
           Cancel
         </Button>
       </div>

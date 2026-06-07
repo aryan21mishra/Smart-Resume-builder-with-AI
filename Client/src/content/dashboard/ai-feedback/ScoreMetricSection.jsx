@@ -1,66 +1,96 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectFeedback } from "@/redux/resumes/feedbackSlice";
 
 const ScoreMetricSection = () => {
+  const feedback = useSelector(selectFeedback);
+  
+  const atsScore = feedback.atsScore !== null && feedback.atsScore !== undefined ? feedback.atsScore : 0;
+  const jobMatchScore = feedback.jobMatchScore !== null && feedback.jobMatchScore !== undefined ? feedback.jobMatchScore : 0;
+  const contentScore = feedback.contentScore !== null && feedback.contentScore !== undefined ? feedback.contentScore : 0;
+  const keywordScore = feedback.keywordScore !== null && feedback.keywordScore !== undefined ? feedback.keywordScore : 0;
+  const formatScore = feedback.formatScore !== null && feedback.formatScore !== undefined ? feedback.formatScore : 0;
+  const impactScore = feedback.impactScore !== null && feedback.impactScore !== undefined ? feedback.impactScore : 0;
+
   return (
-    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-6">
-      <h2 class="text-xs font-bold uppercase tracking-widest text-zinc-400">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-6">
+      <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
         Score Metrics
       </h2>
 
-      <div class="grid grid-cols-2 gap-4 border-b border-zinc-800 pb-6">
-        <div class="text-center">
-          <span class="block text-4xl font-extrabold text-white tracking-tight">
-            87<span class="text-xs font-normal text-zinc-500">/100</span>
+      <div className="grid grid-cols-2 gap-4 border-b border-zinc-800 pb-6">
+        <div className="text-center">
+          <span className="block text-4xl font-extrabold text-white tracking-tight">
+            {atsScore}<span className="text-xs font-normal text-zinc-500">/100</span>
           </span>
-          <span class="text-[10px] uppercase font-semibold text-zinc-400 tracking-wider">
+          <span className="text-[10px] uppercase font-semibold text-zinc-400 tracking-wider">
             ATS Score
           </span>
         </div>
-        <div class="text-center border-l border-zinc-800">
-          <span class="block text-4xl font-extrabold text-white tracking-tight">
-            74<span class="text-xs font-normal text-zinc-500">/100</span>
+        <div className="text-center border-l border-zinc-800">
+          <span className="block text-4xl font-extrabold text-white tracking-tight">
+            {jobMatchScore}<span className="text-xs font-normal text-zinc-500">/100</span>
           </span>
-          <span class="text-[10px] uppercase font-semibold text-zinc-400 tracking-wider">
+          <span className="text-[10px] uppercase font-semibold text-zinc-400 tracking-wider">
             Job Match
           </span>
         </div>
       </div>
 
-      <div class="space-y-4">
+      <div className="space-y-4">
+        {/* Content Quality */}
         <div>
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-zinc-400">Content Quality</span>
-            <span class="font-mono text-white">92%</span>
+          <div className="flex justify-between text-xs mb-1.5">
+            <span className="text-zinc-400">Content Quality</span>
+            <span className="font-mono text-white">{contentScore}%</span>
           </div>
-          <div class="w-full bg-zinc-800 h-1 rounded-full">
-            <div class="bg-white h-1 rounded-full  w-[92%]"></div>
+          <div className="w-full bg-zinc-800 h-1 rounded-full">
+            <div 
+              className="bg-white h-1 rounded-full transition-all duration-500" 
+              style={{ width: `${contentScore}%` }}
+            ></div>
           </div>
         </div>
+
+        {/* Keyword Density */}
         <div>
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-zinc-400">Keyword Density</span>
-            <span class="font-mono text-white">64%</span>
+          <div className="flex justify-between text-xs mb-1.5">
+            <span className="text-zinc-400">Keyword Density</span>
+            <span className="font-mono text-white">{keywordScore}%</span>
           </div>
-          <div class="w-full bg-zinc-800 h-1 rounded-full">
-            <div class="bg-white h-1 rounded-full  w-[64%]"></div>
+          <div className="w-full bg-zinc-800 h-1 rounded-full">
+            <div 
+              className="bg-white h-1 rounded-full transition-all duration-500" 
+              style={{ width: `${keywordScore}%` }}
+            ></div>
           </div>
         </div>
+
+        {/* Formatting & Structure */}
         <div>
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-zinc-400">Formatting & Structure</span>
-            <span class="font-mono text-white">80%</span>
+          <div className="flex justify-between text-xs mb-1.5">
+            <span className="text-zinc-400">Formatting & Structure</span>
+            <span className="font-mono text-white">{formatScore}%</span>
           </div>
-          <div class="w-full bg-zinc-800 h-1 rounded-full">
-            <div class="bg-white h-1 rounded-full  w-[80%]"></div>
+          <div className="w-full bg-zinc-800 h-1 rounded-full">
+            <div 
+              className="bg-white h-1 rounded-full transition-all duration-500" 
+              style={{ width: `${formatScore}%` }}
+            ></div>
           </div>
         </div>
+
+        {/* Impact Metrics */}
         <div>
-          <div class="flex justify-between text-xs mb-1.5">
-            <span class="text-zinc-400">Impact Metrics</span>
-            <span class="font-mono text-white">70%</span>
+          <div className="flex justify-between text-xs mb-1.5">
+            <span className="text-zinc-400">Impact Metrics</span>
+            <span className="font-mono text-white">{impactScore}%</span>
           </div>
-          <div class="w-full bg-zinc-800 h-1 rounded-full">
-            <div class="bg-white h-1 rounded-full  w-[70%]"></div>
+          <div className="w-full bg-zinc-800 h-1 rounded-full">
+            <div 
+              className="bg-white h-1 rounded-full transition-all duration-500" 
+              style={{ width: `${impactScore}%` }}
+            ></div>
           </div>
         </div>
       </div>

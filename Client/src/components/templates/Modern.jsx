@@ -1,3 +1,5 @@
+import React from "react";
+
 const IconEmail = () => (
   <svg
     width="11"
@@ -95,166 +97,184 @@ const IconGitHub = () => (
   </svg>
 );
 
-const IconPrint = () => (
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path
-      d="M3 5V1h8v4M3 10H1V5h12v5h-2M3 8h8v5H3z"
-      stroke="white"
-      strokeWidth="1.3"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
+export default function ModernTemplate({ data }) {
+  const resume = data || {};
+  const personalInfo = resume.personalInfo || {};
+  const experiences = resume.experience || [];
+  const educations = resume.education || [];
+  const skills = resume.skills || { technical: [], soft: [], languages: [], tools: [] };
+  const projects = resume.projects || [];
+  const certifications = resume.certifications || [];
 
-export default function ModernTemplate() {
+  // Build contact items array dynamically
+  const contacts = [
+    personalInfo.email && { icon: <IconEmail />, text: personalInfo.email },
+    personalInfo.phone && { icon: <IconPhone />, text: personalInfo.phone },
+    personalInfo.location && { icon: <IconLocation />, text: personalInfo.location },
+    personalInfo.linkedin && { icon: <IconLinkedIn />, text: personalInfo.linkedin },
+    personalInfo.github && { icon: <IconGitHub />, text: personalInfo.github },
+  ].filter(Boolean);
+
   return (
-    <div className="w-full bg-white rounded-[3px] relative shadow-[0_24px_80px_rgba(10,9,8,0.16),_0_4px_16px_rgba(10,9,8,0.08)] pt-[52px] px-[52px] pb-[60px] font-['DM_Sans',sans-serif] text-[#0f0e0d] h-full">
+    <div className="print-container w-full bg-white rounded-[3px] relative shadow-[0_24px_80px_rgba(10,9,8,0.16),_0_4px_16px_rgba(10,9,8,0.08)] pt-[52px] px-[52px] pb-[60px] font-['DM_Sans',sans-serif] text-[#0f0e0d] h-full text-left">
       {/* Accent bar */}
-      <div className="absolute top-0 left-0 right-0 h-[5px] rounded-t-[3px] bg-[linear-gradient(90deg,#0f0e0d_0%,#c85a2a_100%)]" />
+      <div className="absolute top-0 left-0 right-0 h-[5px] rounded-t-[3px] bg-[linear-gradient(90deg,#0f0e0d_0%,#c85a2a_100%)] no-print" />
 
       {/* ── Header ── */}
       <div>
         <div className="font-['DM_Serif_Display',serif] text-[36px] leading-[1.1] tracking-[-0.5px] text-[#0f0e0d]">
-          Arjun Sharma
+          {personalInfo.firstName || "Your"} {personalInfo.lastName || "Name"}
         </div>
 
-        <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#c85a2a] mt-[5px]">
-          Full Stack Developer
-        </div>
+        {personalInfo.title && (
+          <div className="text-[10px] font-bold tracking-[0.12em] uppercase text-[#c85a2a] mt-[5px]">
+            {personalInfo.title}
+          </div>
+        )}
 
-        <div className="flex flex-wrap gap-[14px] mt-3 pb-4 border-b-[1.5px] border-[#0f0e0d]">
-          {[
-            { icon: <IconEmail />, text: "arjun.sharma@email.com" },
-            { icon: <IconPhone />, text: "+91 98765 43210" },
-            { icon: <IconLocation />, text: "Bengaluru, India" },
-            { icon: <IconLinkedIn />, text: "linkedin.com/in/arjun" },
-            { icon: <IconGitHub />, text: "github.com/arjuns" },
-          ].map(({ icon, text }) => (
-            <span
-              key={text}
-              className="flex items-center gap-[5px] text-[11px] text-[#5c5a56]">
-              {icon}
-              {text}
-            </span>
-          ))}
-        </div>
+        {contacts.length > 0 && (
+          <div className="flex flex-wrap gap-[14px] mt-3 pb-4 border-b-[1.5px] border-[#0f0e0d]">
+            {contacts.map(({ icon, text }, idx) => (
+              <span
+                key={idx}
+                className="flex items-center gap-[5px] text-[11px] text-[#5c5a56] break-all">
+                {icon}
+                {text}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ── Summary ── */}
-      <Section head="Professional Summary">
-        <p className="text-[11.5px] text-[#2a2825] leading-[1.65]">
-          Final-year B.Tech Computer Science student with hands-on experience in
-          React, Node.js, and cloud services. Built 3 full-stack applications
-          used by 500+ active users. Passionate about clean code, scalable
-          architecture, and shipping products that solve real problems.
-        </p>
-      </Section>
+      {personalInfo.summary && (
+        <Section head="Professional Summary">
+          <p className="text-[11.5px] text-[#2a2825] leading-[1.65]">
+            {personalInfo.summary}
+          </p>
+        </Section>
+      )}
 
       {/* ── Experience ── */}
-      <Section head="Work Experience">
-        <ModernExpItem
-          company="TechCorp Pvt. Ltd."
-          date="Jun 2024 – Present"
-          role="Software Engineering Intern"
-          location="Bengaluru"
-          bullets={[
-            "Developed RESTful APIs using Node.js/Express, reducing average response time by 38%",
-            "Built reusable React component library adopted across 5 internal products and 3 teams",
-            "Integrated CI/CD pipelines with GitHub Actions and AWS CodeDeploy cutting deploy time by 60%",
-            "Collaborated with product team on 12 feature releases using Agile/Scrum methodology",
-          ]}
-        />
-        <ModernExpItem
-          company="StartupX Technologies"
-          date="Dec 2023 – May 2024"
-          role="Frontend Developer Intern"
-          location="Remote"
-          bullets={[
-            "Rebuilt core dashboard UI in React + TypeScript, improving page load time by 52%",
-            "Implemented real-time notifications using WebSockets serving 1,200+ concurrent users",
-            "Reduced bundle size by 40% through code splitting and lazy loading strategies",
-          ]}
-        />
-      </Section>
+      {experiences.length > 0 && (
+        <Section head="Work Experience">
+          {experiences.map((exp, i) => {
+            const startStr = exp.startDate ? new Date(exp.startDate).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "";
+            const endStr = exp.isCurrent ? "Present" : (exp.endDate ? new Date(exp.endDate).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "");
+            const dateStr = startStr && endStr ? `${startStr} – ${endStr}` : (startStr || endStr);
+            return (
+              <ModernExpItem
+                key={i}
+                company={exp.company}
+                date={dateStr}
+                role={exp.title}
+                location={exp.location}
+                bullets={exp.bullets || []}
+              />
+            );
+          })}
+        </Section>
+      )}
 
       {/* ── Two-col: Education + Skills ── */}
       <div className="grid grid-cols-2 gap-6 mt-5">
         {/* Education */}
         <div>
-          <ModernSectionHead>Education</ModernSectionHead>
-
-          <div className="flex justify-between items-start">
-            <div>
-              <div className="text-[12px] font-semibold text-[#0f0e0d]">
-                B.Tech, Computer Science &amp; Engineering
-              </div>
-
-              <div className="text-[11px] text-[#5c5a56] mt-[2px]">
-                VIT University, Vellore
-              </div>
-            </div>
-
-            <div className="text-right font-['DM_Mono',monospace] text-[10.5px] text-[#9a9690]">
-              <div>2021 – 2025</div>
-
-              <div className="text-[#2a7a4a] font-semibold text-[11px] mt-[2px]">
-                CGPA 8.7
-              </div>
-            </div>
-          </div>
+          {educations.length > 0 && (
+            <>
+              <ModernSectionHead>Education</ModernSectionHead>
+              {educations.map((edu, i) => {
+                const startStr = edu.startDate ? new Date(edu.startDate).getFullYear() : "";
+                const endStr = edu.isCurrent ? "Present" : (edu.endDate ? new Date(edu.endDate).getFullYear() : "");
+                const dateStr = startStr && endStr ? `${startStr} – ${endStr}` : (startStr || endStr);
+                return (
+                  <div key={i} className="flex justify-between items-start mb-3 last:mb-0">
+                    <div>
+                      <div className="text-[12px] font-semibold text-[#0f0e0d]">
+                        {edu.degree} {edu.field ? `in ${edu.field}` : ""}
+                      </div>
+                      <div className="text-[11px] text-[#5c5a56] mt-[2px]">
+                        {edu.institution}
+                      </div>
+                    </div>
+                    <div className="text-right font-['DM_Mono',monospace] text-[10.5px] text-[#9a9690]">
+                      <div>{dateStr}</div>
+                      {edu.cgpa && (
+                        <div className="text-[#2a7a4a] font-semibold text-[11px] mt-[2px]">
+                          CGPA {edu.cgpa}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </>
+          )}
         </div>
 
         {/* Skills */}
         <div>
-          <ModernSectionHead>Technical Skills</ModernSectionHead>
-
-          <div className="flex flex-wrap gap-[6px]">
-            {[
-              "React.js",
-              "Node.js",
-              "TypeScript",
-              "PostgreSQL",
-              "Docker",
-              "AWS (EC2, S3)",
-              "Python",
-              "Redis",
-              "GraphQL",
-              "Tailwind CSS",
-              "Git / GitHub",
-              "Agile/Scrum",
-            ].map((s) => (
-              <span
-                key={s}
-                className="text-[10.5px] font-medium text-[#2a2825] bg-[#f7f4ef] border border-[#e5e1d8] px-[10px] py-[3px] rounded-[3px]">
-                {s}
-              </span>
-            ))}
-          </div>
+          {Object.values(skills).some((arr) => arr && arr.length > 0) && (
+            <>
+              <ModernSectionHead>Technical Skills</ModernSectionHead>
+              <div className="flex flex-wrap gap-[6px]">
+                {Object.entries(skills).flatMap(([key, items]) => 
+                  (items || []).map((s, idx) => (
+                    <span
+                      key={`${key}-${idx}`}
+                      className="text-[10.5px] font-medium text-[#2a2825] bg-[#f7f4ef] border border-[#e5e1d8] px-[10px] py-[3px] rounded-[3px]">
+                      {s}
+                    </span>
+                  ))
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* ── Projects ── */}
-      <Section head="Projects">
-        <ModernExpItem
-          company="Smart Resume Builder"
-          date="Final Year Project · 2025"
-          role="React · Node.js · Anthropic Claude API · PostgreSQL"
-          bullets={[
-            "Built AI-powered resume builder with ATS scoring, real-time feedback, and 3 resume templates",
-            "Integrated Claude API for keyword analysis, section rewriting, and job description matching",
-            "Implemented PDF export using react-to-print and conversation history storage with Prisma",
-          ]}
-        />
-        <ModernExpItem
-          company="E-Commerce Platform"
-          date="Personal Project · 2024"
-          role="Next.js · Stripe · MongoDB · Redis"
-          bullets={[
-            "Full-stack e-commerce with real-time inventory, Stripe payments, and admin dashboard",
-            "Handled 500+ concurrent users using Redis caching and optimized MongoDB queries",
-          ]}
-        />
-      </Section>
+      {projects.length > 0 && (
+        <Section head="Projects">
+          {projects.map((proj, i) => {
+            const dateStr = proj.startDate ? new Date(proj.startDate).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "";
+            return (
+              <ModernExpItem
+                key={i}
+                company={proj.name}
+                date={dateStr}
+                role={proj.tech ? proj.tech.join(" · ") : ""}
+                bullets={proj.description ? [proj.description] : []}
+              />
+            );
+          })}
+        </Section>
+      )}
+
+      {/* ── Certifications ── */}
+      {certifications.length > 0 && (
+        <Section head="Certifications">
+          <div className="grid grid-cols-2 gap-4">
+            {certifications.map((cert, i) => (
+              <div key={i} className="flex justify-between items-baseline border-b border-[#f0ece5] pb-1">
+                <div>
+                  <span className="text-[12px] font-semibold text-[#0f0e0d]">
+                    {cert.name}
+                  </span>
+                  {cert.issuer && (
+                    <span className="text-[11px] text-[#5c5a56] ml-2">
+                      ({cert.issuer})
+                    </span>
+                  )}
+                </div>
+                <span className="font-['DM_Mono',monospace] text-[10px] text-[#9a9690] whitespace-nowrap">
+                  {cert.issueDate ? new Date(cert.issueDate).getFullYear() : ""}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
     </div>
   );
 }
@@ -297,15 +317,17 @@ function ModernExpItem({ company, date, role, location, bullets }) {
         )}
       </div>
 
-      <ul className="mt-[5px] pl-[14px] list-disc">
-        {bullets.map((b, i) => (
-          <li
-            key={i}
-            className="text-[11px] text-[#2a2825] leading-[1.6] mb-[2px]">
-            {b}
-          </li>
-        ))}
-      </ul>
+      {bullets && bullets.length > 0 && (
+        <ul className="mt-[5px] pl-[14px] list-disc">
+          {bullets.map((b, i) => (
+            <li
+              key={i}
+              className="text-[11px] text-[#2a2825] leading-[1.6] mb-[2px]">
+              {b}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

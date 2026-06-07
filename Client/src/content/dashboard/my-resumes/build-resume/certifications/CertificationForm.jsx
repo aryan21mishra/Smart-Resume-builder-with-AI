@@ -2,21 +2,31 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import FormField from "@/components/common/FormField";
 import { Button } from "@/components/ui";
-import { useDispatch } from "react-redux";
-import { updateForm } from "@/redux/resumes/resumeSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addCertification, updateCertification, selectResumes } from "@/redux/resumes/resumeSlice";
 
-const CertificationForm = ({ setActiveTab }) => {
+const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
+  const dispatch = useDispatch();
+  const certifications = useSelector(selectResumes)?.certifications || [];
+  const certificationData = editIndex !== null && editIndex !== undefined ? (certifications[editIndex] || {}) : {};
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    values: certificationData
+  });
 
   const noExpiry = watch("noExpiry");
-  const dispatch = useDispatch();
   const onSubmit = (data) => {
-    dispatch(updateForm({ field: "certifications", data }));
+    if (editIndex !== null && editIndex !== undefined) {
+      dispatch(updateCertification({ index: editIndex, data }));
+    } else {
+      dispatch(addCertification(data));
+    }
+    setEditIndex?.(null);
     setActiveTab?.("list");
   };
 
@@ -119,7 +129,10 @@ const CertificationForm = ({ setActiveTab }) => {
           type="button"
           variant="default"
           size="lg"
-          onClick={() => setActiveTab?.("list")}
+          onClick={() => {
+            setEditIndex?.(null);
+            setActiveTab?.("list");
+          }}
           className="border border-white/10 bg-white/5 hover:bg-white/10 text-white py-3! px-6! rounded-xl font-montserratMedium text-sm tracking-wide transition cursor-pointer">
           Cancel
         </Button>

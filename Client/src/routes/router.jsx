@@ -28,6 +28,7 @@ import {
   ProjectsPage,
   AwardsAndHonorsPage,
 } from "../pages/pagesImport";
+import SingleResumePage from "@/pages/dashboard/my-resumes/SingleResumePage";
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -43,6 +44,7 @@ export const router = createBrowserRouter(
         <Route path="keywords" element={<KeywordsPage />} />
         <Route path="my-resumes">
           <Route index element={<MyResumesPage />} />
+          <Route path="single-resume/:id" element={<SingleResumePage />} />
           <Route path="build-resume" element={<BuildResumePage />}>
             <Route
               path="personal-information"

@@ -1,28 +1,48 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { selectFeedback } from "@/redux/resumes/feedbackSlice";
 
 const OverallSummaryAndKeyStrengthSection = () => {
+  const feedback = useSelector(selectFeedback);
+
+  const overallFeedback = feedback.overallFeedback || "Initiate an AI evaluation request to extract your resume overall summary.";
+  const strengths = feedback.strengths || [];
+  const hasStrengths = Array.isArray(strengths) ? strengths.length > 0 : !!strengths;
+
   return (
-    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
+    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-6">
+      {/* Overall Summary */}
       <div>
-        <h2 class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">
           Overall Summary
         </h2>
-        <p class="text-sm text-zinc-300 leading-relaxed">
-          Your resume possesses strong foundational formatting and highly
-          relevant structural elements. However, it lacks specific keywords
-          related to cloud deployment pipelines required for this specific job
-          position.
+        <p className="text-sm text-zinc-300 leading-relaxed">
+          {overallFeedback}
         </p>
       </div>
 
-      <div class="pt-4 border-t border-zinc-800">
-        <h3 class="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-2">
+      {/* Key Strengths */}
+      <div className="pt-4 border-t border-zinc-800">
+        <h3 className="text-xs font-bold uppercase tracking-widest text-zinc-400 mb-3">
           Key Strengths
         </h3>
-        <p class="text-sm text-zinc-300">
-          Strong metric utilization in former employment bullet points with
-          highly precise action-oriented wording throughout.
-        </p>
+        {hasStrengths ? (
+          Array.isArray(strengths) ? (
+            <ul className="list-disc list-inside space-y-2 text-sm text-zinc-300">
+              {strengths.map((str, i) => (
+                <li key={i} className="leading-relaxed">{str}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-zinc-300 leading-relaxed">
+              {strengths}
+            </p>
+          )
+        ) : (
+          <p className="text-sm text-zinc-500 italic">
+            Run resume analysis to identify candidate strengths.
+          </p>
+        )}
       </div>
     </div>
   );

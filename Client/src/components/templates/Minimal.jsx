@@ -1,155 +1,184 @@
-export default function MinimalTemplate() {
+import React from "react";
+
+export default function MinimalTemplate({ data }) {
+  const resume = data || {};
+  const personalInfo = resume.personalInfo || {};
+  const experiences = resume.experience || [];
+  const educations = resume.education || [];
+  const skills = resume.skills || { technical: [], soft: [], languages: [], tools: [] };
+  const projects = resume.projects || [];
+  const certifications = resume.certifications || [];
+
   return (
-    <div className="w-full rounded-[3px] grid overflow-hidden shadow-[0_24px_80px_rgba(10,9,8,0.16),_0_4px_16px_rgba(10,9,8,0.08)] grid-cols-[220px_1fr] min-h-[700px] font-['DM_Sans',sans-serif]">
+    <div className="print-container w-full rounded-[3px] grid overflow-hidden shadow-[0_24px_80px_rgba(10,9,8,0.16),_0_4px_16px_rgba(10,9,8,0.08)] grid-cols-[220px_1fr] min-h-[700px] font-['DM_Sans',sans-serif] text-left">
       {/* ── SIDEBAR ── */}
-      <aside className="bg-[#1a1a1a] px-[24px] py-[40px] flex flex-col">
+      <aside className="bg-[#1a1a1a] px-[24px] py-[40px] flex flex-col text-left">
         {/* Name */}
         <div className="mb-[20px]">
           <div className="font-['DM_Serif_Display',serif] text-[24px] text-white leading-[1.1] tracking-[-0.3px]">
-            Arjun
+            {personalInfo.firstName || "Your"}
           </div>
           <div className="font-['DM_Serif_Display',serif] text-[24px] italic text-[rgba(255,255,255,0.55)] leading-[1.1] tracking-[-0.3px]">
-            Sharma
+            {personalInfo.lastName || "Name"}
           </div>
         </div>
 
         <div className="w-[32px] h-[3px] bg-[#c85a2a] rounded-[2px] my-[14px]" />
 
         {/* Contact */}
-        <SidebarSection head="Contact">
-          {[
-            "arjun.sharma@email.com",
-            "+91 98765 43210",
-            "Bengaluru, India",
-            "linkedin.com/in/arjun",
-            "github.com/arjuns",
-          ].map((t) => (
-            <div
-              key={t}
-              className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px] break-all">
-              {t}
-            </div>
-          ))}
-        </SidebarSection>
+        {(personalInfo.email || personalInfo.phone || personalInfo.location) && (
+          <SidebarSection head="Contact">
+            {personalInfo.email && (
+              <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px] break-all">
+                {personalInfo.email}
+              </div>
+            )}
+            {personalInfo.phone && (
+              <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px] break-all">
+                {personalInfo.phone}
+              </div>
+            )}
+            {personalInfo.location && (
+              <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px] break-all">
+                {personalInfo.location}
+              </div>
+            )}
+            {personalInfo.linkedin && (
+              <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px] break-all hover:underline">
+                <a href={personalInfo.linkedin} target="_blank" rel="noreferrer">
+                  LinkedIn
+                </a>
+              </div>
+            )}
+            {personalInfo.github && (
+              <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px] break-all hover:underline">
+                <a href={personalInfo.github} target="_blank" rel="noreferrer">
+                  GitHub
+                </a>
+              </div>
+            )}
+          </SidebarSection>
+        )}
 
         {/* Education */}
-        <SidebarSection head="Education">
-          <div className="text-[10px] text-[rgba(255,255,255,0.75)] font-medium mb-[4px]">
-            B.Tech — CSE
-          </div>
-          <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px]">
-            VIT University
-          </div>
-          <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px]">
-            2021 – 2025
-          </div>
-          <div className="text-[10px] text-[#5db87a] font-medium">
-            CGPA: 8.7 / 10
-          </div>
-        </SidebarSection>
+        {educations.length > 0 && (
+          <SidebarSection head="Education">
+            {educations.map((edu, idx) => {
+              const startYear = edu.startDate ? new Date(edu.startDate).getFullYear() : "";
+              const endYear = edu.isCurrent ? "Present" : (edu.endDate ? new Date(edu.endDate).getFullYear() : "");
+              const years = startYear && endYear ? `${startYear} – ${endYear}` : (startYear || endYear);
+              return (
+                <div key={idx} className="mb-3 last:mb-0">
+                  <div className="text-[10px] text-[rgba(255,255,255,0.75)] font-medium mb-[4px]">
+                    {edu.degree}
+                  </div>
+                  <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px]">
+                    {edu.institution}
+                  </div>
+                  <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[4px]">
+                    {years}
+                  </div>
+                  {edu.cgpa && (
+                    <div className="text-[10px] text-[#5db87a] font-medium">
+                      CGPA: {edu.cgpa}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </SidebarSection>
+        )}
 
         {/* Tech Stack */}
-        <SidebarSection head="Tech Stack">
-          <div>
-            {[
-              "React.js",
-              "Node.js",
-              "TypeScript",
-              "PostgreSQL",
-              "Docker",
-              "AWS",
-              "Python",
-              "Redis",
-              "GraphQL",
-              "Next.js",
-              "Git",
-              "Agile",
-            ].map((s) => (
-              <span
-                key={s}
-                className="inline-block text-[9.5px] text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] rounded-[3px] px-[7px] py-[2px] m-[2px_2px_2px_0]">
-                {s}
-              </span>
-            ))}
-          </div>
-        </SidebarSection>
+        {Object.values(skills).some(arr => arr && arr.length > 0) && (
+          <SidebarSection head="Skills">
+            <div className="flex flex-wrap gap-1">
+              {Object.entries(skills).flatMap(([key, items]) => 
+                (items || []).map((s, idx) => (
+                  <span
+                    key={`${key}-${idx}`}
+                    className="inline-block text-[9px] text-[rgba(255,255,255,0.6)] bg-[rgba(255,255,255,0.07)] border border-[rgba(255,255,255,0.1)] rounded-[3px] px-[6px] py-[1.5px]">
+                    {s}
+                  </span>
+                ))
+              )}
+            </div>
+          </SidebarSection>
+        )}
 
         {/* Certifications */}
-        <SidebarSection head="Certifications">
-          <div className="text-[10px] text-[rgba(255,255,255,0.75)] mb-[4px]">
-            AWS Certified Developer
-          </div>
-          <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55] mb-[6px]">
-            Amazon Web Services · 2024
-          </div>
-          <div className="text-[10px] text-[rgba(255,255,255,0.75)] mb-[4px]">
-            Meta Frontend Developer
-          </div>
-          <div className="text-[10px] text-[rgba(255,255,255,0.5)] leading-[1.55]">
-            Coursera · 2023
-          </div>
-        </SidebarSection>
+        {certifications.length > 0 && (
+          <SidebarSection head="Certifications">
+            {certifications.map((cert, idx) => (
+              <div key={idx} className="mb-2 last:mb-0">
+                <div className="text-[10px] text-[rgba(255,255,255,0.75)] mb-[4px]">
+                  {cert.name}
+                </div>
+                {cert.issuer && (
+                  <div className="text-[9px] text-[rgba(255,255,255,0.5)] leading-[1.4] mb-[2px]">
+                    {cert.issuer}
+                  </div>
+                )}
+                <div className="text-[9px] text-[rgba(255,255,255,0.4)]">
+                  {cert.issueDate ? new Date(cert.issueDate).getFullYear() : ""}
+                </div>
+              </div>
+            ))}
+          </SidebarSection>
+        )}
       </aside>
 
       {/* ── MAIN ── */}
-      <main className="px-[36px] py-[40px] bg-white">
-        <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#c85a2a] mb-[12px]">
-          Full Stack Developer
-        </div>
+      <main className="px-[36px] py-[40px] bg-white text-left">
+        {personalInfo.title && (
+          <div className="text-[11px] font-bold tracking-[0.1em] uppercase text-[#c85a2a] mb-[12px]">
+            {personalInfo.title}
+          </div>
+        )}
 
-        <p className="text-[11px] text-[#444] leading-[1.65] pb-[18px] border-b border-[#f0ece5]">
-          Final-year B.Tech Computer Science student with hands-on experience in
-          React, Node.js, and cloud services. Built 3 full-stack applications
-          used by 500+ active users. Passionate about clean code and scalable
-          architecture that ships fast.
-        </p>
+        {personalInfo.summary && (
+          <p className="text-[11px] text-[#444] leading-[1.65] pb-[18px] border-b border-[#f0ece5]">
+            {personalInfo.summary}
+          </p>
+        )}
 
         {/* Experience */}
-        <MinimalSection head="Work Experience">
-          <MinimalExpItem
-            company="TechCorp Pvt. Ltd."
-            date="Jun 2024 – Present"
-            role="Software Engineering Intern · Bengaluru"
-            bullets={[
-              "Developed RESTful APIs using Node.js, reducing response time by 38%",
-              "Built React component library adopted across 5 internal products",
-              "Integrated CI/CD with GitHub Actions and AWS CodeDeploy cutting deploy time 60%",
-            ]}
-          />
-          <MinimalExpItem
-            company="StartupX Technologies"
-            date="Dec 2023 – May 2024"
-            role="Frontend Developer Intern · Remote"
-            bullets={[
-              "Rebuilt dashboard in React + TypeScript, improving load time by 52%",
-              "Implemented WebSocket notifications for 1,200+ concurrent users",
-              "Reduced bundle size by 40% through lazy loading and code splitting",
-            ]}
-          />
-        </MinimalSection>
+        {experiences.length > 0 && (
+          <MinimalSection head="Work Experience">
+            {experiences.map((exp, idx) => {
+              const startStr = exp.startDate ? new Date(exp.startDate).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "";
+              const endStr = exp.isCurrent ? "Present" : (exp.endDate ? new Date(exp.endDate).toLocaleDateString("en-US", { month: "short", year: "numeric" }) : "");
+              const dateStr = startStr && endStr ? `${startStr} – ${endStr}` : (startStr || endStr);
+              return (
+                <MinimalExpItem
+                  key={idx}
+                  company={exp.company}
+                  date={dateStr}
+                  role={exp.title + (exp.location ? ` · ${exp.location}` : "")}
+                  bullets={exp.bullets || []}
+                />
+              );
+            })}
+          </MinimalSection>
+        )}
 
         {/* Projects */}
-        <MinimalSection head="Projects">
-          <MinimalExpItem
-            company="Smart Resume Builder"
-            date="Final Year · 2025"
-            role="React · Node.js · Claude API · PostgreSQL"
-            bullets={[
-              "AI-powered resume builder with ATS scoring and Claude-powered feedback",
-              "Keyword analysis, section rewriting, job description matching features",
-              "PDF export, 3 templates, conversation history for continuous AI context",
-            ]}
-          />
-          <MinimalExpItem
-            company="E-Commerce Platform"
-            date="Personal · 2024"
-            role="Next.js · Stripe · MongoDB · Redis"
-            bullets={[
-              "Full-stack platform with real-time inventory and Stripe payment integration",
-              "Handled 500+ concurrent users with Redis caching and optimized queries",
-            ]}
-          />
-        </MinimalSection>
+        {projects.length > 0 && (
+          <MinimalSection head="Projects">
+            {projects.map((proj, idx) => {
+              const dateStr = proj.startDate ? new Date(proj.startDate).getFullYear().toString() : "";
+              return (
+                <MinimalExpItem
+                  key={idx}
+                  company={proj.name}
+                  date={dateStr}
+                  role={proj.tech ? proj.tech.join(" · ") : ""}
+                  bullets={proj.description ? [proj.description] : []}
+                />
+              );
+            })}
+          </MinimalSection>
+        )}
       </main>
     </div>
   );
@@ -157,7 +186,7 @@ export default function MinimalTemplate() {
 
 function SidebarSection({ head, children }) {
   return (
-    <div className="mb-[22px]">
+    <div className="mb-[22px] text-left">
       <div className="text-[8.5px] font-bold tracking-[0.14em] uppercase text-[#c85a2a] mb-[9px]">
         {head}
       </div>
@@ -167,7 +196,7 @@ function SidebarSection({ head, children }) {
 }
 function MinimalSection({ head, children }) {
   return (
-    <div className="mt-[18px]">
+    <div className="mt-[18px] text-left">
       <div className="text-[9px] font-bold tracking-[0.12em] uppercase text-[#1a1a1a] border-b-[1.5px] border-[#1a1a1a] pb-[4px] mb-[10px]">
         {head}
       </div>
@@ -177,13 +206,13 @@ function MinimalSection({ head, children }) {
 }
 function MinimalExpItem({ company, date, role, bullets }) {
   return (
-    <div className="mb-[12px]">
+    <div className="mb-[12px] text-left">
       <div className="flex justify-between items-baseline">
         <span className="text-[11.5px] font-semibold text-[#0f0e0d]">
           {company}
         </span>
 
-        <span className="font-['DM_Mono',monospace] text-[9.5px] text-[#999]">
+        <span className="font-['DM_Mono',monospace] text-[9.5px] text-[#999] whitespace-nowrap">
           {date}
         </span>
       </div>
@@ -192,15 +221,17 @@ function MinimalExpItem({ company, date, role, bullets }) {
         {role}
       </div>
 
-      <ul className="pl-[13px] mt-[4px] list-disc">
-        {bullets.map((b, i) => (
-          <li
-            key={i}
-            className="text-[10.5px] text-[#333] leading-[1.6] mb-[2px]">
-            {b}
-          </li>
-        ))}
-      </ul>
+      {bullets && bullets.length > 0 && (
+        <ul className="pl-[13px] mt-[4px] list-disc">
+          {bullets.map((b, i) => (
+            <li
+              key={i}
+              className="text-[10.5px] text-[#333] leading-[1.6] mb-[2px]">
+              {b}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

@@ -3,21 +3,31 @@ import FormField from "@/components/common/FormField";
 import { RiSparkling2Line, RiCheckLine } from "@remixicon/react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui";
-import { useDispatch } from "react-redux";
-import { updateForm } from "@/redux/resumes/resumeSlice";
-const ExperienceForm = ({ setActiveTab }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { addExperience, updateExperience, selectResumes } from "@/redux/resumes/resumeSlice";
+const ExperienceForm = ({ setActiveTab, editIndex, setEditIndex }) => {
+  const dispatch = useDispatch();
+  const experiences = useSelector(selectResumes)?.experiences || [];
+  const experienceData = editIndex !== null && editIndex !== undefined ? (experiences[editIndex] || {}) : {};
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    values: experienceData
+  });
 
   // Fix #4 — watch isCurrent to conditionally disable/require End Date
   const currentlyWorkHere = watch("currentlyWorkHere");
-  const dispatch = useDispatch();
   const onSubmit = (data) => {
-    dispatch(updateForm({ field: "experiences", data }));
+    if (editIndex !== null && editIndex !== undefined) {
+      dispatch(updateExperience({ index: editIndex, data }));
+    } else {
+      dispatch(addExperience(data));
+    }
+    setEditIndex?.(null);
     setActiveTab("list");
   };
 
@@ -136,6 +146,10 @@ const ExperienceForm = ({ setActiveTab }) => {
           type="button"
           variant="default"
           size="lg"
+          onClick={() => {
+            setEditIndex?.(null);
+            setActiveTab("list");
+          }}
           className=" border border-white/10 bg-white/5 hover:bg-white/10 text-white py-3! px-6! rounded-xl font-montserratMedium text-sm tracking-wide transition cursor-pointer">
           Cancel
         </Button>

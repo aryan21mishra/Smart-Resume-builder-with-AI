@@ -1,13 +1,23 @@
 import FormField from "@/components/common/FormField";
 import { Button } from "@/components/ui";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { updateForm } from "@/redux/resumes/resumeSlice";
+import { updateForm, selectResumes } from "@/redux/resumes/resumeSlice";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const EducationForm = () => {
   const [activeTab, setActiveTab] = useState("graduation");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const resume = useSelector(selectResumes);
+  const educationData =
+    resume?.education &&
+    typeof resume.education === "object" &&
+    !Array.isArray(resume.education)
+      ? resume.education
+      : {};
 
   const {
     register,
@@ -15,13 +25,15 @@ const EducationForm = () => {
     watch,
     trigger,
     formState: { errors },
-  } = useForm();
-  const dispatch = useDispatch();
+  } = useForm({
+    values: educationData
+  });
   // Fix #4 — watch isCurrent to conditionally disable/require End Date
   const isCurrent = watch("graduation.isCurrent");
 
   const onSubmit = (data) => {
     dispatch(updateForm({ field: "education", data }));
+    navigate("/dashboard/my-resumes/build-resume/projects");
   };
 
   // Fix #5 — validate current tab fields before moving to next

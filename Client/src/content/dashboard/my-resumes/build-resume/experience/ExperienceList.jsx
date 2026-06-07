@@ -1,49 +1,17 @@
+import { selectResumes, deleteExperience } from "@/redux/resumes/resumeSlice";
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui";
 
-const ExperienceList = ({ setActiveTab }) => {
-  const experiences = [
-    {
-      jobTitle: "Senior Software Engineer",
-      company: "Google",
-      location: "Bangalore, India",
-      jobType: "Full-time",
-      startDate: "Jan 2022",
-      endDate: "",
-      currentlyWorkHere: true,
-      description: `• Built scalable internal tools for cloud infrastructure
-• Improved frontend performance by 35%
-• Mentored junior developers and conducted code reviews`,
-    },
-
-    {
-      jobTitle: "Frontend Developer",
-      company: "Microsoft",
-      location: "Hyderabad, India",
-      jobType: "Full-time",
-      startDate: "Jun 2020",
-      endDate: "Dec 2021",
-      currentlyWorkHere: false,
-      description: `• Developed reusable React components
-• Collaborated with UI/UX team for dashboard redesign
-• Reduced API response handling time significantly`,
-    },
-
-    {
-      jobTitle: "Software Engineering Intern",
-      company: "Amazon",
-      location: "Remote",
-      jobType: "Internship",
-      startDate: "Jan 2020",
-      endDate: "May 2020",
-      currentlyWorkHere: false,
-      description: `• Built admin analytics dashboard
-• Wrote optimized backend APIs using Node.js
-• Participated in agile sprint planning`,
-    },
-  ];
+const ExperienceList = ({ setActiveTab, setEditIndex }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const experiences = useSelector(selectResumes)?.experiences;
+  console.log("experiences => ", experiences);
   return (
     <div className="flex flex-col gap-4 px-5">
-      {experiences.map((exp, index) => (
+      {experiences?.map((exp, index) => (
         <div
           key={index}
           className="bg-[#121212] border border-white/10 rounded-2xl p-5 flex flex-col gap-4">
@@ -67,11 +35,20 @@ const ExperienceList = ({ setActiveTab }) => {
 
             {/* Actions */}
             <div className="flex items-center gap-2">
-              <button className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-white transition" >
+              <button 
+                onClick={() => {
+                  setEditIndex(index);
+                  setActiveTab("addExperience");
+                }}
+                className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs text-white transition cursor-pointer">
                 Edit
               </button>
 
-              <button className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-xs text-red-400 transition">
+              <button 
+                onClick={() => {
+                  dispatch(deleteExperience(index));
+                }}
+                className="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-xs text-red-400 transition cursor-pointer">
                 Delete
               </button>
             </div>
@@ -91,10 +68,25 @@ const ExperienceList = ({ setActiveTab }) => {
         </div>
       ))}
 
-      {/* Add Button */}
-      <button className="w-full border border-dashed border-white/10 hover:border-[#e8b86d]/40 rounded-2xl py-4 text-sm text-white/60 hover:text-[#e8b86d] transition" onClick={()=>setActiveTab("addExperience")}>
-        + Add Experience
-      </button>
+      {/* Actions Segment */}
+      <div className="flex gap-4 items-center mt-6 pb-6">
+        <Button
+          variant="outline"
+          onClick={() => {
+            setEditIndex(null);
+            setActiveTab("addExperience");
+          }}
+          className="flex-1 border border-dashed border-white/10 hover:border-[#e8b86d]/40 hover:text-[#e8b86d] bg-transparent text-white/60 py-3! rounded-xl font-montserratMedium text-sm cursor-pointer transition">
+          + Add Experience
+        </Button>
+
+        <Button
+          variant="default"
+          onClick={() => navigate("/dashboard/my-resumes/build-resume/education")}
+          className="flex-1 bg-[#e8b86d] hover:bg-[#e8b86d]/90 text-black py-3! rounded-xl font-montserratBold text-sm tracking-wide cursor-pointer transition">
+          Save & Continue
+        </Button>
+      </div>
     </div>
   );
 };

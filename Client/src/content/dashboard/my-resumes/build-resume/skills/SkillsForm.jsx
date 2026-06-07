@@ -3,16 +3,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import FormField from "@/components/common/FormField";
 import { Button } from "@/components/ui";
-import { updateForm } from "@/redux/resumes/resumeSlice";
+import { updateForm, selectResumes } from "@/redux/resumes/resumeSlice";
+import { useNavigate } from "react-router-dom";
+
 const SkillsForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const resume = useSelector(selectResumes);
+  const skillsData = Array.isArray(resume?.skills) ? (resume?.skills[0] || {}) : (resume?.skills || {});
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    values: skillsData
+  });
+
   const onSubmit = (data) => {
     dispatch(updateForm({ field: "skills", data }));
+    navigate("/dashboard/my-resumes/build-resume/certifications");
   };
 
   return (

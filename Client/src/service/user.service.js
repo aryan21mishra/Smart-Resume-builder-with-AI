@@ -1,4 +1,4 @@
-const { default: api } = require("@/api/axios");
+import api from "@/api/axios";
 
 class User {
   constructor() {
@@ -6,31 +6,31 @@ class User {
   }
   async getProfile() {
     const response = await api.get(`${this.baseURL}/me`);
-    return response;
+    return response?.data;
   }
   async updateProfile(formData) {
     const response = await api.put(`${this.baseURL}/update-profile`, formData);
-    return response;
+    return response?.data;
   }
   async updateAvatar(formData) {
-    const response = await api.put(`${this.baseURL}/update-avatar`, formData);
-    return response;
+    const response = await api.patch(`${this.baseURL}/update-avatar`, formData);
+    return response?.data;
   }
-  async deleteAvatar() {
-    const response = await api.delete(`${this.baseURL}/delete-avatar`);
-    return response;
-  }
+  // async deleteAvatar() {
+  //   const response = await api.delete(`${this.baseURL}/delete-avatar`);
+  //   return response?.data;
+  // }
   async changePassword(formData) {
     const response = await api.put(`${this.baseURL}/change-password`, formData);
-    return response;
+    return response?.data;
   }
   async forgotPassword(formData) {
     const response = await api.post(
       `${this.baseURL}/forgot-password`,
       formData,
     );
-    return response;
+    return response?.data;
   }
 }
 
-export default new User();
+export const user = new User();
