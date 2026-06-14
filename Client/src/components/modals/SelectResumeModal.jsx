@@ -73,7 +73,6 @@ const SelectResumeModal = ({
       });
     }
   };
-
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -95,7 +94,6 @@ const SelectResumeModal = ({
             <label className="block text-[11px] font-medium uppercase tracking-wider text-zinc-400">
               Your Resume
             </label>
-
             <div className="min-h-[72px] bg-zinc-900/40 border border-zinc-800 rounded-xl p-3 flex flex-col justify-between transition-all">
               {selectedResume ? (
                 <div className="flex items-center justify-between w-full">
@@ -201,7 +199,6 @@ const SelectResumeModal = ({
               </div>
             )}
           </div>
-
           {/* Target Job Description Textarea */}
           <div className="space-y-2">
             <label className="block text-[11px] font-medium uppercase tracking-wider text-zinc-400">

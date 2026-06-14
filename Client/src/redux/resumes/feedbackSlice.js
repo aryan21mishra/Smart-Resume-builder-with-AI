@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 const initialState = {
   atsScore: null,
   jobMatchScore: null,
@@ -17,7 +16,6 @@ const initialState = {
   resumeUploadId: null,
   hasAnalyzed: false
 };
-
 const feedbackSlice = createSlice({
   name: "feedback",
   initialState,
@@ -34,9 +32,6 @@ const feedbackSlice = createSlice({
     }
   }
 });
-
 export const { setFeedback, clearFeedback } = feedbackSlice.actions;
-
 export const selectFeedback = (state) => state.feedback;
-
 export default feedbackSlice.reducer;

@@ -10,7 +10,6 @@ const PersonalInformationForm = () => {
   const navigate = useNavigate();
   const resume = useSelector(selectResumes);
   const personalInformation = resume?.personalInformation || {};
-
   const {
     register,
     handleSubmit,
@@ -49,7 +48,6 @@ const PersonalInformationForm = () => {
           {...register("headline")}
           errors={errors}
         />
-
         <FormField
           label="Phone"
           placeholder="+1 555 555 5555"
@@ -57,7 +55,6 @@ const PersonalInformationForm = () => {
           {...register("phone")}
           errors={errors}
         />
-
         <FormField
           label="Email"
           placeholder="[EMAIL_ADDRESS]"
@@ -88,7 +85,6 @@ const PersonalInformationForm = () => {
             errors={errors}
           />
         </div>
-
         <FormField
           label="Portfolio URL (Optional)"
           placeholder="https://portfolio.com"
@@ -96,7 +92,6 @@ const PersonalInformationForm = () => {
           {...register("portfolioUrl")}
           errors={errors}
         />
-
         <FormField
           label="LinkedIn URL (Optional)"
           placeholder="https://linkedin.com/in/..."

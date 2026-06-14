@@ -9,7 +9,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
   const dispatch = useDispatch();
   const certifications = useSelector(selectResumes)?.certifications || [];
   const certificationData = editIndex !== null && editIndex !== undefined ? (certifications[editIndex] || {}) : {};
-
   const {
     register,
     handleSubmit,
@@ -18,7 +17,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
   } = useForm({
     values: certificationData
   });
-
   const noExpiry = watch("noExpiry");
   const onSubmit = (data) => {
     if (editIndex !== null && editIndex !== undefined) {
@@ -29,7 +27,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
     setEditIndex?.(null);
     setActiveTab?.("list");
   };
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -46,7 +43,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           name="name"
         />
       </div>
-
       {/* Issuer */}
       <div className="relative">
         <FormField
@@ -57,7 +53,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           name="issuer"
         />
       </div>
-
       {/* Dates */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
@@ -67,7 +62,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           errors={errors}
           name="issueDate"
         />
-
         {!noExpiry && (
           <FormField
             label="Expiry Date"
@@ -78,7 +72,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           />
         )}
       </div>
-
       {/* No Expiry */}
       <div className="flex items-center gap-2 py-1">
         <input
@@ -87,14 +80,12 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           {...register("noExpiry")}
           className="w-4 h-4 rounded border-white/10 bg-[#121212] text-[#e8b86d] focus:ring-[#e8b86d]/50 focus:ring-1 focus:ring-offset-0 focus:outline-none"
         />
-
         <label
           htmlFor="noExpiry"
           className="text-xs text-white/80 font-montserratMedium cursor-pointer select-none">
           This certification does not expire
         </label>
       </div>
-
       {/* Credential ID */}
       <FormField
         label="Credential ID"
@@ -103,7 +94,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
         errors={errors}
         name="credentialId"
       />
-
       {/* URL */}
       <div className="relative">
         <FormField
@@ -114,7 +104,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           name="url"
         />
       </div>
-
       {/* Actions */}
       <div className="flex justify-end w-full gap-4 pt-2">
         <Button
@@ -124,7 +113,6 @@ const CertificationForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           className="flex justify-center items-center gap-2 py-3! px-6! rounded-xl font-montserratBold text-sm tracking-wide transition cursor-pointer">
           Save Certification
         </Button>
-
         <Button
           type="button"
           variant="default"

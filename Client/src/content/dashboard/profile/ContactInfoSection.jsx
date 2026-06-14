@@ -28,30 +28,6 @@ const ContactInfoSection = ({ register, errors }) => {
           })}
           errors={errors}
         />
-        <FormField
-          label="Phone Number"
-          name="phone"
-          type="tel"
-          placeholder="+1 (555) 000-0000"
-          {...register("phone")}
-          errors={errors}
-        />
-        <FormField
-          label="LinkedIn URL"
-          name="linkedin"
-          type="url"
-          placeholder="https://linkedin.com/in/username"
-          {...register("linkedin")}
-          errors={errors}
-        />
-        <FormField
-          label="GitHub URL"
-          name="github"
-          type="url"
-          placeholder="https://github.com/username"
-          {...register("github")}
-          errors={errors}
-        />
       </div>
     </div>
   );

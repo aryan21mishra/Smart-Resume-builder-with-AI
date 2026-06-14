@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 const initialState = {
   title: "",
   template: "",
@@ -78,7 +77,6 @@ const resumeSlice = createSlice({
     },
   },
 });
-
 export const {
   updateForm,
   addExperience,
@@ -94,5 +92,4 @@ export const {
   removeResumes,
 } = resumeSlice.actions;
 export const selectResumes = (state) => state.resume;
-
 export default resumeSlice.reducer;

@@ -4,7 +4,6 @@ import { selectFeedback } from "@/redux/resumes/feedbackSlice";
 
 const ScoreMetricSection = () => {
   const feedback = useSelector(selectFeedback);
-  
   const atsScore = feedback.atsScore !== null && feedback.atsScore !== undefined ? feedback.atsScore : 0;
   const jobMatchScore = feedback.jobMatchScore !== null && feedback.jobMatchScore !== undefined ? feedback.jobMatchScore : 0;
   const contentScore = feedback.contentScore !== null && feedback.contentScore !== undefined ? feedback.contentScore : 0;

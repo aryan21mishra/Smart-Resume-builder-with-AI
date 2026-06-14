@@ -1,5 +1,4 @@
 import api from "@/api/axios";
-
 class User {
   constructor() {
     this.baseURL = "/users";
@@ -16,10 +15,6 @@ class User {
     const response = await api.patch(`${this.baseURL}/update-avatar`, formData);
     return response?.data;
   }
-  // async deleteAvatar() {
-  //   const response = await api.delete(`${this.baseURL}/delete-avatar`);
-  //   return response?.data;
-  // }
   async changePassword(formData) {
     const response = await api.put(`${this.baseURL}/change-password`, formData);
     return response?.data;
@@ -32,5 +27,4 @@ class User {
     return response?.data;
   }
 }
-
 export const user = new User();

@@ -154,7 +154,6 @@ export default function ModernTemplate({ data }) {
           </p>
         </Section>
       )}
-
       {/* ── Experience ── */}
       {experiences.length > 0 && (
         <Section head="Work Experience">

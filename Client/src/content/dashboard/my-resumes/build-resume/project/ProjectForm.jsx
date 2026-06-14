@@ -29,7 +29,6 @@ const ProjectForm = ({ setActiveTab, editIndex, setEditIndex }) => {
     setEditIndex?.(null);
     setActiveTab?.("list");
   };
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -44,25 +43,21 @@ const ProjectForm = ({ setActiveTab, editIndex, setEditIndex }) => {
         errors={errors}
         name="name"
       />
-
       {/* Description */}
       <div className="flex flex-col gap-2">
         <label className="text-[11px] font-semibold tracking-[0.12em] uppercase text-zinc-500 font-montserratSemiBold">
           Description
         </label>
-
         <textarea
           rows={5}
           placeholder="Describe your project, achievements, features, impact..."
           className="w-full bg-[#121212] border border-white/10 text-white placeholder-white/20 rounded-xl p-4 focus:border-white focus:ring-0 focus:outline-none text-sm transition font-montserratRegular"
           {...register("description")}
         />
-
         <p className="text-[10px] text-white/40 leading-relaxed">
           💡 Highlight impact, technologies used, and what problem it solves.
         </p>
       </div>
-
       {/* URLs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="relative">
@@ -85,7 +80,6 @@ const ProjectForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           />
         </div>
       </div>
-
       {/* Tech Stack */}
       <FormField
         label="Tech Stack"
@@ -94,7 +88,6 @@ const ProjectForm = ({ setActiveTab, editIndex, setEditIndex }) => {
         errors={errors}
         name="tech"
       />
-
       {/* Dates */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormField
@@ -104,7 +97,6 @@ const ProjectForm = ({ setActiveTab, editIndex, setEditIndex }) => {
           errors={errors}
           name="startDate"
         />
-
         {!currentlyWorking && (
           <FormField
             label="End Date"

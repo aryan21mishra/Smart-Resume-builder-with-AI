@@ -18,7 +18,6 @@ const Settings = () => {
 
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-zinc-50 p-6 lg:p-12 antialiased selection:bg-white selection:text-black">
-      {/* ================= PAGE CONTROL HEADER ================= */}
       <header className="max-w-4xl mx-auto mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-900 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">

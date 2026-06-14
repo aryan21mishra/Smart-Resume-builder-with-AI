@@ -27,14 +27,11 @@ const otpSchema = Schema(
   },
   { timestamps: true },
 );
-
 otpSchema.pre("save", async function () {
   if (!this.isModified("otp")) return;
   this.otp = await bcrypt.hash(this.otp, 10);
 });
-
 otpSchema.methods.comparedOTP = async function (otp) {
   return await bcrypt.compare(otp, this.otp);
 };
-
 export const OTP = mongoose.model("OTP", otpSchema);

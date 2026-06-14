@@ -1,4 +1,5 @@
 import cloudinary from "../config/cloudinary.js";
+import fs from "fs";
 
 export async function uploadCloud({ localFilePath }) {
   try {
@@ -15,7 +16,7 @@ export async function uploadCloud({ localFilePath }) {
 
     return response;
   } catch (error) {
-    fs.unlinkSync(localFilePath); // remove the locally saved temporary file as the upload operation got failed
+    fs.unlinkSync(localFilePath);
     return null;
   }
 }

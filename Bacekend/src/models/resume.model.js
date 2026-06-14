@@ -15,7 +15,6 @@ const personalInfoSchema = new Schema(
   },
   { _id: false },
 );
-
 const experienceSchema = new Schema(
   {
     company: { type: String, required: true, trim: true },
@@ -29,7 +28,6 @@ const experienceSchema = new Schema(
   },
   { _id: true, timestamps: false },
 );
-
 const educationSchema = new Schema(
   {
     institution: { type: String, required: true, trim: true },
@@ -42,7 +40,6 @@ const educationSchema = new Schema(
   },
   { _id: true, timestamps: false },
 );
-
 const projectSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -55,7 +52,6 @@ const projectSchema = new Schema(
   },
   { _id: true, timestamps: false },
 );
-
 const certificationSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
@@ -67,7 +63,6 @@ const certificationSchema = new Schema(
   },
   { _id: true, timestamps: false },
 );
-
 const skillsSchema = new Schema(
   {
     technical: [{ type: String }],
@@ -77,7 +72,6 @@ const skillsSchema = new Schema(
   },
   { _id: true },
 );
-
 const resumeSchema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -110,7 +104,5 @@ const resumeSchema = new Schema(
   },
   { timestamps: true },
 );
-
 resumeSchema.plugin(mongooseAggregatePaginate);
-
 export const Resume = mongoose.model("Resume", resumeSchema);

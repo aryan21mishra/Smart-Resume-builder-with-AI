@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-
 const messageSchema = new Schema({
   role: {
     type: String,
@@ -15,5 +14,4 @@ const messageSchema = new Schema({
     ref: "Conservation",
   },
 });
-
 export const Message = mongoose.model("Message", messageSchema);

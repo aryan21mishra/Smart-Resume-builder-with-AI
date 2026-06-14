@@ -27,6 +27,7 @@ export const updateUserTokens = async (
 };
 
 export const updateUser = async (userId, fieldsToUpdate) => {
+  console.log(fieldsToUpdate);
   return await User.findByIdAndUpdate(
     userId,
     { $set: fieldsToUpdate },

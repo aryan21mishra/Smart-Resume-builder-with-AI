@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 const initialState = {
   authenticate: false,
 };
@@ -15,9 +14,6 @@ const authSlice = createSlice({
     },
   },
 });
-
 export const selectAuth = (state) => state.auth.authenticate;
-
 export const { addAuth, removeAuth } = authSlice.actions;
-
 export default authSlice.reducer;

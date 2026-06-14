@@ -10,9 +10,33 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui";
 import { useDispatch } from "react-redux";
 import { updateForm } from "@/redux/resumes/resumeSlice";
-
+const templatesList = [
+  {
+    id: "classic",
+    title: "Classic Template",
+    description:
+      "Traditional, elegant serif typography tailored for banking, legal, corporate positions, and rigorous academic tracks.",
+    tags: ["Serif Font", "High Density", "Academic / Corporate"],
+    difficulty: "ATS Safe",
+  },
+  {
+    id: "modern",
+    title: "Modern Template",
+    description:
+      "Clean sans-serif system with explicit structural balance, designed to excel in engineering, product management, and high-tech corporate roles.",
+    tags: ["Sans-Serif", "Balanced Spacing", "SDE / Tech Product"],
+    difficulty: "Highly Recommended",
+  },
+  {
+    id: "minimal",
+    title: "Minimal Template",
+    description:
+      "Stark, spacious layout format focusing purely on whitespace and bold typographic weight hierarchy for design and data science paths.",
+    tags: ["Monochrome", "High Whitespace", "Creative / Analytics"],
+    difficulty: "ATS Optimized",
+  },
+];
 const ResumeTemplates = () => {
-  // Local state tracking which template layout structure is actively selected
   const [selectedTemplate, setSelectedTemplate] = useState("classic");
 
   const navigate = useNavigate();
@@ -23,36 +47,8 @@ const ResumeTemplates = () => {
     navigate("/dashboard/my-resumes/build-resume/personal-information");
   };
 
-  const templatesList = [
-    {
-      id: "classic",
-      title: "Classic Template",
-      description:
-        "Traditional, elegant serif typography tailored for banking, legal, corporate positions, and rigorous academic tracks.",
-      tags: ["Serif Font", "High Density", "Academic / Corporate"],
-      difficulty: "ATS Safe",
-    },
-    {
-      id: "modern",
-      title: "Modern Template",
-      description:
-        "Clean sans-serif system with explicit structural balance, designed to excel in engineering, product management, and high-tech corporate roles.",
-      tags: ["Sans-Serif", "Balanced Spacing", "SDE / Tech Product"],
-      difficulty: "Highly Recommended",
-    },
-    {
-      id: "minimal",
-      title: "Minimal Template",
-      description:
-        "Stark, spacious layout format focusing purely on whitespace and bold typographic weight hierarchy for design and data science paths.",
-      tags: ["Monochrome", "High Whitespace", "Creative / Analytics"],
-      difficulty: "ATS Optimized",
-    },
-  ];
-
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-zinc-50 p-6 lg:p-12 antialiased selection:bg-white selection:text-black">
-      {/* ====== HEADER CONTROL PANEL ====== */}
       <header className="max-w-6xl mx-auto mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-900 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">

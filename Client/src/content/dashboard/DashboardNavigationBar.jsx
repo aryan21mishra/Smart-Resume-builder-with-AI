@@ -11,68 +11,65 @@ import {
   RiSettings5Line,
 } from "@remixicon/react";
 import TemplateSVG from "../../assets/svg/TemplateSVG";
+const mainMenu = [
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    icon: RiDashboardLine,
+    to: "/dashboard",
+  },
+  {
+    id: "my-resumes",
+    label: "My Resumes",
+    icon: RiFileList2Line,
+    to: "/dashboard/my-resumes",
+  },
+  {
+    id: "ai-feedback",
+    label: "AI Feedback",
+    icon: RiStarLine,
+    to: "/dashboard/ai-feedback",
+  },
+];
 
+const tools = [
+  {
+    id: "templates",
+    label: "Templates",
+    icon: TemplateSVG,
+    to: "/dashboard/templates",
+  },
+  {
+    id: "keywords",
+    label: "Keywords",
+    icon: RiMenuSearchLine,
+    to: "/dashboard/keywords",
+  },
+  {
+    id: "rewrite",
+    label: "Rewriter",
+    icon: RiPencilLine,
+    to: "/dashboard/rewrite",
+  },
+];
+
+const account = [
+  {
+    id: "profile",
+    label: "Profile",
+    icon: RiUserLine,
+    to: "/dashboard/profile",
+  },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: RiSettings5Line,
+    to: "/dashboard/settings",
+  },
+];
 const DashboardNavigationBar = () => {
-  const mainMenu = [
-    {
-      id: "dashboard",
-      label: "Dashboard",
-      icon: RiDashboardLine,
-      to: "/dashboard",
-    },
-    {
-      id: "my-resumes",
-      label: "My Resumes",
-      icon: RiFileList2Line,
-      to: "/dashboard/my-resumes",
-    },
-    {
-      id: "ai-feedback",
-      label: "AI Feedback",
-      icon: RiStarLine,
-      to: "/dashboard/ai-feedback",
-    },
-  ];
-
-  const tools = [
-    {
-      id: "templates",
-      label: "Templates",
-      icon: TemplateSVG,
-      to: "/dashboard/templates",
-    },
-    {
-      id: "keywords",
-      label: "Keywords",
-      icon: RiMenuSearchLine,
-      to: "/dashboard/keywords",
-    },
-    {
-      id: "rewrite",
-      label: "Rewriter",
-      icon: RiPencilLine,
-      to: "/dashboard/rewrite",
-    },
-  ];
-
-  const account = [
-    {
-      id: "profile",
-      label: "Profile",
-      icon: RiUserLine,
-      to: "/dashboard/profile",
-    },
-    {
-      id: "settings",
-      label: "Settings",
-      icon: RiSettings5Line,
-      to: "/dashboard/settings",
-    },
-  ];
-
   return (
     <aside className="w-full max-w-[240px] h-screen bg-zinc-950 border-r border-zinc-900 flex flex-col justify-between text-zinc-400 selection:bg-white selection:text-black antialiased">
-      {/* ================= BRAND CONTAINER ================= */}
       <div className="p-5 border-b border-zinc-900 flex items-center gap-2.5">
         <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center text-black">
           <RiAiGenerate size={16} className="stroke-[2]" />
@@ -81,8 +78,6 @@ const DashboardNavigationBar = () => {
           Resume.AI
         </span>
       </div>
-
-      {/* ================= SCROLLABLE NAV WRAPPER ================= */}
       <nav className="flex-1 overflow-y-auto px-3 py-6 space-y-7 scrollbar-none">
         {/* Section: Main Menu */}
         <div className="space-y-1">
@@ -192,8 +187,6 @@ const DashboardNavigationBar = () => {
           })}
         </div>
       </nav>
-
-      {/* ================= ACCOUNT FOOTER PROFILES ================= */}
       <footer className="p-4 border-t border-zinc-900 bg-zinc-950 flex items-center gap-3">
         <div className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono text-xs font-bold text-white select-none">
           AM

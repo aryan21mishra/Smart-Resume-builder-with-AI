@@ -9,8 +9,5 @@ export function useSigninFirebaseMutation() {
       console.log(data.token);
       mutate({ token: data.token });
     },
-    onError: (error) => {
-      console.log(error);
-    },
   });
 }

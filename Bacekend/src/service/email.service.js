@@ -1,43 +1,20 @@
-import { createTransport, getTestMessageUrl } from "nodemailer";
-
-export const transporter = createTransport({
-  service: "gmail",
-  auth: {
-    type: "OAuth2",
-    user: process.env.EMAIL_USER,
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    refreshToken: process.env.REFRESH_TOKEN,
-    accessToken: process.env.ACCESS_TOKEN,
-  },
-});
-
-// Verify the connection configuration
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("Error connecting to email server:", error);
-  } else {
-    console.log("Email server is ready to send messages");
-  }
-});
+import { resend } from "../config/resend.confing.js";
 
 // Function to send email
 const sendEmail = async (to, subject, text, html) => {
-  try {
-    const info = await transporter.sendMail({
-      from: `"Ai Resume" <${process.env.EMAIL_USER}>`,
-      to,
-      subject,
-      text,
-      html,
-    });
+  const { data, error } = await resend.emails.send({
+    from: `Ai Resume <${process.env.EMAIL_USER}>`,
+    to,
+    subject,
+    text,
+    html,
+  });
 
-    console.log("Message sent: %s", info.messageId);
-    return info; // ✅ return on success
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw error; // ✅ re-throw so caller knows it failed
+  if (error) {
+    return console.error("email send error", error);
   }
+  return data
+
 };
 
 export async function sendRegistrationEmail(username, email) {

@@ -13,7 +13,8 @@ const userSchema = new Schema(
       trim: true,
     },
     passwordHash: { type: String, select: false, default: null },
-    avatar: { type: String },
+    avatar: { type: String, default: null },
+    avatarPublicId: { type: String, trim: true, default: null },
     provider: { type: String, enum: ["google", "email"], default: "email" },
     googleId: { type: String, select: false, default: null },
     refreshToken: {
@@ -68,8 +69,4 @@ userSchema.methods.generateRefreshToken = function () {
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY },
   );
 };
-
-// userSchema.index({ aemail: 1 });
-// userSchema.index({ "oauth.google.id": 1 });
-// userSchema.index({ "oauth.github.id": 1 });
 export const User = mongoose.model("User", userSchema);

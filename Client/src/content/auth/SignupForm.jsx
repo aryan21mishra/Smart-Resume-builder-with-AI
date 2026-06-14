@@ -6,6 +6,8 @@ import Logo from "../../components/common/logo";
 import { useRegisterMutation } from "@/hooks/mutations/useAuthMutations";
 import { useSigninFirebaseMutation } from "@/hooks/mutations/useFirebaseAuthMutations";
 import { Link } from "react-router-dom";
+
+
 const SignupForm = () => {
   const {
     register,
@@ -151,5 +153,4 @@ const SignupForm = () => {
     </div>
   );
 };
-
 export default SignupForm;

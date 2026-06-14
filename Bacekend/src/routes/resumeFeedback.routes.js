@@ -10,10 +10,10 @@ const resumeFeedbackRouter = Router();
 
 resumeFeedbackRouter
   .route("/analyze")
-  .post(fileUpload.single("resume"), verifyUser, analyzeResumeByText);
+  .post(verifyUser, fileUpload.single("resume"), analyzeResumeByText);
 resumeFeedbackRouter
   .route("/job-match")
-  .post(fileUpload.single("resume"), verifyUser, jobMatch);
-resumeFeedbackRouter.route("/rewrite").post(verifyUser, rewriteSection);
+  .post(verifyUser, fileUpload.single("resume"), jobMatch);
+
 
 export default resumeFeedbackRouter;

@@ -15,35 +15,35 @@ import { createFeedBack } from "../service/feedback.db.service.js";
 import { ResumeUpload } from "../models/resume-upload.model.js";
 
 export const analyzeResumeByText = asyncHandler(async (req, res) => {
-  const { resumeId, resumeText, jobDescription } = req.body;
-  const userId = req.user;
+  const { resumeId, jobDescription } = req.body;
+  const userId = req.user?._id;
   const file = req.file;
 
-  //pdf structure text from ai
+  //pdf text
   let structuredText;
 
   //save file in db
   let saveFile;
-
   if (file) {
-    //upload on cloudinary
-    const uploadResult = await uploadCloud(file.path, "resumes");
-
     //extract pdf to text
     const resumePdfText = await pdfExtractor(file.path);
+    //upload on cloudinary
+    const uploadResult = await uploadCloud({ localFilePath: file.path });
 
     //structure the extracted text
     //Prompt for structure the extracted text
     const userPrompt = userPrompts.parseResumePrompt(resumePdfText);
     //call ai for structure the extracted text
-    structuredText = await getStructureTextFromPdf(userPrompt);
+
+    const { rawText, parsedText } = await getStructureTextFromPdf(userPrompt);
+    structuredText = parsedText;
 
     //save the uploaded file
     saveFile = await ResumeUpload.create({
-      title: uploadResult.originalName,
-      url: uploadResult.url,
-      publicId: uploadResult.publicId,
-      rawText: resumePdfText,
+      title: uploadResult.original_filename,
+      url: uploadResult.secure_url,
+      publicId: uploadResult.public_id,
+      rawText,
       userId,
     });
 
@@ -54,6 +54,7 @@ export const analyzeResumeByText = asyncHandler(async (req, res) => {
       );
     }
   }
+
   //create conservation
   const conservation = await createConservation(userId);
   if (!conservation) {
@@ -64,8 +65,8 @@ export const analyzeResumeByText = asyncHandler(async (req, res) => {
   }
 
   //Prompt for check ats score of the resume
-  const userPrompt = analyzeUserResumePrompt(
-    resumeText || structuredText?.parsedText,
+  const userPrompt = userPrompts.analyzeUserResumePrompt(
+    structuredText,
     jobDescription,
   );
 
@@ -76,8 +77,6 @@ export const analyzeResumeByText = asyncHandler(async (req, res) => {
       content: userPrompt,
     },
   ]);
-
-  console.log("parsedText", parsedText);
 
   if (!rawText || !parsedText) {
     throw new ApiError(500, "AI service unavailable!");
@@ -158,14 +157,15 @@ export const jobMatch = asyncHandler(async (req, res) => {
     //Prompt for structure the extracted text
     const userPrompt = userPrompts.parseResumePrompt(resumePdfText);
     //call ai for structure the extracted text
-    structuredText = await getStructureTextFromPdf(userPrompt);
+    const { rawText, parsedText } = await getStructureTextFromPdf(userPrompt);
+    structuredText = parsedText;
 
     //save the uploaded file
     saveFile = await ResumeUpload.create({
       title: uploadResult.originalName,
       url: uploadResult.url,
       publicId: uploadResult.publicId,
-      rawText: resumePdfText,
+      rawText,
       userId,
     });
 
@@ -182,7 +182,7 @@ export const jobMatch = asyncHandler(async (req, res) => {
   }
 
   const pastMessages = await findMessages(conservationId);
-  const jobMatchPrompt = jobMatchPrompt(
+  const jobMatchPrompt = userPrompts.jobMatchPrompt(
     resumeText || structuredText?.parsedText,
     jobDescription,
   );
@@ -259,7 +259,7 @@ export const rewriteSection = asyncHandler(async (req, res) => {
     conservationId = await createConservation(resumeId, userId)._id;
   }
   const pastMessages = await findMessages(conservationId);
-  const rewriteSectionPrompt = rewriteSectionPrompt(
+  const rewriteSectionPrompt = userPrompts.rewriteSectionPrompt(
     section,
     currentContent,
     instruction,

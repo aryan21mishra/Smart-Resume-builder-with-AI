@@ -3,6 +3,7 @@ import { ApiResponse } from "../lib/apiResponse.js";
 import { asyncHandler } from "../lib/asyncHandler.js";
 import {
   createResumeForUser,
+  findAllResumesByUserId,
   findByIdAndUpdate,
   findResumeById,
 } from "../service/resume.db.service.js";
@@ -133,6 +134,7 @@ export const getAllResumes = asyncHandler(async (req, res) => {
   const userId = req.user._id;
   console.log(userId);
   const allResumes = await findAllResumesByUserId(userId);
+  console.log(allResumes)
   if (!allResumes) {
     throw new ApiError(404, "Resumes not found!");
   }

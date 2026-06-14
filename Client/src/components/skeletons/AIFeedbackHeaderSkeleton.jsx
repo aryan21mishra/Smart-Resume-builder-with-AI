@@ -1,6 +1,5 @@
 import React from "react";
 import { Skeleton } from "../ui/skeleton";
-
 const AIFeedbackHeaderSkeleton = () => {
   return (
     <>
@@ -36,6 +35,5 @@ const AIFeedbackHeaderSkeleton = () => {
       </button>
     </>
   );
-};
-
+}
 export default AIFeedbackHeaderSkeleton;

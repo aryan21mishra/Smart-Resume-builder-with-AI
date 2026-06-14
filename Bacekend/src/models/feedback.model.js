@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-
 const sectionFeedbackSchema = new Schema(
   {
     summary: { type: String },
@@ -19,7 +18,6 @@ const improvementsSchema = new Schema(
   },
   { _id: true, timestamps: false },
 );
-
 const feedbackSchema = new Schema(
   {
     resumeId: { type: Schema.Types.ObjectId, ref: "Resume", default: null },
@@ -45,7 +43,7 @@ const feedbackSchema = new Schema(
       type: [String],
       default: [],
     },
-    strength: {
+    strengths: {
       type: [String],
       default: [],
     },
@@ -60,5 +58,4 @@ const feedbackSchema = new Schema(
   },
   { timestamps: true },
 );
-
 export const FeedBack = mongoose.model("Feedback", feedbackSchema);

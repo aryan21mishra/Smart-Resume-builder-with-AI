@@ -255,25 +255,17 @@ export default function SingleResume() {
   const { id: resumeId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const reduxResume = useSelector(selectResumes);
-
   const [resumeData, setResumeData] = useState(null);
   const [selectedTemplate, setSelectedTemplate] = useState("modern");
   const [isPreviewMode, setIsPreviewMode] = useState(false);
-
-  // ====== API STATE HOOKS ======
   const { data: apiResponse, isLoading: isApiLoading, error: apiError } = useGetResumeByIdQuery(
     resumeId !== "preview" ? resumeId : null,
     { enabled: resumeId !== "preview" }
   );
-
   const { mutate: createResume, isPending: isCreating } = useCreateResumeMutation();
   const { mutate: updateResume, isPending: isUpdating } = useUpdateResumeByIdMutation();
-  
   const isSaving = isCreating || isUpdating;
-
-  // Extract raw details dynamically with safety fallbacks
   const getExtractedResume = () => {
     return apiResponse?.data?.data?.existingResume || apiResponse?.data?.existingResume || apiResponse;
   };
@@ -345,32 +337,20 @@ export default function SingleResume() {
       const extracted = getExtractedResume();
       sourceData = mapBackendToFrontend(extracted);
     }
-
-    // Helper to find the first incomplete/empty section path
     const getFirstIncompleteSectionPath = (resume) => {
       if (!resume) return "/dashboard/my-resumes/build-resume/personal-information";
-
-      // 1. Personal Information
       if (!resume.personalInformation?.firstName) {
         return "/dashboard/my-resumes/build-resume/personal-information";
       }
-
-      // 2. Experience
       if (!resume.experiences || resume.experiences.length === 0) {
         return "/dashboard/my-resumes/build-resume/experience";
       }
-
-      // 3. Education
       if (!resume.education?.graduation?.institution) {
         return "/dashboard/my-resumes/build-resume/education";
       }
-
-      // 4. Projects
       if (!resume.projects || resume.projects.length === 0) {
         return "/dashboard/my-resumes/build-resume/projects";
       }
-
-      // 5. Skills
       let hasSkills = false;
       const sks = resume.skills;
       if (Array.isArray(sks) && sks.length > 0) {
@@ -381,18 +361,12 @@ export default function SingleResume() {
       if (!hasSkills) {
         return "/dashboard/my-resumes/build-resume/skills";
       }
-
-      // 6. Certifications
       if (!resume.certifications || resume.certifications.length === 0) {
         return "/dashboard/my-resumes/build-resume/certifications";
       }
-
-      // Fallback
       return "/dashboard/my-resumes/build-resume/personal-information";
     };
-
     const targetPath = getFirstIncompleteSectionPath(sourceData);
-
     dispatch(setResume(sourceData));
     navigate(targetPath);
   };
@@ -400,7 +374,6 @@ export default function SingleResume() {
   const handleDownload = () => {
     window.print();
   };
-
   const handleBack = () => {
     if (resumeId === "preview") {
       navigate("/dashboard/my-resumes/build-resume/personal-information");
@@ -408,16 +381,12 @@ export default function SingleResume() {
       navigate("/dashboard/my-resumes");
     }
   };
-
-  // Map template IDs to template layout components
   const templateComponents = {
     classic: ClassicTemplate,
     modern: ModernTemplate,
     minimal: MinimalTemplate,
   };
-
   const ActiveTemplate = templateComponents[selectedTemplate.toLowerCase()] || ModernTemplate;
-
   const isLoading = resumeId !== "preview" && isApiLoading;
   const error = resumeId !== "preview" ? apiError : null;
 
@@ -487,10 +456,7 @@ export default function SingleResume() {
 
       {/* ====== MAIN WORKSPACE ====== */}
       <main className="flex-1 flex overflow-hidden h-[calc(100vh-64px)]">
-        {/* CONDITION 1: LOADING STATE */}
         {isLoading && <SingleResumeSkeleton />}
-
-        {/* CONDITION 2: ERROR STATE */}
         {!isLoading && error && (
           <div className="flex-1 flex items-center justify-center p-6 no-print">
             <div className="text-center max-w-sm border border-zinc-900 bg-zinc-900/20 p-8 rounded-2xl">
@@ -506,11 +472,8 @@ export default function SingleResume() {
             </div>
           </div>
         )}
-
-        {/* CONDITION 3: DATA RENDER (SPLIT SCREEN WORKSPACE) */}
         {!isLoading && !error && resumeData && (
           <>
-            {/* Control Panel (Left Side Layout Switcher) */}
             <div
               className={`w-80 border-r border-zinc-900 bg-zinc-950 p-6 flex flex-col gap-6 overflow-y-auto no-print ${isPreviewMode ? "hidden lg:flex opacity-40 pointer-events-none" : "flex"}`}>
               <div>
@@ -537,9 +500,7 @@ export default function SingleResume() {
                   })}
                 </div>
               </div>
-
               <hr className="border-zinc-900" />
-
               <div>
                 <h3 className="text-xs font-mono tracking-wider text-zinc-500 uppercase mb-2">
                   Metadata Info
@@ -558,8 +519,6 @@ export default function SingleResume() {
                 </div>
               </div>
             </div>
-
-            {/* Document Render Viewport (Right Side) */}
             <div className="flex-1 bg-zinc-900/30 p-4 md:p-8 overflow-y-auto flex justify-center items-start print:p-0 print:bg-white print:overflow-visible print:h-auto">
               <div className="w-full max-w-[816px] shadow-2xl rounded-sm transition-transform duration-300 transform origin-top hover:scale-[1.005] print:shadow-none print:transform-none print:max-w-none print:p-0">
                 <ActiveTemplate data={resumeData} />

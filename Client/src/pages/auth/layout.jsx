@@ -10,11 +10,7 @@ import { Sparkles, Check } from "lucide-react";
 const AuthLayout = () => {
   return (
     <div className="w-full h-screen bg-[#040406] overflow-hidden font-sans flex items-center justify-center relative select-none">
-      
-      {/* Container Wrapper to isolate flex zones */}
       <div className="w-full h-full flex relative z-10">
-        
-        {/* Left Side: Branding & Visuals (Hidden on mobile) */}
         <div className="hidden md:flex md:w-3/5 h-full relative flex-col justify-between p-8 lg:p-12 border-r border-zinc-900 bg-[#050508]/40">
           
           {/* Premium Background Grid Pattern */}
@@ -29,8 +25,6 @@ const AuthLayout = () => {
           <div className="z-10 w-full">
             <Logo />
           </div>
-
-          {/* Hero Context Panel (Glassmorphic Container) */}
           <div className="my-auto my-10 lg:my-16 z-10 max-w-xl bg-white/[0.02] border border-white/5 backdrop-blur-md rounded-2xl p-8 lg:p-10 shadow-2xl shadow-violet-950/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-[150px] h-[150px] bg-violet-600/5 blur-[50px] rounded-full pointer-events-none"></div>
 
@@ -102,14 +96,8 @@ const AuthLayout = () => {
             &copy; {new Date().getFullYear()} ResumeAI. Structured for recruiters.
           </div>
         </div>
-
-        {/* Right Side: Authentication Forms (Form Canvas) */}
         <div className="w-full md:w-2/5 h-full bg-[#050507] flex flex-col justify-center items-center px-6 sm:px-12 lg:px-16 relative">
-          
-          {/* Spotlight Glow behind the forms */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-violet-600/5 blur-[90px] rounded-full pointer-events-none z-0"></div>
-
-          {/* Tiny structural logo adjustment for mobile viewports only */}
           <div className="absolute top-6 left-6 md:hidden z-20">
             <Logo />
           </div>

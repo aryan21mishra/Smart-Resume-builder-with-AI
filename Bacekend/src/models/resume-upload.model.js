@@ -1,6 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-
-
 const resumeUploadSchema = new Schema(
     {
         title: {
@@ -29,5 +27,4 @@ const resumeUploadSchema = new Schema(
     },
     {timestamps:true}
 )
-
 export const ResumeUpload = mongoose.model("ResumeUpload", resumeUploadSchema);

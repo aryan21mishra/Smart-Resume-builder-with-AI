@@ -1,6 +1,5 @@
 import React from "react";
 import { Skeleton } from "../ui/skeleton";
-
 const RequiredImprovementsSectionSkeleton = () => {
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">

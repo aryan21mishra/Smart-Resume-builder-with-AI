@@ -15,26 +15,19 @@ function Profile() {
   const userInfo = useSelector(selectUser);
   const dispatch = useDispatch();
   const [selectedImage, setSelectedImage] = useState(userInfo?.avatar);
-
-  // profile query called at top level
   const { data: userData } = useGetProfile();
   const { mutate: updateProfileMutation, isPending } = useUpdateProfile();
-
-  // Sync profile data to Redux when query resolves
   useEffect(() => {
     if (userData) {
-      dispatch(addUserInfo(userData));
+      dispatch(addUserInfo(userData?.data?.user));
     }
   }, [userData, dispatch]);
 
-  // Sync selectedImage if userInfo avatar updates
   useEffect(() => {
     if (userInfo?.avatar) {
       setSelectedImage(userInfo.avatar);
     }
   }, [userInfo?.avatar]);
-
-  // Setup react-hook-form with default values tracking userInfo
   const {
     register,
     handleSubmit,

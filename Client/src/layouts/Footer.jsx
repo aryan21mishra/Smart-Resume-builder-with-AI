@@ -21,17 +21,6 @@ const Footer = () => {
               feedback. Enhance your career options and land your dream tech
               interview.
             </p>
-            {/* <div className="flex gap-4 pt-2">
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-850 flex items-center justify-center text-zinc-500 hover:text-white hover:border-zinc-700 transition">
-                <Github size={16} />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-850 flex items-center justify-center text-zinc-500 hover:text-white hover:border-zinc-700 transition">
-                <Linkedin size={16} />
-              </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-850 flex items-center justify-center text-zinc-500 hover:text-white hover:border-zinc-700 transition">
-                <Twitter size={16} />
-              </a>
-            </div> */}
           </div>
 
           {/* Product Links */}

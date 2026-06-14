@@ -341,8 +341,6 @@ const EducationForm = () => {
                   name="higher.cgpa"
                 />
               </div>
-
-              {/* Fix #3 — Previous + Save All moved inside "high" TabsContent only */}
               <div className="flex justify-end gap-4">
                 <Button
                   type="button"

@@ -7,7 +7,6 @@ const storage = diskStorage({
     cb(null, file.originalname);
   },
 });
-
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype === "image/jpeg" ||
@@ -21,7 +20,6 @@ const fileFilter = (req, file, cb) => {
     cb(new Error("File must be an image or PDF"), false);
   }
 };
-
 const fileUpload = multer({
   storage: storage,
   fileFilter: fileFilter,

@@ -1,5 +1,4 @@
 import mongoose, { Schema } from "mongoose";
-
 const conservationSchema = new Schema(
   {
     resumeId: {
@@ -16,8 +15,6 @@ const conservationSchema = new Schema(
       default: "Resume Analysis",
     },
   },
-
   { timestamps: true },
 );
-
 export const Conservation = mongoose.model("Conservation", conservationSchema);

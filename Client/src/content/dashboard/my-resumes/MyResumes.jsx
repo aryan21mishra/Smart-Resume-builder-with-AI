@@ -17,17 +17,13 @@ import { AllResumeSkeleton } from "@/components/skeletons";
 
 const MyResumes = () => {
   const navigate = useNavigate();
-
   const resumeCreateHandler = () => {
     navigate("/dashboard/templates");
   };
-
   const { data: allResumes, isLoading } = useGetAllResumeQuery();
-  console.log(allResumes);
 
   return (
     <div className="p-6 lg:p-12 w-full min-h-screen bg-zinc-950 text-zinc-50 antialiased selection:bg-white selection:text-black">
-      {/* ====== HEADER SEGMENT ====== */}
       <div className="mb-12 max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-zinc-900 pb-8">
         <div className="max-w-xl">
           <h1 className="font-montserratBold text-transparent bg-clip-text bg-gradient-to-r from-white via-zinc-200 to-zinc-500 text-3xl lg:text-4xl tracking-tight mb-2">
@@ -38,8 +34,6 @@ const MyResumes = () => {
             Optimize your profile presentation for high-impact applications.
           </p>
         </div>
-
-        {/* Top-Right Action Button */}
         <Button
           variant="default"
           size="lg"
@@ -53,8 +47,6 @@ const MyResumes = () => {
           Create From Scratch
         </Button>
       </div>
-
-      {/* ====== MAIN CONTENT SECTION ====== */}
       <div className="max-w-6xl mx-auto">
         {isLoading ? (
           <AllResumeSkeleton />

@@ -25,7 +25,6 @@ const ProjectList = ({ setActiveTab, setEditIndex }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const projects = useSelector(selectResumes)?.projects || [];
-
   return (
     <div className="flex flex-col gap-5 px-5 py-4">
       {/* Header */}

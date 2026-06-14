@@ -7,47 +7,43 @@ import {
   RiSparklingLine,
   RiErrorWarningLine,
 } from "@remixicon/react";
-
+const resumeDummy = {
+  title: "Software_Engineer_2026.pdf",
+  updatedAt: "May 2026",
+  feedback: [
+    {
+      atsScore: 82,
+      jobMatchScore: 71,
+      impactScore: 68,
+      keywordScore: 60,
+      strengths:
+        "Excellent technical breakdown structure and strong project action-verb distribution indicators.",
+      missingKeywords: ["CI/CD", "Kubernetes", "GraphQL", "TypeScript"],
+    },
+  ],
+  rewriteSection: [
+    {
+      id: 1,
+      sectionName: "Experience - Bullet #2",
+      originalText: "Worked on backend routes.",
+      rewrittenText:
+        "Architected 14 scalable REST API endpoints maximizing ingestion capacity by 34%.",
+    },
+    {
+      id: 2,
+      sectionName: "Professional Summary",
+      originalText: "Looking for a full stack engineer job.",
+      rewrittenText:
+        "Performance-driven Software Engineer specializing in low-latency runtime optimization frameworks.",
+    },
+  ],
+};
 const ResumeDashboard = ({ resumeData }) => {
-  // Fallback structural initialization assuming mock/empty state matching pipeline payload structure
-  const resume = resumeData || {
-    title: "Software_Engineer_2026.pdf",
-    updatedAt: "May 2026",
-    feedback: [
-      {
-        atsScore: 82,
-        jobMatchScore: 71,
-        impactScore: 68,
-        keywordScore: 60,
-        strengths:
-          "Excellent technical breakdown structure and strong project action-verb distribution indicators.",
-        missingKeywords: ["CI/CD", "Kubernetes", "GraphQL", "TypeScript"],
-      },
-    ],
-    rewriteSection: [
-      {
-        id: 1,
-        sectionName: "Experience - Bullet #2",
-        originalText: "Worked on backend routes.",
-        rewrittenText:
-          "Architected 14 scalable REST API endpoints maximizing ingestion capacity by 34%.",
-      },
-      {
-        id: 2,
-        sectionName: "Professional Summary",
-        originalText: "Looking for a full stack engineer job.",
-        rewrittenText:
-          "Performance-driven Software Engineer specializing in low-latency runtime optimization frameworks.",
-      },
-    ],
-  };
-
+  const resume = resumeData || resumeDummy;
   const feedback = resume.feedback?.[0] || {};
   const rewrites = resume.rewriteSection || [];
-
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-zinc-50 p-6 lg:p-12 antialiased selection:bg-white selection:text-black">
-      {/* ================= PAGE CONTROL HEADER ================= */}
       <header className="max-w-6xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-zinc-900 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -67,7 +63,6 @@ const ResumeDashboard = ({ resumeData }) => {
       </header>
 
       <div className="max-w-6xl mx-auto space-y-8">
-        {/* ================= TOP PRIMARY METRIC GRID ================= */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {[
             {
@@ -106,12 +101,8 @@ const ResumeDashboard = ({ resumeData }) => {
             </div>
           ))}
         </section>
-
-        {/* ================= TWO-COLUMN LOWER METRIC VIEW ================= */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* LEFT PANEL: Audit Breakdown (Schema: strengths, missingKeywords) */}
           <section className="lg:col-span-5 space-y-6">
-            {/* Core Architectural Strengths */}
             <div className="border border-zinc-900 bg-zinc-900/30 rounded-xl p-6 space-y-3">
               <span className="text-[10px] font-mono tracking-widest font-bold uppercase text-zinc-400 block">
                 Identified Core Strengths
@@ -121,8 +112,6 @@ const ResumeDashboard = ({ resumeData }) => {
                   "Initiate an AI evaluation request sequence to extract overall formatting optimization parameters."}
               </p>
             </div>
-
-            {/* Target Missing System Keywords */}
             <div className="border border-zinc-900 bg-zinc-900/30 rounded-xl p-6 space-y-4">
               <span className="text-[10px] font-mono tracking-widest font-bold uppercase text-zinc-400 block">
                 Critical Missing Scanner Keywords
@@ -142,8 +131,6 @@ const ResumeDashboard = ({ resumeData }) => {
               </div>
             </div>
           </section>
-
-          {/* RIGHT PANEL: Optimization Activity Log (Schema: rewriteSection Pipeline lookup limit:3) */}
           <section className="lg:col-span-7 border border-zinc-900 bg-zinc-900/10 rounded-xl overflow-hidden flex flex-col">
             <div className="p-6 border-b border-zinc-900 bg-zinc-900/40 flex items-center justify-between">
               <span className="text-[10px] font-mono tracking-widest font-bold uppercase text-zinc-400">

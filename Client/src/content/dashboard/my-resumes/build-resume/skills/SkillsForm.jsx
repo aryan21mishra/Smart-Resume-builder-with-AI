@@ -11,7 +11,6 @@ const SkillsForm = () => {
   const navigate = useNavigate();
   const resume = useSelector(selectResumes);
   const skillsData = Array.isArray(resume?.skills) ? (resume?.skills[0] || {}) : (resume?.skills || {});
-
   const {
     register,
     handleSubmit,
@@ -19,12 +18,10 @@ const SkillsForm = () => {
   } = useForm({
     values: skillsData
   });
-
   const onSubmit = (data) => {
     dispatch(updateForm({ field: "skills", data }));
     navigate("/dashboard/my-resumes/build-resume/certifications");
   };
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -36,7 +33,6 @@ const SkillsForm = () => {
         errors={errors}
         name="technical"
       />
-
       <FormField
         label="Soft Skills"
         placeholder="Leadership, Communication, Teamwork"
@@ -44,7 +40,6 @@ const SkillsForm = () => {
         errors={errors}
         name="soft"
       />
-
       <FormField
         label="Languages"
         placeholder="English, Hindi"
@@ -52,7 +47,6 @@ const SkillsForm = () => {
         errors={errors}
         name="languages"
       />
-
       <FormField
         label="Tools"
         placeholder="Git, Docker, Postman"

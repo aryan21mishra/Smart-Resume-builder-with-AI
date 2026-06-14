@@ -31,7 +31,7 @@ const AiFeedbackHeader = ({
           jobDescription={jobDescription}
           setJobDescription={setJobDescription}
         >
-          <div className="group relative flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 bg-zinc-950/80 border border-zinc-800 hover:border-zinc-700 rounded-xl cursor-pointer transition-all duration-300">
+<div className="group relative flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 bg-zinc-950/80 border border-zinc-800 hover:border-zinc-700 rounded-xl cursor-pointer transition-all duration-300">
             <div className="flex flex-col md:flex-row gap-6 md:gap-10 flex-1 min-w-0">
               {/* Resume configuration preview */}
               <div className="space-y-1 min-w-0 md:w-1/2">

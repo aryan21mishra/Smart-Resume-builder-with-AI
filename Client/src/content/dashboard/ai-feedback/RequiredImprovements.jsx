@@ -5,7 +5,6 @@ import { selectFeedback } from "@/redux/resumes/feedbackSlice";
 const RequiredImprovementsSection = () => {
   const feedback = useSelector(selectFeedback);
   const improvements = feedback.improvements || [];
-
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
       <div className="p-6 border-b border-zinc-800 flex justify-between items-center">
@@ -18,18 +17,15 @@ const RequiredImprovementsSection = () => {
           </span>
         )}
       </div>
-
       <div className="divide-y divide-zinc-850 bg-zinc-950/40">
         {improvements.length > 0 ? (
           improvements.map((item, idx) => {
-            // Priority styling configuration
             let priorityBadge = "text-zinc-400 bg-zinc-800 border-zinc-700";
             if (item.priority?.toLowerCase() === "high") {
               priorityBadge = "text-red-400 bg-red-500/10 border-red-500/20";
             } else if (item.priority?.toLowerCase() === "medium") {
               priorityBadge = "text-amber-400 bg-amber-500/10 border-amber-500/20";
             }
-
             return (
               <div key={item._id || idx} className="p-5 flex items-start gap-4 hover:bg-zinc-900/20 transition-colors">
                 <span className="font-mono text-xs text-zinc-550 pt-1 shrink-0">

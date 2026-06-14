@@ -15,7 +15,6 @@ import {
   findAndUpdateOtp,
   findOTP,
 } from "../service/otp.service.js";
-import { sendEmail } from "../lib/Resend.js";
 import {
   sendOTPMail,
   sendRegistrationEmail,
@@ -95,8 +94,6 @@ export const registerUser = asyncHandler(async (req, res) => {
 export const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(req.body);
-
   if ([email, password].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
@@ -165,13 +162,13 @@ export const getUserProfile = asyncHandler(async (req, res) => {
 
 export const updateUserProfile = asyncHandler(async (req, res) => {
   // only allow updating firstName, lastName and avatar
-  const { firstName, lastName, avatar } = req.body;
+  const { firstName, lastName, email } = req.body;
   // build an object with the fields to update
   const fieldsToUpdate = {};
   // only add the fields that are provided in the request body
   if (firstName) fieldsToUpdate.firstName = firstName;
   if (lastName) fieldsToUpdate.lastName = lastName;
-  if (avatar) fieldsToUpdate.avatar = avatar;
+  if (email) fieldsToUpdate.email = email;
 
   // update the user in the database and return the updated user
   const updatedUser = await updateUser(req.user._id, fieldsToUpdate);
@@ -349,4 +346,25 @@ export const googleLogin = asyncHandler(async (req, res) => {
       .cookie("refreshToken", refreshToken, options)
       .json(new ApiResponse(200, { user }, "Login successful!"));
   }
+});
+
+export const updateAvatar = asyncHandler(async (req, res) => {
+  console.log("avatar : ", req.file);
+  const file = req.file;
+
+  // check the file is uploaded or not
+  if (!file) {
+    throw new ApiError(400, "File is required!");
+  }
+
+  const { localFilePath } = file?.path;
+  const response = await uploadCloud({ localFilePath });
+
+  const updatedUser = await updateUser(req.user._id, {
+    avatar: response.secure_url,
+    avatarPublicId: response.public_id,
+  });
+  res.json(
+    new ApiResponse(200, { updatedUser }, "Avatar updated successfully!"),
+  );
 });

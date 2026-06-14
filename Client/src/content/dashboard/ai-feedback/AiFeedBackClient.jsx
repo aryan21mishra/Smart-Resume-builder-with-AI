@@ -66,7 +66,6 @@ const AiFeedBackClient = () => {
   const [jobDescription, setJobDescription] = useState(
     "React & Node Backend Engineer Role",
   );
-
   const feedbackState = useSelector(selectFeedback);
   const { mutate, isPending } = useFeedbackMutation();
 
@@ -75,16 +74,13 @@ const AiFeedBackClient = () => {
       toast.error("Please select or upload a resume first.");
       return;
     }
-
     if (!jobDescription || jobDescription.trim() === "") {
       toast.error("Please enter a target job description.");
       return;
     }
-
     const payload = {
       jobDescription,
     };
-
     if (selectedResume.type === "file") {
       payload.file = selectedResume.rawFile;
     } else if (selectedResume.type === "website") {
@@ -136,5 +132,4 @@ const AiFeedBackClient = () => {
     </div>
   );
 };
-
 export default AiFeedBackClient;

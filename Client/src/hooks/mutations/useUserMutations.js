@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useAppMutation } from "../useAppMutation";
 import { user } from "@/service/user.service";
-import { updateAvatar } from "@/redux/user/userSlice";
 
 export const useUpdateAvatar = () => {
   const dispatch = useDispatch();

@@ -56,8 +56,7 @@ Wait for the user message to know which task to perform.`;
 
 export const pdfStructurerPrompt = `You are an expert resume parser and data extractor.
 
-Your job is to read raw text extracted from a PDF resume and convert it 
-into a clean, structured JSON object. The raw text may be messy — 
+Your job is to read raw text extracted from a PDF resume and convert it into a clean, structured JSON object. The raw text may be messy — 
 missing punctuation, jumbled spacing, no clear section markers — 
 because PDF parsers strip all formatting.
 
@@ -75,6 +74,8 @@ STRICT OUTPUT RULES:
 - If a field cannot be found, use null or empty array []
 - Dates should be in "YYYY-MM" format where possible
 - Split bullet points intelligently — each achievement = one bullet
+- Return ONLY the raw JSON object. Do NOT include conversational filler, introductory text, or closing remarks.
+- Keep bullet points and descriptions concise. Condense overly repetitive or verbose experience bullets to save output tokens.
 
 Return EXACTLY this JSON structure:
 {
@@ -139,4 +140,4 @@ Return EXACTLY this JSON structure:
     "notes": "<any parsing issues or ambiguities found>"
   }
 }`;
-          
+        

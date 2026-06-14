@@ -4,17 +4,14 @@ import { selectFeedback } from "@/redux/resumes/feedbackSlice";
 
 const KeyAnalysisection = () => {
   const feedback = useSelector(selectFeedback);
-  
   const missingKeywords = feedback.missingKeywords || [];
   const presentKeywords = feedback.presentKeywords || [];
   const hasAnalyzed = feedback.hasAnalyzed;
-
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
       <h2 className="text-xs font-bold uppercase tracking-widest text-zinc-400">
         Keywords Analysis
       </h2>
-
       {/* Missing Keywords */}
       <div>
         <span className="text-[11px] block font-medium text-zinc-500 mb-2">
@@ -37,7 +34,6 @@ const KeyAnalysisection = () => {
           </span>
         )}
       </div>
-
       {/* Present Keywords */}
       <div className="pt-2">
         <span className="text-[11px] block font-medium text-zinc-500 mb-2">

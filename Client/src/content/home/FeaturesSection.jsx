@@ -15,38 +15,36 @@ import {
   FileText,
   Settings,
 } from "lucide-react";
-
+const primaryFeatures = [
+  {
+    icon: <RiFileList2Line size={28} className="text-violet-400" />,
+    heading: "Resume Builder",
+    paragraph:
+      "Create professional, ATS-friendly resumes using our step-by-step assistant and optimized schemas.",
+    buttonName: "Build Now",
+    navigationTo: "/dashboard/my-resumes/build-resume/personal-information",
+    glow: "group-hover:border-violet-500/30 group-hover:shadow-violet-950/10",
+  },
+  {
+    icon: <RiLineChartLine size={28} className="text-emerald-400" />,
+    heading: "ATS Score Checker",
+    paragraph:
+      "Analyze keyword usage, layout constraints, and bullet impact to bypass automated tracking system blocks.",
+    buttonName: "Check Score",
+    navigationTo: "/dashboard/ai-feedback",
+    glow: "group-hover:border-emerald-500/30 group-hover:shadow-emerald-950/10",
+  },
+  {
+    icon: <RiTargetFill size={28} className="text-amber-400" />,
+    heading: "Job Match Analyzer",
+    paragraph:
+      "Paste target job descriptions to identify structural keyword gaps and see compatibility ranks.",
+    buttonName: "Match Now",
+    navigationTo: "/dashboard/keywords",
+    glow: "group-hover:border-amber-500/30 group-hover:shadow-amber-950/10",
+  },
+];
 export default function FeaturesSection() {
-  const primaryFeatures = [
-    {
-      icon: <RiFileList2Line size={28} className="text-violet-400" />,
-      heading: "Resume Builder",
-      paragraph:
-        "Create professional, ATS-friendly resumes using our step-by-step assistant and optimized schemas.",
-      buttonName: "Build Now",
-      navigationTo: "/dashboard/my-resumes/build-resume/personal-information",
-      glow: "group-hover:border-violet-500/30 group-hover:shadow-violet-950/10",
-    },
-    {
-      icon: <RiLineChartLine size={28} className="text-emerald-400" />,
-      heading: "ATS Score Checker",
-      paragraph:
-        "Analyze keyword usage, layout constraints, and bullet impact to bypass automated tracking system blocks.",
-      buttonName: "Check Score",
-      navigationTo: "/dashboard/ai-feedback",
-      glow: "group-hover:border-emerald-500/30 group-hover:shadow-emerald-950/10",
-    },
-    {
-      icon: <RiTargetFill size={28} className="text-amber-400" />,
-      heading: "Job Match Analyzer",
-      paragraph:
-        "Paste target job descriptions to identify structural keyword gaps and see compatibility ranks.",
-      buttonName: "Match Now",
-      navigationTo: "/dashboard/keywords",
-      glow: "group-hover:border-amber-500/30 group-hover:shadow-amber-950/10",
-    },
-  ];
-
   return (
     <section className="relative py-12 sm:py-20 bg-[#050508]/20 w-full overflow-hidden">
       {/* Glow highlight */}
