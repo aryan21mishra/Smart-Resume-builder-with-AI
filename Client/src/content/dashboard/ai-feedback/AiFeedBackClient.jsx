@@ -74,10 +74,6 @@ const AiFeedBackClient = () => {
       toast.error("Please select or upload a resume first.");
       return;
     }
-    if (!jobDescription || jobDescription.trim() === "") {
-      toast.error("Please enter a target job description.");
-      return;
-    }
     const payload = {
       jobDescription,
     };

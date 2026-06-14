@@ -97,7 +97,7 @@ const resumeSchema = new Schema(
     isDraft: { type: Boolean, default: true },
     feedback: { type: Schema.Types.ObjectId, ref: "Feedback" },
     exportFormats: [{ type: String, enum: ["pdf", "docx", "txt", "json"] }],
-    isDelete: {
+    isDeleted: {
       type: Boolean,
       default: false,
     },

@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
+  id: null,
   title: "",
   template: "",
   personalInformation: {},
@@ -16,7 +17,9 @@ const resumeSlice = createSlice({
   reducers: {
     updateForm: (state, action) => {
       const { field, data } = action.payload;
-      if (field === "title") {
+      if (field === "id") {
+        state.id = data;
+      } else if (field === "title") {
         state.title = data;
       } else if (field === "template") {
         state.template = data;

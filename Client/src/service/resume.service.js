@@ -23,7 +23,7 @@ class ResumeService {
     };
   getAllResumes = async () => {
     const response = await api.get(`${this.baseURL}/all-resumes`);
-    return response?.data;
+    return response?.data?.data?.allResumes || [];
   };
 }
 export const resumeService = new ResumeService();

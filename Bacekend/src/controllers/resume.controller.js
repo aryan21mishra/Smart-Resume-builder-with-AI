@@ -132,9 +132,7 @@ export const duplicateResume = asyncHandler(async (req, res) => {
 
 export const getAllResumes = asyncHandler(async (req, res) => {
   const userId = req.user._id;
-  console.log(userId);
   const allResumes = await findAllResumesByUserId(userId);
-  console.log(allResumes)
   if (!allResumes) {
     throw new ApiError(404, "Resumes not found!");
   }
