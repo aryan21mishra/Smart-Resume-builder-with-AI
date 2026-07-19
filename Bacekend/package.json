@@ -16,7 +16,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "dev": "nodemon --signal SIGTERM -r dotenv/config --experimental-json-modules src/index.js"
+    "dev": "nodemon --signal SIGTERM -r dotenv/config --experimental-json-modules src/index.js",
+    "start": "node -r dotenv/config --experimental-json-modules src/index.js"
   },
   "dependencies": {
     "@react-email/render": "^2.0.8",
