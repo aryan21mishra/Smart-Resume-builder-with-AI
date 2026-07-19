@@ -1,5 +1,8 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/redux/user/userSlice";
+import { useLogoutMutation } from "@/hooks/mutations/useAuthMutations";
 import {
   RiAiGenerate,
   RiDashboardLine,
@@ -9,6 +12,7 @@ import {
   RiPencilLine,
   RiUserLine,
   RiSettings5Line,
+  RiLogoutBoxRLine,
 } from "@remixicon/react";
 import TemplateSVG from "../../assets/svg/TemplateSVG";
 const mainMenu = [
@@ -68,6 +72,24 @@ const account = [
   },
 ];
 const DashboardNavigationBar = () => {
+  const user = useSelector(selectUser);
+  const { mutate: logout } = useLogoutMutation();
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  const fullName = user
+    ? [user.firstName, user.lastName].filter(Boolean).join(" ")
+    : "Guest User";
+
+  const initials = user
+    ? [user.firstName, user.lastName]
+        .filter(Boolean)
+        .map((n) => n[0].toUpperCase())
+        .join("")
+    : "G";
+
   return (
     <aside className="w-full max-w-[240px] h-screen bg-zinc-950 border-r border-zinc-900 flex flex-col justify-between text-zinc-400 selection:bg-white selection:text-black antialiased">
       <div className="p-5 border-b border-zinc-900 flex items-center gap-2.5">
@@ -187,18 +209,34 @@ const DashboardNavigationBar = () => {
           })}
         </div>
       </nav>
-      <footer className="p-4 border-t border-zinc-900 bg-zinc-950 flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono text-xs font-bold text-white select-none">
-          AM
+      <footer className="p-4 border-t border-zinc-900 bg-zinc-950 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3 min-w-0">
+          {user?.avatar ? (
+            <img
+              src={user.avatar}
+              alt="Avatar"
+              className="w-8 h-8 rounded-full border border-zinc-800 object-cover shrink-0"
+            />
+          ) : (
+            <div className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center font-mono text-xs font-bold text-white select-none shrink-0">
+              {initials || "U"}
+            </div>
+          )}
+          <div className="min-w-0">
+            <p className="text-xs font-bold tracking-wide text-white truncate font-montserratSemiBold">
+              {fullName || "User Profile"}
+            </p>
+            <p className="text-[10px] font-mono text-zinc-500 tracking-wide truncate">
+              {user?.email || "active session"}
+            </p>
+          </div>
         </div>
-        <div className="flex-1 min-w-0">
-          <p className="text-xs font-bold tracking-wide text-white truncate font-montserratSemiBold">
-            Aryan Mishra
-          </p>
-          <p className="text-[10px] font-mono text-zinc-500 tracking-wide truncate">
-            Software Engineer
-          </p>
-        </div>
+        <button
+          onClick={handleLogout}
+          title="Sign Out"
+          className="p-1.5 hover:bg-zinc-900 rounded-lg text-zinc-500 hover:text-red-400 transition-colors cursor-pointer shrink-0">
+          <RiLogoutBoxRLine size={16} />
+        </button>
       </footer>
     </aside>
   );

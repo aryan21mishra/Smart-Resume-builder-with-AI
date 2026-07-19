@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/redux/user/userSlice";
+import { useLogoutMutation } from "@/hooks/mutations/useAuthMutations";
+import { useChangePassword } from "@/hooks/mutations/useUserMutations";
+import { toast } from "sonner";
 import {
   RiUserLine,
   RiLockPasswordLine,
@@ -6,15 +11,59 @@ import {
   RiEqualizerLine,
   RiEyeLine,
   RiEyeOffLine,
+  RiLogoutBoxRLine,
+  RiLoader4Line,
 } from "@remixicon/react";
 
 const Settings = () => {
+  const user = useSelector(selectUser);
+  const { mutate: logout, isPending: isLoggingOut } = useLogoutMutation();
+  const { mutate: changePassword, isPending: isChangingPassword } = useChangePassword();
+
   const [showPass, setShowPass] = useState({
     current: false,
     new: false,
     confirm: false,
   });
+
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      toast.error("Please fill in all password fields.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("New passwords do not match.");
+      return;
+    }
+    if (newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters.");
+      return;
+    }
+    changePassword(
+      { currentPassword, newPassword },
+      {
+        onSuccess: () => {
+          setCurrentPassword("");
+          setNewPassword("");
+          setConfirmPassword("");
+        },
+      }
+    );
+  };
+
+  const fullName = user
+    ? [user.firstName, user.lastName].filter(Boolean).join(" ")
+    : "";
 
   return (
     <div className="w-full min-h-screen bg-zinc-950 text-zinc-50 p-6 lg:p-12 antialiased selection:bg-white selection:text-black">
@@ -30,8 +79,21 @@ const Settings = () => {
             Account Settings
           </h1>
         </div>
-        <div className="font-mono text-[10px] text-zinc-500 bg-zinc-900/20 border border-zinc-900 px-3 py-1.5 rounded-lg">
-          Session Profile: Active
+        <div className="flex items-center gap-3">
+          <div className="font-mono text-[10px] text-zinc-500 bg-zinc-900/20 border border-zinc-900 px-3 py-1.5 rounded-lg">
+            Session Profile: Active
+          </div>
+          <button
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="flex items-center gap-2 px-3 py-1.5 border border-red-950/60 bg-red-950/10 hover:bg-red-900/20 text-red-400 hover:text-red-300 font-medium text-[11px] rounded-lg transition-colors cursor-pointer disabled:opacity-50">
+            {isLoggingOut ? (
+              <RiLoader4Line size={12} className="animate-spin" />
+            ) : (
+              <RiLogoutBoxRLine size={12} />
+            )}
+            Logout
+          </button>
         </div>
       </header>
 
@@ -45,7 +107,7 @@ const Settings = () => {
             </div>
             <p className="text-[11px] text-zinc-500 font-montserratRegular leading-relaxed">
               Your public operational metadata attached to published resume
-              exports.
+              exports. To edit these, please visit the profile page.
             </p>
           </div>
 
@@ -56,8 +118,9 @@ const Settings = () => {
               </label>
               <input
                 type="text"
-                defaultValue="Aryan Mishra"
-                className="w-full bg-zinc-900/30 border border-zinc-900 focus:border-zinc-700 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none transition-colors font-montserratRegular"
+                disabled
+                value={fullName}
+                className="w-full bg-zinc-900/20 border border-zinc-900/50 rounded-lg px-3 py-2 text-xs text-zinc-500 focus:outline-none font-montserratRegular cursor-not-allowed"
               />
             </div>
             <div className="space-y-1.5">
@@ -66,8 +129,9 @@ const Settings = () => {
               </label>
               <input
                 type="text"
-                defaultValue="Software Engineer"
-                className="w-full bg-zinc-900/30 border border-zinc-900 focus:border-zinc-700 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none transition-colors font-montserratRegular"
+                disabled
+                value={user?.professtion || "Not Set"}
+                className="w-full bg-zinc-900/20 border border-zinc-900/50 rounded-lg px-3 py-2 text-xs text-zinc-500 focus:outline-none font-montserratRegular cursor-not-allowed"
               />
             </div>
             <div className="space-y-1.5 sm:col-span-2">
@@ -76,8 +140,9 @@ const Settings = () => {
               </label>
               <input
                 type="email"
-                defaultValue="aryan.mishra@example.com"
-                className="w-full bg-zinc-900/30 border border-zinc-900 focus:border-zinc-700 rounded-lg px-3 py-2 text-xs text-white placeholder-zinc-700 focus:outline-none transition-colors font-mono"
+                disabled
+                value={user?.email || ""}
+                className="w-full bg-zinc-900/20 border border-zinc-900/50 rounded-lg px-3 py-2 text-xs text-zinc-500 focus:outline-none font-mono cursor-not-allowed"
               />
             </div>
           </div>
@@ -96,7 +161,7 @@ const Settings = () => {
             </p>
           </div>
 
-          <div className="md:col-span-2 space-y-4">
+          <form onSubmit={handlePasswordChange} className="md:col-span-2 space-y-4">
             {/* Current Password Field */}
             <div className="space-y-1.5 relative">
               <label className="text-[10px] font-mono uppercase tracking-wider text-zinc-400 block">
@@ -106,6 +171,8 @@ const Settings = () => {
                 <input
                   type={showPass.current ? "text" : "password"}
                   placeholder="••••••••••••"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
                   className="w-full bg-zinc-900/30 border border-zinc-900 focus:border-zinc-700 rounded-lg pl-3 pr-10 py-2 text-xs text-white focus:outline-none transition-colors font-mono"
                 />
                 <button
@@ -133,6 +200,8 @@ const Settings = () => {
                   <input
                     type={showPass.new ? "text" : "password"}
                     placeholder="••••••••••••"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
                     className="w-full bg-zinc-900/30 border border-zinc-900 focus:border-zinc-700 rounded-lg pl-3 pr-10 py-2 text-xs text-white focus:outline-none transition-colors font-mono"
                   />
                   <button
@@ -158,6 +227,8 @@ const Settings = () => {
                   <input
                     type={showPass.confirm ? "text" : "password"}
                     placeholder="••••••••••••"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     className="w-full bg-zinc-900/30 border border-zinc-900 focus:border-zinc-700 rounded-lg pl-3 pr-10 py-2 text-xs text-white focus:outline-none transition-colors font-mono"
                   />
                   <button
@@ -175,7 +246,17 @@ const Settings = () => {
                 </div>
               </div>
             </div>
-          </div>
+            
+            <div className="flex justify-end pt-2">
+              <button
+                type="submit"
+                disabled={isChangingPassword}
+                className="px-5 py-2 bg-white text-black font-semibold text-xs rounded-lg hover:bg-zinc-200 transition-colors tracking-wide flex items-center gap-1.5 cursor-pointer disabled:opacity-50">
+                {isChangingPassword && <RiLoader4Line size={12} className="animate-spin" />}
+                Change Password
+              </button>
+            </div>
+          </form>
         </section>
 
         {/* ================= SECTION 3: DESTRUCTIVE AREA (DELETE ACCOUNT) ================= */}
@@ -240,11 +321,13 @@ const Settings = () => {
 
         {/* ================= FINAL SAVE CONTEXT BAR ================= */}
         <footer className="pt-6 border-t border-zinc-900 flex justify-end gap-3">
-          <button className="px-4 py-2 border border-zinc-900 text-zinc-400 hover:text-white hover:border-zinc-700 font-medium text-xs rounded-lg transition-colors tracking-wide font-mono">
-            Reset Layout
-          </button>
-          <button className="px-5 py-2 bg-white text-black font-semibold text-xs rounded-lg hover:bg-zinc-200 transition-colors tracking-wide">
-            Save Structural Changes
+          <button 
+            type="button"
+            onClick={handleLogout}
+            disabled={isLoggingOut}
+            className="px-5 py-2 bg-red-600 hover:bg-red-500 text-white font-semibold text-xs rounded-lg transition-colors tracking-wide flex items-center gap-1.5 cursor-pointer disabled:opacity-50">
+            {isLoggingOut && <RiLoader4Line size={12} className="animate-spin" />}
+            Logout Session
           </button>
         </footer>
       </main>
