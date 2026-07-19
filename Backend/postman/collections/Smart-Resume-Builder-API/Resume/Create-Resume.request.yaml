@@ -1,0 +1,62 @@
+$kind: http-request
+name: Create Resume
+method: POST
+url: '{{baseUrl}}/resumes'
+order: 1000
+auth:
+  type: bearer
+  credentials:
+    - key: token
+      value: '{{accessToken}}'
+headers:
+  - key: Content-Type
+    value: application/json
+body:
+  type: json
+  content: |-
+    {
+      "title": "My Software Engineer Resume",
+      "template": "modern",
+      "colorTheme": "#e8b86d",
+      "font": "DM Sans",
+      "targetJobTitle": "Software Engineer",
+      "targetIndustry": "Technology",
+      "targetJobDescription": "We are looking for a software engineer...",
+      "fullName": "John Doe",
+      "email": "john.doe@example.com",
+      "summary": "Experienced software engineer with 5 years of experience...",
+      "contact": {
+        "phone": "+1234567890",
+        "location": "New York, NY",
+        "linkedin": "https://linkedin.com/in/johndoe",
+        "github": "https://github.com/johndoe",
+        "website": "https://johndoe.com"
+      },
+      "experience": [
+        {
+          "company": "Tech Corp",
+          "title": "Software Engineer",
+          "location": "New York, NY",
+          "startDate": "2020-01-01",
+          "isCurrent": true,
+          "bullets": ["Built scalable APIs", "Led a team of 3 engineers"]
+        }
+      ],
+      "education": [
+        {
+          "institution": "State University",
+          "degree": "B.S. Computer Science",
+          "field": "Computer Science",
+          "startDate": "2016-09-01",
+          "endDate": "2020-05-01",
+          "gpa": 3.8
+        }
+      ],
+      "skills": {
+        "technical": ["JavaScript", "Node.js", "React"],
+        "soft": ["Leadership", "Communication"],
+        "languages": ["English", "Spanish"],
+        "tools": ["Git", "Docker", "AWS"]
+      },
+      "isDraft": false
+    }
