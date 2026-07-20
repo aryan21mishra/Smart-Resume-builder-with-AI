@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useLoginMutation } from "@/hooks/mutations/useAuthMutations";
-import Logo from "../../components/common/logo";
 import FormField from "../../components/common/FormField";
 import { Button } from "../../components/ui";
 import { RiArrowRightLongLine } from "@remixicon/react";
