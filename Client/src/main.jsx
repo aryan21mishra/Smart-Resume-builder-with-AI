@@ -5,7 +5,7 @@ import { BrowserRouter, RouterProvider } from "react-router-dom";
 import { router } from "./routes/router.jsx";
 import { Provider } from "react-redux";
 import { store } from "./redux/store/store.js";
-import TanstackProvider from "./layouts/provider/tanstackProvider.jsx";
+import TanstackProvider from "./layouts/provider/TanstackProvider";
 import { Toaster } from "sonner";
 createRoot(document.getElementById("root")).render(
   <TanstackProvider>
