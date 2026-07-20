@@ -1,7 +1,5 @@
 import React from "react";
-import AuthImage from "../../assets/auth/kamran-abdullayev-nGYTbtuDjAI-unsplash.jpg";
-import Image from "../../components/common/Image";
-import Logo from "../../components/common/logo";
+import Logo from "../../components/common/Logo";
 import { Typewriter } from "react-simple-typewriter";
 import BackgroundGradientDesign from "../../components/common/BackgroundGradientDesign";
 import { Outlet } from "react-router-dom";

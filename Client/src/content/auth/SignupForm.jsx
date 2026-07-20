@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, Label } from "../../components/ui/index";
 import FormField from "../../components/common/FormField";
-import Logo from "../../components/common/logo";
 import { useRegisterMutation } from "@/hooks/mutations/useAuthMutations";
 import { useSigninFirebaseMutation } from "@/hooks/mutations/useFirebaseAuthMutations";
 import { Link } from "react-router-dom";
